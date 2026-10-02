@@ -1,0 +1,88 @@
+{
+  "recorded": "2026-10-02",
+  "scope": "Public frontend reference planning only",
+  "websites": [
+    {
+      "id": "current-high4tech",
+      "url": "https://high4tech.framer.ai/",
+      "role": "current-site"
+    },
+    {
+      "id": "displace",
+      "url": "https://displace.agency/",
+      "role": "visual-reference"
+    },
+    {
+      "id": "fahrenheit",
+      "url": "https://www.fahrenheit.ch/",
+      "role": "visual-reference"
+    },
+    {
+      "id": "direct",
+      "url": "https://wearedirect.co/",
+      "role": "visual-reference"
+    },
+    {
+      "id": "marino",
+      "url": "https://marino.co.uk/",
+      "role": "visual-reference"
+    },
+    {
+      "id": "madamepolare",
+      "url": "https://madamepolare.com/en",
+      "role": "visual-reference"
+    },
+    {
+      "id": "copula",
+      "url": "https://copula.agency/",
+      "role": "visual-reference"
+    },
+    {
+      "id": "tkxel",
+      "url": "https://tkxel.com/",
+      "role": "visual-reference"
+    },
+    {
+      "id": "stokt-heron",
+      "url": "https://wearestokt.com/case-study-collection/heron",
+      "role": "visual-and-case-study-reference"
+    }
+  ],
+  "repositories": [
+    {
+      "id": "react-three-fiber",
+      "url": "https://github.com/pmndrs/react-three-fiber",
+      "role": "candidate-library-or-effect-reference"
+    },
+    {
+      "id": "shadergradient",
+      "url": "https://github.com/ruucm/shadergradient",
+      "role": "candidate-library-or-effect-reference"
+    },
+    {
+      "id": "liquid-logo",
+      "url": "https://github.com/collidingScopes/liquid-logo",
+      "role": "candidate-library-or-effect-reference"
+    },
+    {
+      "id": "react-ui-os",
+      "url": "https://github.com/saschb2b/react-ui-os",
+      "role": "open-source-macOS-desktop-reference"
+    },
+    {
+      "id": "macos-web-simulator",
+      "url": "https://github.com/LikhithSP/MacOS-Web-Simulator",
+      "role": "open-source-macOS-interaction-reference"
+    }
+  ],
+  "additionalDocumentation": [
+    {
+      "id": "gsap",
+      "url": "https://gsap.com/docs/v3/"
+    },
+    {
+      "id": "scrolltrigger",
+      "url": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/"
+    }
+  ]
+}
