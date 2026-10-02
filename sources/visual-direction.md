@@ -87,3 +87,7 @@ The current site positions High4Tech as a design and development agency. Broader
 5. Copula and Displace for selective typographic or interactive personality, adapted to High4Tech's white-dominant interface.
 
 Detailed evidence and source URLs are in [Website references](references/websites.md). This hierarchy is a proposed interpretation of the references, not a user-approved ranking.
+
+## Current landing implementation
+
+The landing page now uses one contained black bento module as the visual counterweight to the white page. It groups services, motion language, mascot artwork, availability, and the working toolchain (Next.js, React, Three.js, GSAP, Payload, Figma, and Vercel) into compact cards. Cards reveal with GSAP as the section enters, while the orbit, spark, tool chips, and service rows carry small, low-noise motion. The black module stays an accent surface; the overall page remains white-led with High4Tech orange reserved for emphasis.
