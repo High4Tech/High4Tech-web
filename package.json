@@ -14,7 +14,9 @@
     "cms:importmap": "payload generate:importmap",
     "cms:migrate": "payload migrate",
     "cms:verify": "node --env-file=.env --import tsx scripts/verify-cms.ts",
-    "deployment:verify": "node --import tsx scripts/verify-deployment.ts"
+    "deployment:verify": "node --import tsx scripts/verify-deployment.ts",
+    "assistant:verify": "node --import tsx scripts/verify-assistant.ts",
+    "assistant:verify:cms": "node --env-file=.env --import tsx scripts/verify-assistant-cms.ts"
   },
   "dependencies": {
     "@fontsource/unbounded": "^5.2.0",

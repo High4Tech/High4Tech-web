@@ -29,4 +29,4 @@ export const faqs = [
   { question: 'How do we get started?', answer: 'Tell us a little about your project through the contact page, or reach out on WhatsApp. We can then discuss the scope and the next steps.' },
 ];
 
-export const socials = { instagram: 'https://instagram.com/high_4_tech/', linkedin: 'https://linkedin.com/company/high4tech/', behance: 'https://behance.net/high4tech', whatsapp: 'https://wa.link/p3t9vf' };
+export const socials = { instagram: 'https://instagram.com/high_4_tech/', linkedin: 'https://linkedin.com/company/high4tech/', behance: 'https://behance.net/high4tech', whatsapp: 'https://wa.me/923256138361' };

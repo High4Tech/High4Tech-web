@@ -77,6 +77,7 @@ export interface Config {
     pricing: Pricing;
     'ai-services': AiService;
     'chatbot-data': ChatbotDatum;
+    'knowledge-documents': KnowledgeDocument;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -94,6 +95,7 @@ export interface Config {
     pricing: PricingSelect<false> | PricingSelect<true>;
     'ai-services': AiServicesSelect<false> | AiServicesSelect<true>;
     'chatbot-data': ChatbotDataSelect<false> | ChatbotDataSelect<true>;
+    'knowledge-documents': KnowledgeDocumentsSelect<false> | KnowledgeDocumentsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -104,10 +106,12 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    'assistant-settings': AssistantSetting;
     'site-settings': SiteSetting;
     'contact-info': ContactInfo;
   };
   globalsSelect: {
+    'assistant-settings': AssistantSettingsSelect<false> | AssistantSettingsSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'contact-info': ContactInfoSelect<false> | ContactInfoSelect<true>;
   };
@@ -377,6 +381,8 @@ export interface AiService {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Published answers are available to visitors. Drafts and unpublished revisions stay private.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "chatbot-data".
  */
@@ -390,6 +396,28 @@ export interface ChatbotDatum {
   answer: string;
   link?: string | null;
   label?: string | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Import a data file, review its text, then publish. The assistant quotes published passages only; raw documents are private.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "knowledge-documents".
+ */
+export interface KnowledgeDocument {
+  id: number;
+  title: string;
+  /**
+   * Original filename for your reference. The file itself is not stored.
+   */
+  sourceName?: string | null;
+  /**
+   * This text is the source of answers. Remove confidential material before publishing.
+   */
+  content: string;
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -458,6 +486,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'chatbot-data';
         value: number | ChatbotDatum;
+      } | null)
+    | ({
+        relationTo: 'knowledge-documents';
+        value: number | KnowledgeDocument;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -727,6 +759,19 @@ export interface ChatbotDataSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "knowledge-documents_select".
+ */
+export interface KnowledgeDocumentsSelect<T extends boolean = true> {
+  title?: T;
+  sourceName?: T;
+  content?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -767,6 +812,18 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant-settings".
+ */
+export interface AssistantSetting {
+  id: number;
+  enabled?: boolean | null;
+  welcomeMessage: string;
+  fallbackMessage: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
@@ -801,6 +858,18 @@ export interface ContactInfo {
   welcomeBody: string;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant-settings_select".
+ */
+export interface AssistantSettingsSelect<T extends boolean = true> {
+  enabled?: T;
+  welcomeMessage?: T;
+  fallbackMessage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

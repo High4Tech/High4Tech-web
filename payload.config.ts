@@ -14,7 +14,7 @@ const cloudReady=remoteDatabase&&!cmsConfigurationIssues().length;
 const blobToken=process.env.BLOB_READ_WRITE_TOKEN;
 export default buildConfig({
   secret:process.env.PAYLOAD_SECRET||'',
-  admin:{user:'users',importMap:{baseDir:directory},meta:{titleSuffix:'— High4Tech CMS'}},
+  admin:{user:'users',importMap:{baseDir:directory},meta:{titleSuffix:'— High4Tech CMS'},components:{beforeDashboard:['/cms/components/StudioDashboard#StudioDashboard']}},
   collections,globals,sharp,
   db:sqliteAdapter({client:{url:process.env.DATABASE_URL||'file:./studio.db',authToken:process.env.DATABASE_AUTH_TOKEN},push:process.env.VERCEL||remoteDatabase?false:undefined,migrationDir:path.resolve(directory,'cms/migrations')}),
   plugins:[vercelBlobStorage({enabled:cloudReady,token:cloudReady?blobToken:undefined,collections:{media:true},alwaysInsertFields:true,clientUploads:true,addRandomSuffix:true})],

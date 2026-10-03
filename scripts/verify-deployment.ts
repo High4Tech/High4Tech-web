@@ -21,6 +21,19 @@ if(origin){
   const body=await content.json();
   assert.equal(body.settings.agencyName,'High4Tech');
   assert.ok(body.projects.length>0);
+  assert.equal(body.socials.whatsapp,'https://wa.me/923256138361');
+  const assistantResponse=await fetch(origin+'/api/assistant',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify({question:'What is the capital of France?'})});
+  assert.equal(assistantResponse.status,200);
+  const assistant=await assistantResponse.json();
+  assert.equal(assistant.status,'not-found');
+  assert.equal(assistant.mode,'preview');
+  assert.deepEqual(assistant.sources,[]);
+  const supportedResponse=await fetch(origin+'/api/assistant',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify({question:body.knowledge[0].question})});
+  assert.equal(supportedResponse.status,200);
+  const supported=await supportedResponse.json();
+  assert.equal(supported.status,'matched');
+  assert.equal(supported.answer,body.knowledge[0].answer);
+  assert.equal(supported.answer,supported.sources[0].excerpt);
   for(const [method,route] of [['GET','/api/users/me'],['POST','/api/users/first-register'],['POST','/api/projects']] as const){
     const response:Response=await fetch(origin+route,{method});
     assert.equal(response.status,503,`${method} ${route} must not initialize an unconfigured CMS`);

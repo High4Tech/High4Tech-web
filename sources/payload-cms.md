@@ -13,7 +13,9 @@ The frontend remains a custom React/Next.js studio. Payload 3.90.2 is integrated
 | Pricing | Pricing page; illustrative-price labels |
 | AI services | AI Zone cards and details |
 | FAQs | Home clarity section and FAQ components |
-| Chatbot data | Assistant answers matched by keywords; local navigation links |
+| Approved answers | Published Q&A, conservative knowledge search, citations and navigation links |
+| Knowledge documents | Imported TXT, Markdown, CSV or JSON; published source passages for the assistant |
+| Assistant settings | Enable/pause, welcome message and unsupported-question response |
 | Media | Uploads, project covers/galleries, Newsroom images, logos |
 | Site settings | Agency/studio names, marks/logos, headline, introduction, about text |
 | Contact info | Mail address/welcome message, social links and booking URL |
@@ -24,7 +26,9 @@ Collection records support drafts and published versions. An unfinished revision
 
 The server sends public content through `/api/studio-content`. The studio refreshes on tab focus and every 30 seconds while visible. Initial content is seeded once from `lib/studio-content.ts` / `lib/content.ts`; those files provide starting content rather than live editing.
 
-Mail is a configurable welcome message with a mailto Reply action, rather than a connected inbox. The assistant is a CMS-fed scripted guide. CMS password-reset emails require an email adapter. Paid tools use their external purchase platforms.
+Mail is a configurable welcome message with a mailto Reply action, rather than a connected inbox. The assistant retrieves exact passages from published studio knowledge, cites the source and declines unsupported questions. It uses no external AI API and saves no conversation history. CMS password-reset emails require an email adapter. Paid tools use their external purchase platforms.
+
+The custom `/admin` dashboard contains assistant counts, file/Q&A shortcuts and a visitor-answer test panel. See [assistant-knowledge.md](assistant-knowledge.md) for imports, limits and publication behavior.
 
 ## Development files
 

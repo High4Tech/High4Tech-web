@@ -15,10 +15,11 @@ export const getStudioContent=cache(async():Promise<StudioContent>=>{
   const names=['services','projects','newsroom','resources','faqs','pricing','ai-services','chatbot-data'] as const;
   const results=await Promise.all(names.map(collection=>payload.find({collection,limit:500,depth:1,sort:'sortOrder',overrideAccess:false,draft:false})));
   const [services,projects,articles,resources,faqs,pricing,ai,knowledge]=results.map(result=>result.docs as unknown as Row[]);
-  const [site,contact]=await Promise.all([payload.findGlobal({slug:'site-settings',depth:1}),payload.findGlobal({slug:'contact-info'})]);
+  const [site,contact,assistant]=await Promise.all([payload.findGlobal({slug:'site-settings',depth:1}),payload.findGlobal({slug:'contact-info'}),payload.findGlobal({slug:'assistant-settings'})]);
   const settings=site as unknown as Row;
   const info=contact as unknown as Row;
   return {
+    assistant:{enabled:assistant.enabled!==false,welcomeMessage:assistant.welcomeMessage||defaultContent.assistant.welcomeMessage,fallbackMessage:assistant.fallbackMessage||defaultContent.assistant.fallbackMessage},
     services:services.map((s,i)=>({slug:str(s.slug),number:String(i+1).padStart(2,'0'),title:str(s.title),short:str(s.short),description:str(s.description),tags:strings(s.tags),deliverables:strings(s.deliverables),symbol:str(s.symbol,'flower'),draft:Boolean(s.draft)})),
     projects:projects.map(p=>({slug:str(p.slug),name:str(p.name),type:str(p.type),category:str(p.category),year:str(p.year),image:imageURL(p.image,str(p.imagePath)),color:str(p.color,'#f5eee9'),description:str(p.description),source:'',intro:str(p.intro),images:Array.isArray(p.gallery)?p.gallery.map(item=>{const row=item as Row;return {url:imageURL(row.image,str(row.imagePath)),alt:str(row.alt,str(p.name))};}).filter(image=>image.url):[]})),
     articles:articles.map((a,i)=>({slug:str(a.slug),number:String(i+1).padStart(2,'0'),title:str(a.title),category:str(a.category),read:str(a.read),artwork:str(a.artwork,'type'),summary:str(a.summary),paragraphs:strings(a.paragraphs),image:imageURL(a.image),publishedAt:str(a.publishedAt)})),

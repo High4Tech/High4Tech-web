@@ -24,13 +24,15 @@ Open `http://127.0.0.1:3000` for the studio or `http://127.0.0.1:3000/admin` for
 - **Resources:** free/paid tools and external platform links.
 - **Pricing:** packages and the flag identifying illustrative prices.
 - **AI services:** automation and AI offerings.
-- **FAQs and Chatbot data:** public answers and the assistant’s keyword-based responses.
+- **FAQs and Approved answers:** public Q&A, assistant source text and keywords.
+- **Knowledge documents:** import TXT, Markdown, CSV or JSON and publish reviewed assistant knowledge.
+- **Assistant settings:** enable/pause the assistant, welcome message and unsupported-question response.
 - **Site settings:** agency name, logos, home introduction and about text.
 - **Contact info:** email, social links, booking link and Mail’s welcome message.
 
 Save a draft while editing; use Publish to make collection content public. Globals become live when saved. The studio refreshes published data when the tab regains focus and every 30 seconds while visible. Newly published service, project and Newsroom slugs have their own routes. Layout, visual effects and fixed interface labels remain in the code.
 
-The assistant still uses scripted responses; adding CMS knowledge does not connect a paid AI service. Mail displays a configurable welcome message and opens the visitor’s email app to reply. Project briefs validate locally and prepare an email; they do not send or store messages. Resources open the tool’s own platform for access or purchases. Music only plays when requested.
+The assistant searches published studio knowledge, returns exact source passages with citations, and declines unsupported questions. It uses no paid AI API or external knowledge and stores no conversation history. The admin dashboard includes source counts, import shortcuts and a visitor-answer test. See [the assistant guide](sources/assistant-knowledge.md). Mail displays a configurable welcome message and opens the visitor’s email app to reply. Project briefs validate locally and prepare an email; they do not send or store messages. Resources open the tool’s own platform for access or purchases. Music only plays when requested.
 
 ## Checks
 
@@ -40,6 +42,8 @@ npm run build
 ```
 
 With the development server running, `npm run cms:verify` checks public publishing, private drafts and revisions, unauthenticated write restrictions, and upload delivery. It creates and removes only temporary content/media fixtures; it never creates an admin account. `CMS_TEST_ORIGIN` can override the default local URL.
+
+`npm run assistant:verify` checks grounding and file imports. `npm run assistant:verify:cms` checks publication, private revisions, document privacy and deletion. Warm up the local server first. After schema changes, avoid running development schema auto-sync in two processes at once; use `NODE_ENV=production` for a verification CLI once the development server has synced its schema.
 
 After schema changes, regenerate `payload-types.ts` and the admin import map using `npm run cms:types` and `npm run cms:importmap`. Generate a migration with `npx payload migrate:create descriptive_name`.
 

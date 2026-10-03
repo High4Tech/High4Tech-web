@@ -1,4 +1,5 @@
 import { services, projects, resources, articles, faqs, socials } from './content';
+import { assistantDefaults } from './assistant-search';
 
 export const defaultSettings = {
   agencyName: 'High4Tech', studioName: 'High4Tech Studio', logo: '/brand/wordmark.png', mark: '/brand/mark.png',
@@ -29,5 +30,6 @@ export type StudioContent = {
   pricing: typeof defaultPricing;
   ai: typeof defaultAI;
   knowledge: typeof defaultKnowledge;
+  assistant: typeof assistantDefaults;
 };
-export const defaultContent: StudioContent = {services,projects,resources,articles,faqs,socials,settings:defaultSettings,pricing:defaultPricing,ai:defaultAI,knowledge:defaultKnowledge};
+export const defaultContent: StudioContent = {services,projects,resources,articles,faqs,socials,settings:defaultSettings,pricing:defaultPricing,ai:defaultAI,knowledge:defaultKnowledge,assistant:assistantDefaults};
