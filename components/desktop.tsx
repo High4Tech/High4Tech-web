@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Search, Wifi, Folder, Grid2X2, List, Home, Sparkles, Box, NotebookPen, Mail, CalendarDays, Send, Monitor, ChevronRight, MessageCircle, Command, X, PanelLeft, Minus, Maximize2, Sun, Moon, Clock3, Play, Pause, DollarSign, BrainCircuit, Gamepad2 } from 'lucide-react';
 import { useStudioContent } from './content-provider';
 import { Symbol, ResourceCard, ArticleArt } from './ui';
-import { Newsroom, AIZone, Pricing, PricingReminder, PlayArea, BrandIcon } from './studio-sections';
+import { Newsroom, Pricing, PricingReminder, PlayArea, BrandIcon } from './studio-sections';
+import { AIZone } from './ai-zone';
 import { StudioMail } from './studio-mail';
 import { MacIcon, Toolkit, Gallery, SafariPreview } from './studio-apps';
 import { SoundToggle, playUiSound } from './sound';
@@ -97,7 +98,7 @@ function AppWindow({window:w,active,sidebar,setSidebar,onFocus,onClose,onMinimiz
   const drag=useRef<{x:number;y:number;bx:number;by:number}|null>(null);const app=appFor(w.path);
   const [search,setSearch]=useState('');const [list,setList]=useState(false);
   useEffect(()=>setSearch(''),[w.path]);
-  const compact=['assistant','calendar','safari','contact'].includes(app.id);
+  const compact=['assistant','calendar','safari','contact','ai'].includes(app.id);
   const label=w.path.split('/').length>2?(projects.find(p=>w.path.endsWith(p.slug))?.name||services.find(s=>w.path.endsWith(s.slug))?.short||articles.find(a=>w.path.endsWith(a.slug))?.title||app.label):app.label;
   return <section className={`os-window ${active?'is-active':''} ${w.minimized?'is-minimized':''} ${w.motion?'window-'+w.motion:''} ${w.maximized?'is-maximized':''} ${compact?'compact-window':''} app-${app.id} ${sidebar?'sidebar-open':''}`} style={{'--window-x':`${w.x}px`,'--window-y':`${w.y}px`,zIndex:w.z} as React.CSSProperties} onAnimationEnd={e=>{if(e.target===e.currentTarget)onMotionEnd();}} aria-label={`${app.label} window`} onPointerDown={onFocus}>
     <header className="window-titlebar" data-tip="windows" onDoubleClick={e=>{if(!(e.target as HTMLElement).closest('button'))onZoom();}} onPointerDown={e=>{if((e.target as HTMLElement).closest('button')||w.maximized||window.innerWidth<=800)return;drag.current={x:e.clientX,y:e.clientY,bx:w.x,by:w.y};e.currentTarget.setPointerCapture(e.pointerId);}} onPointerMove={e=>{if(!drag.current)return;onMove(Math.max(-window.innerWidth*.3,Math.min(window.innerWidth*.3,drag.current.bx+e.clientX-drag.current.x)),Math.max(-35,Math.min(window.innerHeight-180,drag.current.by+e.clientY-drag.current.y)));}} onPointerUp={()=>{drag.current=null;}} onPointerCancel={()=>{drag.current=null;}}>

@@ -24,6 +24,7 @@
     "@payloadcms/next": "3.90.2",
     "@payloadcms/storage-vercel-blob": "3.90.2",
     "@react-three/fiber": "^9.0.0",
+    "globe.gl": "^2.46.2",
     "graphql": "16.13.2",
     "gsap": "^3.14.0",
     "lucide-react": "^0.468.0",

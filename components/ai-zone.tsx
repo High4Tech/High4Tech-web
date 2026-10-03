@@ -1,0 +1,85 @@
+'use client';
+import dynamic from 'next/dynamic';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowDown, ArrowRight, ArrowUpRight, Check, Plus, Play, Workflow, Bot, Database, Sparkles, FileText, Inbox, ShieldCheck, X } from 'lucide-react';
+import { useStudioContent } from './content-provider';
+import { defaultAI } from '@/lib/studio-content';
+
+const Globe = dynamic(() => import('./ai-globe'), { ssr: false, loading: () => <div className="az-globe-loading"><img src="/ai/globe-fallback.svg" alt="Global network"/></div> });
+const workflows = [
+  { name: 'Lead to opportunity', icon: Inbox, trigger: 'New website inquiry', steps: ['Capture inquiry', 'Organize & qualify', 'Draft a reply', 'Team approval'], detail: ['An inquiry arrives from your website, with the visitor’s contact details.', 'The workflow puts relevant details into your CRM and flags missing information.', 'An assistant prepares a draft using your approved services and business information.', 'Your team reviews the draft before a reply is sent.'], outcome: 'A cleaner inbox. A clear next step.' },
+  { name: 'Documents to decisions', icon: FileText, trigger: 'New document uploaded', steps: ['Receive document', 'Extract key details', 'Check exceptions', 'Reviewed record'], detail: ['A document enters a designated upload folder.', 'Selected fields are extracted into a structured record for review.', 'Missing or uncertain details are flagged rather than silently guessed.', 'A person approves the record before it moves into your business system.'], outcome: 'Less retyping. More useful information.' },
+  { name: 'Questions to clarity', icon: Bot, trigger: 'New customer question', steps: ['Receive question', 'Search your knowledge', 'Prepare an answer', 'Answer or hand off'], detail: ['A visitor asks a question in your support interface.', 'The assistant looks for relevant, approved business information.', 'An answer is prepared from the supported information, with source references.', 'Supported answers are shown; uncertain requests move to your team.'], outcome: 'Your knowledge, available when it matters.' },
+];
+const questions = [
+  ['Where should we start?', 'Pick one repetitive task: qualifying inquiries, preparing reports, finding answers, or processing documents. We map the current process and build a focused prototype before expanding it.'],
+  ['Can this work with our existing tools?', 'We can plan around your current CRM, inbox, spreadsheets, and apps. Available APIs, account permissions, and provider subscriptions determine which connections are possible.'],
+  ['Do we need AI in every workflow?', 'No. Clear rules are often enough. We use AI for tasks that need language or document understanding, and ordinary automation for predictable steps.'],
+  ['Will our team stay in control?', 'We agree on approval points, access, and fallback behaviour before building. Payments, sensitive decisions, and external messages can remain behind human review.'],
+];
+
+function Texture() {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = ref.current; if (!video) return;
+    const motion = matchMedia('(prefers-reduced-motion: reduce)'); let visible = false;
+    const update = () => { if (visible && !motion.matches && !document.hidden) void video.play().catch(() => {}); else video.pause(); };
+    const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; update(); });
+    observer.observe(video); motion.addEventListener('change', update); document.addEventListener('visibilitychange', update);
+    return () => { observer.disconnect(); motion.removeEventListener('change', update); document.removeEventListener('visibilitychange', update); video.pause(); };
+  }, []);
+  return <video ref={ref} muted loop playsInline preload="none" poster="/ai/neural-surface-poster.jpg" aria-hidden="true"><source src="/ai/neural-surface.mp4" type="video/mp4"/></video>;
+}
+
+export function AIZone({ open }: { open: (path: string) => void }) {
+  const { ai, settings } = useStudioContent();
+  const services = ai.length ? ai : defaultAI;
+  const root = useRef<HTMLDivElement>(null), serviceSection = useRef<HTMLElement>(null), workflowSection = useRef<HTMLElement>(null);
+  const [selected, setSelected] = useState(0), [step, setStep] = useState(0), [expanded, setExpanded] = useState<string | null>(null), [running, setRunning] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const current = workflows[selected];
+  useEffect(() => {
+    let disposed = false, context: { revert: () => void } | undefined, observer: IntersectionObserver | undefined;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    void import('gsap').then(({ gsap }) => {
+      if (disposed || !root.current) return;
+      context = gsap.context(self => {
+        gsap.fromTo('[data-az-hero]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .8, stagger: .09, ease: 'power3.out' });
+        observer = new IntersectionObserver(entries => entries.forEach(entry => {
+          if (entry.isIntersecting) { self.add(() => { gsap.fromTo(entry.target, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .7, ease: 'power2.out' }); }); observer?.unobserve(entry.target); }
+        }), { root: root.current?.closest('.window-scroll'), threshold: .12 });
+        root.current?.querySelectorAll('[data-az-reveal]').forEach(element => observer?.observe(element));
+      }, root);
+    });
+    return () => { disposed = true; observer?.disconnect(); context?.revert(); };
+  }, []);
+  useEffect(() => {
+    if (!running) return;
+    if (step === 3) { setRunning(false); return; }
+    timer.current = setTimeout(() => setStep(value => value + 1), matchMedia('(prefers-reduced-motion: reduce)').matches ? 250 : 1100);
+    return () => { if (timer.current) clearTimeout(timer.current); };
+  }, [running, step]);
+  const jump = (ref: React.RefObject<HTMLElement | null>) => ref.current?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+  function changeWorkflow(index: number) { setRunning(false); setSelected(index); setStep(0); }
+  return <div className="ai-zone az-page" ref={root}>
+    <nav className="az-nav" aria-label="AI Zone navigation"><div><img src={settings.logo} alt={settings.agencyName}/><span>AI ZONE</span></div><div><button onClick={() => jump(serviceSection)}>Capabilities</button><button onClick={() => jump(workflowSection)}>Workflows</button><button className="az-nav-contact" onClick={() => open('/contact')}>Let’s build <ArrowUpRight size={13}/></button></div></nav>
+    <header className="az-hero">
+      <div className="az-hero-copy"><span className="az-eyebrow" data-az-hero><i/>INTELLIGENCE, PUT TO WORK.</span><h1 data-az-hero>Make room<br/>for your<br/><em>next move.</em></h1><p data-az-hero>AI assistants. Connected systems. Workflows that move your business forward—while your team stays in control.</p><div className="az-actions" data-az-hero><button className="az-cta az-primary" onClick={() => open('/contact')}>Build a workflow <ArrowUpRight size={15}/></button><button className="az-link" onClick={() => jump(workflowSection)}>See what’s possible <ArrowDown size={14}/></button></div><div className="az-hero-note" data-az-hero><span>HUMAN IDEAS.</span><span>INTELLIGENT EXECUTION.</span></div></div>
+      <div className="az-hero-visual"><Globe/></div>
+      <div className="az-hero-footer"><span>HIGH4TECH / APPLIED AI</span><span>SCROLL TO CONNECT THE DOTS <ArrowDown size={12}/></span></div>
+    </header>
+    <section className="az-evolution" data-az-reveal><span className="az-eyebrow">THE SHIFT IS ALREADY HERE</span><div><h2>From answering questions<br/>to <em>moving work forward.</em></h2><p>AI is becoming part of the workflow: finding information, interpreting documents, and working with connected tools. The useful part is choosing the right task and building a dependable path around it.</p><div className="az-shift"><span>01 <strong>Understand</strong></span><ArrowRight size={14}/><span>02 <strong>Connect</strong></span><ArrowRight size={14}/><span>03 <strong>Act, with review</strong></span></div><a className="az-research" href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener noreferrer">Read about workflows & agents <ArrowUpRight size={11}/></a></div></section>
+    <section className="az-capabilities" ref={serviceSection}>
+      <div className="az-section-heading" data-az-reveal><span className="az-eyebrow">WHAT WE CAN BUILD / 01</span><div><h2>Big possibilities.<br/><em>Specific solutions.</em></h2><p>Start with the work that gets in your way.<br/>We’ll help you design what comes next.</p></div></div>
+      <div className="az-service-list">{services.map((service, index) => { const Icon = service.kind === 'assistant' ? Bot : service.kind === 'integration' ? Database : Workflow; const isOpen = expanded === service.name; return <article className={isOpen ? 'is-expanded' : ''} key={service.name} data-az-reveal><button className="az-service-head" aria-expanded={isOpen} onClick={() => setExpanded(isOpen ? null : service.name)}><span className="az-service-index">{String(index + 1).padStart(2, '0')}</span><div className={`az-service-art kind-${service.kind}`} aria-hidden="true"><Icon size={35} strokeWidth={1}/><i/><i/><i/></div><div><h3>{service.name}</h3><p>{service.text}</p><span className="az-service-tags">{service.items.slice(0, 2).map(item => <small key={item}>{item}</small>)}</span></div><span className="az-expand">{isOpen ? <X size={17}/> : <Plus size={17}/>}</span></button>{isOpen && <div className="az-service-details"><span>WAYS TO PUT IT TO WORK</span><ul>{service.items.map(item => <li key={item}><Check size={13}/>{item}</li>)}</ul><button className="az-cta" onClick={() => open('/contact')}>Discuss this service <ArrowUpRight size={14}/></button></div>}</article>; })}</div>
+    </section>
+    <section className="az-workflow" ref={workflowSection}>
+      <div className="az-section-heading" data-az-reveal><span className="az-eyebrow">CONNECTED BY DESIGN / 02</span><div><h2>A little less manual.<br/><em>A lot more connected.</em></h2><p>Follow an example from trigger to outcome.<br/>Every business gets its own blueprint.</p></div></div>
+      <div className="az-workbench" data-az-reveal><div className="az-workbench-top"><span><i/>WORKFLOW EXPLORER</span><small>CONCEPT DEMO</small></div><div className="az-workflow-tabs" role="tablist" aria-label="Example workflows">{workflows.map((flow, index) => <button role="tab" id={`az-tab-${index}`} aria-controls="az-flow-panel" aria-selected={selected === index} tabIndex={selected === index ? 0 : -1} key={flow.name} onClick={() => changeWorkflow(index)} onKeyDown={event => { if (['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) { event.preventDefault(); const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (selected + (event.key === 'ArrowRight' ? 1 : 2)) % 3; changeWorkflow(next); document.getElementById(`az-tab-${next}`)?.focus(); } }}><flow.icon size={14}/>{flow.name}</button>)}</div><div id="az-flow-panel" role="tabpanel" aria-labelledby={`az-tab-${selected}`}><div className="az-trigger"><span>WHEN</span><current.icon size={16}/><strong>{current.trigger}</strong><span>THEN ↓</span></div><div className="az-flow-nodes">{current.steps.map((label, index) => <button key={label} className={`${index === step ? 'is-current' : ''} ${index < step ? 'is-complete' : ''}`} aria-pressed={index === step} onClick={() => { setRunning(false); setStep(index); }}><span>{index < step ? <Check size={12}/> : String(index + 1).padStart(2,'0')}</span><strong>{label}</strong><i/></button>)}</div><div className="az-workflow-inspector" aria-live="polite"><div><span>STEP {String(step+1).padStart(2,'0')}</span><p>{current.detail[step]}</p></div><button className="az-cta" disabled={running} onClick={() => { setStep(0); setRunning(true); }}><Play size={12}/>{running ? 'Following the flow…' : 'Run example'}</button></div><div className="az-outcome"><Check size={14}/><span>{current.outcome}</span><small>Illustrative workflow · no accounts connected</small></div></div></div>
+    </section>
+    <section className="az-signal" data-az-reveal><div className="az-signal-art"><Texture/><span>H4T / SIGNAL FIELD</span><div aria-hidden="true"><i/><i/><i/></div></div><div className="az-signal-copy"><span className="az-eyebrow">A PURPOSE BEHIND EVERY CONNECTION</span><h2>Built around<br/><em>your business.</em></h2><div><span>01</span><p><strong>A clear starting point.</strong> We map the task, the people, and the tools. A useful prototype comes before a big promise.</p></div><div><span>02</span><p><strong>Your knowledge. Your context.</strong> Approved information and agreed permissions shape what an assistant can see and do.</p></div><div><span>03</span><p><strong>People where they matter.</strong> Review points, clear handoffs, and useful monitoring are part of the workflow.</p></div></div></section>
+    <section className="az-ideas"><div className="az-section-heading" data-az-reveal><span className="az-eyebrow">YOUR NEXT STARTING POINT / 03</span><div><h2>Small starts.<br/><em>Real possibilities.</em></h2><p>Sample project ideas.<br/>Designed around everyday business work.</p></div></div><div className="az-idea-grid">{[{name:'A sales inbox that stays ahead.',icon:Inbox,tag:'SALES & OPERATIONS',text:'Organize inquiries, prepare CRM records, and draft replies for review.'},{name:'Answers, without the search.',icon:Bot,tag:'CUSTOMER EXPERIENCE',text:'A knowledge assistant that helps visitors find the right service and next step.'},{name:'Documents that become useful data.',icon:FileText,tag:'BUSINESS INTELLIGENCE',text:'Turn uploaded documents into structured records with exception checks.'}].map(idea => <article key={idea.name} data-az-reveal><div className="az-idea-visual"><idea.icon size={36} strokeWidth={1}/><span>✳</span></div><span className="az-eyebrow">{idea.tag}</span><h3>{idea.name}</h3><p>{idea.text}</p><button className="az-link" onClick={() => open('/contact')}>Explore this idea <ArrowUpRight size={13}/></button></article>)}</div></section>
+    <section className="az-faq" data-az-reveal><div><span className="az-eyebrow">A LITTLE CLARITY</span><h2>Good questions.<br/><em>Clear answers.</em></h2><button className="az-link" onClick={() => open('/assistant')}>Ask the studio assistant <ArrowUpRight size={13}/></button></div><div>{questions.map(([question, answer]) => <details key={question}><summary>{question}<Plus size={14}/></summary><p>{answer}</p></details>)}</div></section>
+    <footer className="az-end"><span className="az-eyebrow"><Sparkles size={12}/>YOUR NEXT MOVE STARTS HERE.</span><h2>Put your ideas<br/><em>into motion.</em></h2><p>Tell us what takes too much time.<br/>Let’s build a better way to work.</p><div className="az-actions"><button className="az-cta az-primary" onClick={() => open('/contact')}>Start a conversation <ArrowUpRight size={15}/></button><button className="az-link" onClick={() => open('/pricing')}>Explore pricing <ArrowRight size={13}/></button></div><div className="az-end-bottom"><span>HIGH4TECH / AI ZONE</span><ShieldCheck size={15}/><span>THOUGHTFUL BY DESIGN.</span></div></footer>
+  </div>;
+}

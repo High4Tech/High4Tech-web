@@ -17,6 +17,9 @@ export const defaultAI = [
   { name:'Workflow automation', kind:'workflow', text:'Connect the steps that slow your team down.', items:['Lead capture and routing','CRM and spreadsheet workflows','Approvals, reminders, and reporting'] },
   { name:'AI assistants', kind:'assistant', text:'Give your knowledge a useful interface.', items:['Service and support assistants','Internal knowledge search','Human handoff and clear boundaries'] },
   { name:'Connected operations', kind:'integration', text:'Help your tools work together.', items:['API and system integrations','Document intake and processing','Status dashboards and notifications'] },
+  { name:'AI strategy & prototypes', kind:'workflow', text:'Find a practical starting point before making a bigger investment.', items:['Process and opportunity mapping','A focused proof of concept','Testing and an implementation plan'] },
+  { name:'Document intelligence', kind:'integration', text:'Turn incoming documents into information your team can use.', items:['Document field extraction','Exception checks and review queues','Structured exports to business systems'] },
+  { name:'Internal knowledge assistants', kind:'assistant', text:'Give your team a clearer path to approved company information.', items:['Knowledge search with source references','Role-based access planning','Human handoff for uncertain answers'] },
 ];
 export const defaultKnowledge = faqs.map(f=>({...f,keywords:f.question,link:'/contact',label:'Contact the studio'}));
 export type StudioContent = {
