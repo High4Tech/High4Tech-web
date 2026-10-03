@@ -1,8 +1,7 @@
 import 'server-only';
 import { cache } from 'react';
-import { getPayload } from 'payload';
-import config from '@payload-config';
-import type { StudioContent } from './studio-content';
+import { defaultContent,type StudioContent } from './studio-content';
+import { cmsConfigurationIssues } from './cms-runtime';
 
 type Row=Record<string,unknown>;
 const str=(value:unknown,fallback='')=>typeof value==='string'?value:fallback;
@@ -10,6 +9,8 @@ const strings=(value:unknown)=>Array.isArray(value)?value.map(item=>str((item as
 const imageURL=(value:unknown,fallback='')=>value&&typeof value==='object'?str((value as Row).url,fallback):fallback;
 
 export const getStudioContent=cache(async():Promise<StudioContent>=>{
+  if(cmsConfigurationIssues().length)return defaultContent;
+  const [{getPayload},{default:config}]=await Promise.all([import('payload'),import('@payload-config')]);
   const payload=await getPayload({config});
   const names=['services','projects','newsroom','resources','faqs','pricing','ai-services','chatbot-data'] as const;
   const results=await Promise.all(names.map(collection=>payload.find({collection,limit:500,depth:1,sort:'sortOrder',overrideAccess:false,draft:false})));

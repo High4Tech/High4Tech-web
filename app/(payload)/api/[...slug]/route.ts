@@ -1,8 +1,10 @@
 import config from '@payload-config';
 import { REST_DELETE,REST_GET,REST_OPTIONS,REST_PATCH,REST_POST,REST_PUT } from '@payloadcms/next/routes';
-export const GET=REST_GET(config);
-export const POST=REST_POST(config);
-export const PATCH=REST_PATCH(config);
-export const PUT=REST_PUT(config);
-export const DELETE=REST_DELETE(config);
-export const OPTIONS=REST_OPTIONS(config);
+import { cmsConfigurationIssues,cmsUnavailableResponse } from '@/lib/cms-runtime';
+const protect=(handler:ReturnType<typeof REST_GET>)=>async(...args:Parameters<typeof handler>)=>cmsConfigurationIssues().length?cmsUnavailableResponse():handler(...args);
+export const GET=protect(REST_GET(config));
+export const POST=protect(REST_POST(config));
+export const PATCH=protect(REST_PATCH(config));
+export const PUT=protect(REST_PUT(config));
+export const DELETE=protect(REST_DELETE(config));
+export const OPTIONS=protect(REST_OPTIONS(config));

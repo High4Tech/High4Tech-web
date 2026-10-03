@@ -45,6 +45,8 @@ After schema changes, regenerate `payload-types.ts` and the admin import map usi
 
 ## Production
 
+**Vercel:** the repository includes `vercel.json` and a hosted build script. The public studio works with bundled content before CMS setup. To enable the hosted CMS, connect a remote libSQL database and public Vercel Blob store and set `PAYLOAD_SECRET`, `DATABASE_URL`, `DATABASE_AUTH_TOKEN`, and `BLOB_READ_WRITE_TOKEN`. The hosted build runs migrations and a non-overwriting content bootstrap. Follow [the Vercel deployment guide](sources/vercel-deployment.md). Local database records and uploads do not travel through Git.
+
 Use a persistent Node host with durable SQLite and image storage, or change the database/upload adapters for the selected host. Set a private `PAYLOAD_SECRET` and `DATABASE_URL` in the host’s environment. Keep the secret stable. A fresh production database needs `npm run cms:migrate` before build/start. The initial migration is included in `cms/migrations/`.
 
 Do not apply the initial migration to the auto-synced development database. Use a separate fresh production database and plan a content export/import when deploying existing local edits. Back up the database and uploaded media together. Database files and uploads are not transferred by Git.

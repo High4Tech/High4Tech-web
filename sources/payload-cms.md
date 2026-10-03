@@ -39,6 +39,8 @@ Mail is a configurable welcome message with a mailto Reply action, rather than a
 
 Local `.env`, `studio.db` and `media/` stay outside Git. See the root README for setup, persistent hosting, migrations and backups.
 
+Vercel uses remote libSQL and the official Blob adapter. Until all hosted settings are configured, the public studio displays bundled content and the admin explains setup. See [Vercel deployment](vercel-deployment.md).
+
 ## Official implementation references
 
 - [Payload installation](https://payloadcms.com/docs/getting-started/installation)
