@@ -1,4 +1,5 @@
 import { services, projects, resources, articles, faqs, socials } from './content';
+import type { StudioResource, StudioVideo } from './resource-platforms';
 import { assistantDefaults } from './assistant-search';
 
 export const defaultSettings = {
@@ -23,9 +24,9 @@ export const defaultAI = [
 ];
 export const defaultKnowledge = faqs.map(f=>({...f,keywords:f.question,link:'/contact',label:'Contact the studio'}));
 export type StudioContent = {
-  services: typeof services;
-  projects: (typeof projects[number] & { images?: {url:string;alt:string}[] })[];
-  resources: typeof resources;
+  services: (typeof services[number] & { videos?: StudioVideo[] })[];
+  projects: (typeof projects[number] & { images?: {url:string;alt:string}[]; videos?: StudioVideo[] })[];
+  resources: StudioResource[];
   articles: (typeof articles[number] & {image?:string;publishedAt?:string})[];
   faqs: typeof faqs;
   socials: typeof socials;

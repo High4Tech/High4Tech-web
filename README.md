@@ -18,10 +18,10 @@ Open `http://127.0.0.1:3000` for the studio or `http://127.0.0.1:3000/admin` for
 
 ## Content management
 
-- **Services:** descriptions, deliverables and detail routes.
-- **Projects:** case studies, cover images and gallery uploads.
+- **Services:** descriptions, deliverables, detail routes and YouTube videos.
+- **Projects:** case studies, cover images, gallery uploads and YouTube walkthroughs.
 - **Newsroom:** articles, categories, images and publication dates.
-- **Resources:** free/paid tools and external platform links.
+- **Resources:** free/paid tools, platform categories (WordPress, Shopify, Android, iOS, Custom, POS, Other), searchable capabilities, YouTube demos and external platform links.
 - **Pricing:** packages and the flag identifying illustrative prices.
 - **AI services:** automation and AI offerings.
 - **FAQs and Approved answers:** public Q&A, assistant source text and keywords.
@@ -32,7 +32,7 @@ Open `http://127.0.0.1:3000` for the studio or `http://127.0.0.1:3000/admin` for
 
 Save a draft while editing; use Publish to make collection content public. Globals become live when saved. The studio refreshes published data when the tab regains focus and every 30 seconds while visible. Newly published service, project and Newsroom slugs have their own routes. Layout, visual effects and fixed interface labels remain in the code.
 
-The assistant searches published studio knowledge, returns exact source passages with citations, and declines unsupported questions. It uses no paid AI API or external knowledge and stores no conversation history. The admin dashboard includes source counts, import shortcuts and a visitor-answer test. See [the assistant guide](sources/assistant-knowledge.md). Mail displays a configurable welcome message and opens the visitor’s email app to reply. Project briefs validate locally and prepare an email; they do not send or store messages. Resources open the tool’s own platform for access or purchases. Music only plays when requested.
+The assistant searches published studio knowledge, returns exact source passages with citations, and declines unsupported questions. It uses no paid AI API or external knowledge and saves conversations privately in the CMS when configured. Platform and purpose requests return matching published resource cards. The support inbox at `/admin/conversations` lists visitors, flags human requests, and lets a signed-in team member take over, reply, return control to the assistant, or resolve the chat. The admin dashboard includes source counts, import shortcuts and a visitor-answer test. See [the assistant guide](sources/assistant-knowledge.md) and [the live support guide](sources/live-support.md). Mail displays a configurable welcome message and opens the visitor’s email app to reply. Project briefs validate locally and prepare an email; they do not send or store messages. Resources open the tool’s own platform for access or purchases. Music only plays when requested.
 
 ## Checks
 
@@ -44,6 +44,8 @@ npm run build
 With the development server running, `npm run cms:verify` checks public publishing, private drafts and revisions, unauthenticated write restrictions, and upload delivery. It creates and removes only temporary content/media fixtures; it never creates an admin account. `CMS_TEST_ORIGIN` can override the default local URL.
 
 `npm run assistant:verify` checks grounding and file imports. `npm run assistant:verify:cms` checks publication, private revisions, document privacy and deletion. Warm up the local server first. After schema changes, avoid running development schema auto-sync in two processes at once; use `NODE_ENV=production` for a verification CLI once the development server has synced its schema.
+
+`npm run resources:verify` checks platform/purpose searches and safe video URLs. With the local server running and its schema synced, `NODE_ENV=production npm run chat:verify:cms` checks saved chat privacy, handoff, staff replies, duplicate sends, draft resources and videos. This creates and deletes only temporary test records and a temporary test admin; it leaves existing accounts untouched. On PowerShell set `$env:NODE_ENV="production"` before running the verification.
 
 After schema changes, regenerate `payload-types.ts` and the admin import map using `npm run cms:types` and `npm run cms:importmap`. Generate a migration with `npx payload migrate:create descriptive_name`.
 

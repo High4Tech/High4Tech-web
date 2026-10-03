@@ -22,9 +22,9 @@ export function ServiceRows() {
   return <div className="service-rows">{services.map(s => <Link href={`/services/${s.slug}`} className="service-row" key={s.slug} data-cursor="EXPLORE" data-reveal><span className="service-number">/{s.number}</span><div className="service-info"><h3>{s.short}<span className="orange">.</span></h3><div className="service-tags">{s.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div><Symbol kind={s.symbol} /><span className="service-arrow"><ArrowUpRight size={28} /></span></Link>)}</div>;
 }
 
-export function ResourceCard({ resource }: { resource: typeof resources[number] }) {
+export function ResourceCard({ resource, open }: { resource: typeof resources[number]; open?: (path:string)=>void }) {
   const content = <><div className={`resource-art art-${resource.icon}`}><Symbol kind={resource.icon} /><span className={`resource-price ${resource.price === 'Free' ? 'free' : ''}`}>{resource.price}</span>{resource.url && <span className="resource-open"><ArrowUpRight size={19} /></span>}</div><div className="resource-info"><span className="micro-label muted">{resource.category} / {resource.label}</span><h3>{resource.title}</h3><p>{resource.description}</p>{resource.url ? <span className="text-link">Explore tool <ArrowUpRight size={15} /></span> : <span className="preview-label">LINK TO BE ADDED</span>}</div></>;
-  return resource.url ? <a className="resource-card" href={resource.url} target="_blank" rel="noopener noreferrer" data-cursor="OPEN TOOL" data-reveal>{content}</a> : <article className="resource-card resource-placeholder" data-reveal>{content}</article>;
+  return open ? <button className="resource-card resource-card-button" onClick={()=>open(`/tools-and-resources/${resource.id}`)}>{content}</button> : <Link className="resource-card" href={`/tools-and-resources/${resource.id}`}>{content}</Link>;
 }
 
 export function ArticleArt({ kind }: { kind: string }) {

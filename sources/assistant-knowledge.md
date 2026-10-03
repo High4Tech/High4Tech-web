@@ -31,7 +31,7 @@ Original files are not retained. The reviewed text, source filename and publicat
 
 Local development uses the existing Payload database. Production requires the remote database/CMS environment described in [vercel-deployment.md](vercel-deployment.md). The committed migration adds the document/version tables, settings and lock relations.
 
-If the CMS has not been connected, the public assistant uses the bundled approved Q&A and labels replies as bundled studio knowledge. Uploaded local documents do not transfer through Git. If a configured database becomes unavailable, the assistant reports unavailable instead of falling back to stale preview answers. The UI supports timeout, retry, source labels, human WhatsApp handoff and clearing the conversation.
+If the CMS has not been connected, the public assistant uses the bundled approved Q&A and labels replies as bundled studio knowledge. Uploaded local documents do not transfer through Git. If a configured database becomes unavailable, the assistant reports unavailable instead of falling back to stale preview answers. The UI supports timeout, retry, source labels, catalog result cards, saved conversations and live staff takeover. See [live-support.md](live-support.md) for platforms, videos, visitor privacy and the admin inbox. Starting a new conversation preserves earlier history for the team when CMS support is connected.
 
 ## Music account access decision
 

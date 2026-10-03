@@ -1,5 +1,5 @@
 export type KnowledgeSource = { id: string; title: string; text: string; keywords?: string; kind: 'answer' | 'document'; link?: string; label?: string };
-export type AssistantReply = { status: 'matched' | 'conversation' | 'not-found' | 'disabled' | 'unavailable'; answer: string; sources: { id: string; title: string; kind: 'answer' | 'document'; excerpt: string }[]; link?: string; label?: string };
+export type AssistantReply = { status: 'matched' | 'conversation' | 'not-found' | 'disabled' | 'unavailable'; answer: string; sources: { id: string; title: string; kind: 'answer' | 'document'; excerpt: string }[]; link?: string; label?: string; resources?: {id:string;title:string;description:string;price:string;platforms:string[]}[] };
 export const assistantDefaults = {
   enabled: true,
   welcomeMessage: 'Ask about High4Tech. I look up answers in our published studio knowledge and show you where they came from.',
@@ -30,7 +30,7 @@ export function contactKnowledge(email: string, whatsapp: string): KnowledgeSour
 }
 // Correct one-character edits only when there is one unambiguous source term.
 // Whole-token matching still rejects unsupported nouns and mixed-topic questions.
-function oneEditApart(a: string, b: string): boolean {
+export function oneEditApart(a: string, b: string): boolean {
   if (Math.abs(a.length - b.length) > 1) return false;
   if (a.length === b.length) {
     const differences = [...a].map((char, i) => char === b[i] ? -1 : i).filter(i => i >= 0);

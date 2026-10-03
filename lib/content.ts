@@ -9,11 +9,12 @@ export const projects = [
   { slug: 'driver-finder', name: 'Driver Finder', type: 'App design & development', category: 'Applications', year: '2024', image: '/projects/driver-finder.webp', color: '#ead100', description: 'A mobile experience for the people who keep things moving.', source: 'https://high4tech.framer.ai/projects/evergreen-solutions', intro: 'An app design and development project from the High4Tech portfolio. A closer look at the interfaces and visual direction.' },
 ];
 
-export const resources = [
-  { id: 'shadergradient', title: 'ShaderGradient', description: 'Explore moving gradients and make your next interface a little less ordinary.', category: 'Design', price: 'Free', url: 'https://www.shadergradient.co/', icon: 'gradient', label: 'Community resource' },
-  { id: 'liquid-logo', title: 'Liquid Logo', description: 'Turn a static mark into a flowing, liquid-metal experiment.', category: 'Design', price: 'Free', url: 'https://collidingscopes.github.io/liquid-logo/', icon: 'liquid', label: 'Community resource' },
-  { id: 'react-three-fiber', title: 'React Three Fiber', description: 'A starting point for building interactive 3D experiences with React.', category: 'Development', price: 'Free', url: 'https://github.com/pmndrs/react-three-fiber', icon: 'cube', label: 'Community resource' },
-  { id: 'studio-tool', title: 'The next studio tool.', description: 'A space for our paid tools. Purchases will happen on each tool’s own platform.', category: 'Studio tools', price: 'Paid', url: null, icon: 'tool', label: 'Catalog preview' },
+import type { StudioResource } from './resource-platforms';
+export const resources: StudioResource[] = [
+  { id: 'shadergradient', title: 'ShaderGradient', description: 'Explore moving gradients and make your next interface a little less ordinary.', category: 'Design', price: 'Free', url: 'https://www.shadergradient.co/', icon: 'gradient', platforms: ['custom'], label: 'Community resource' },
+  { id: 'liquid-logo', title: 'Liquid Logo', description: 'Turn a static mark into a flowing, liquid-metal experiment.', category: 'Design', price: 'Free', url: 'https://collidingscopes.github.io/liquid-logo/', icon: 'liquid', platforms: ['custom'], label: 'Community resource' },
+  { id: 'react-three-fiber', title: 'React Three Fiber', description: 'A starting point for building interactive 3D experiences with React.', category: 'Development', price: 'Free', url: 'https://github.com/pmndrs/react-three-fiber', icon: 'cube', platforms: ['custom'], label: 'Community resource' },
+  { id: 'studio-tool', title: 'The next studio tool.', description: 'A space for our paid tools. Purchases will happen on each tool’s own platform.', category: 'Studio tools', price: 'Paid', url: null, icon: 'tool', platforms: ['custom'], label: 'Catalog preview' },
 ];
 
 export const articles = [

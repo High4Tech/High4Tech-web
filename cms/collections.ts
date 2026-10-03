@@ -1,4 +1,6 @@
 import type { Access, CollectionConfig, Field, GlobalConfig } from 'payload';
+import { chatCollections } from './chat-collections';
+import { resourcePlatforms, youtubeID } from '../lib/resource-platforms';
 import { assistantDefaults } from '../lib/assistant-search';
 import { MAX_KNOWLEDGE_CHARACTERS } from '../lib/knowledge-files';
 
@@ -14,13 +16,16 @@ const imagePath:Field={name:'imagePath',type:'text',admin:{description:'Optional
 const make=(name:string,fields:Field[],title='title'):CollectionConfig=>({slug:name,access,versions:{drafts:true},admin:{useAsTitle:title,group:'Website content',defaultColumns:[title,'_status','updatedAt']},fields:[...fields,order]});
 const safeURL=(value:unknown)=>!value||typeof value==='string'&&/^https?:\/\//i.test(value)||'Use a full https:// URL.';
 
+const videos:Field={name:'videos',type:'array',label:'YouTube videos',admin:{description:'Optional project walkthroughs, service demos, or tool tutorials. Paste a YouTube URL, not embed HTML.'},fields:[text('title',false),{name:'url',type:'text',required:true,validate:(v:unknown)=>Boolean(youtubeID(v))||'Use a valid HTTPS YouTube watch, shorts, embed, or youtu.be URL.'}]};
+
 export const collections:CollectionConfig[]=[
+  ...chatCollections,
   {slug:'users',auth:true,access:{read:authenticated,create:authenticated,update:authenticated,delete:authenticated},admin:{useAsTitle:'email',group:'Administration'},fields:[text('name',false)]},
   {slug:'media',access:{read:()=>true,create:authenticated,update:authenticated,delete:authenticated},admin:{group:'Website content'},upload:{staticDir:'media',mimeTypes:['image/*'],imageSizes:[{name:'thumbnail',width:400,height:300,fit:'inside'}],adminThumbnail:'thumbnail'},fields:[text('alt')]},
-  make('services',[text('title'),slug,text('short'),{name:'description',type:'textarea',required:true},list('tags'),list('deliverables'),{name:'symbol',type:'select',options:['flower','orbit','spark'],defaultValue:'flower'},{name:'draft',type:'checkbox',label:'Show scope preview note'}]),
-  make('projects',[text('name'),slug,text('type'),text('category'),text('year'),media('image'),imagePath,{name:'gallery',type:'array',fields:[media('image'),imagePath,text('alt',false)]},text('color',false),{name:'description',type:'textarea',required:true},{name:'intro',type:'textarea',required:true}], 'name'),
+  make('services',[text('title'),slug,text('short'),{name:'description',type:'textarea',required:true},list('tags'),list('deliverables'),videos,{name:'symbol',type:'select',options:['flower','orbit','spark'],defaultValue:'flower'},{name:'draft',type:'checkbox',label:'Show scope preview note'}]),
+  make('projects',[text('name'),slug,text('type'),text('category'),text('year'),media('image'),imagePath,{name:'gallery',type:'array',fields:[media('image'),imagePath,text('alt',false)]},text('color',false),{name:'description',type:'textarea',required:true},{name:'intro',type:'textarea',required:true},videos], 'name'),
   make('newsroom',[text('title'),slug,text('category'),text('read'),{name:'summary',type:'textarea',required:true},{name:'paragraphs',type:'array',minRows:1,fields:[{name:'value',type:'textarea',required:true}]},{name:'artwork',type:'select',options:['type','orbit','grid'],defaultValue:'type'},media('image'),{name:'publishedAt',type:'date'}]),
-  make('resources',[text('title'),slug,{name:'description',type:'textarea',required:true},text('category'),{name:'price',type:'select',options:['Free','Paid'],required:true},text('label'),{name:'url',type:'text',validate:safeURL,admin:{description:'External platform for use or purchase.'}},{name:'icon',type:'select',options:['gradient','liquid','cube','tool'],defaultValue:'tool'}]),
+  make('resources',[text('title'),slug,{name:'description',type:'textarea',required:true},text('category'),{name:'platforms',type:'select',hasMany:true,required:true,defaultValue:['custom'],options:[...resourcePlatforms],admin:{description:'Select every platform this tool actually supports.'}},{name:'capabilities',type:'textarea',maxLength:2000,admin:{description:'Searchable purposes and synonyms, e.g. inventory, stock tracking, low-stock alerts. The assistant uses these with the description.'}},videos,{name:'price',type:'select',options:['Free','Paid'],required:true},text('label'),{name:'url',type:'text',validate:safeURL,admin:{description:'External platform for use or purchase.'}},{name:'icon',type:'select',options:['gradient','liquid','cube','tool'],defaultValue:'tool'}]),
   make('faqs',[text('question'),{name:'answer',type:'textarea',required:true}],'question'),
   make('pricing',[text('title'),text('price'),text('unit'),text('label'),{name:'intro',type:'textarea',required:true},list('items'),{name:'sample',type:'checkbox',defaultValue:true,label:'Illustrative price'}]),
   make('ai-services',[text('name'),{name:'kind',type:'select',options:['workflow','assistant','integration'],required:true},{name:'text',type:'textarea',required:true},list('items')],'name'),

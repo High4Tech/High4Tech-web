@@ -1,5 +1,4 @@
-import { getAssistantKnowledge } from '@/lib/assistant-knowledge';
-import { searchKnowledge } from '@/lib/assistant-search';
+import { answerAssistant } from '@/lib/assistant-response';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -36,9 +35,7 @@ export async function POST(request: Request) {
   const question = body && typeof body === 'object' && 'question' in body ? body.question : undefined;
   if (typeof question !== 'string' || !question.trim() || question.length > 500) return json({ error: 'Use a question between 1 and 500 characters.' }, 400);
   try {
-    const knowledge = await getAssistantKnowledge();
-    if (!knowledge.settings.enabled) return json({ status: 'disabled', answer: 'The studio assistant is currently paused. Please contact our team.', sources: [], mode: knowledge.mode });
-    return json({ ...searchKnowledge(question.trim(), knowledge.sources, knowledge.settings.fallbackMessage), mode: knowledge.mode });
+    return json(await answerAssistant(question.trim()));
   } catch {
     // A connection failure must never cause a switch to stale bundled answers.
     return json({ status: 'unavailable', answer: 'The studio knowledge is temporarily unavailable. Please try again or contact our team.', sources: [] }, 503);

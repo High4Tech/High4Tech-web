@@ -14,9 +14,9 @@ const cloudReady=remoteDatabase&&!cmsConfigurationIssues().length;
 const blobToken=process.env.BLOB_READ_WRITE_TOKEN;
 export default buildConfig({
   secret:process.env.PAYLOAD_SECRET||'',
-  admin:{user:'users',importMap:{baseDir:directory},meta:{titleSuffix:'— High4Tech CMS'},components:{beforeDashboard:['/cms/components/StudioDashboard#StudioDashboard']}},
+  admin:{user:'users',importMap:{baseDir:directory},meta:{titleSuffix:'— High4Tech CMS'},components:{beforeDashboard:['/cms/components/StudioDashboard#StudioDashboard'],beforeNavLinks:['/cms/components/ConversationView#InboxNav'],views:{conversations:{Component:'/cms/components/ConversationView#ConversationView',path:'/conversations',exact:true,meta:{title:'Live support inbox'}}}}},
   collections,globals,sharp,
-  db:sqliteAdapter({client:{url:process.env.DATABASE_URL||'file:./studio.db',authToken:process.env.DATABASE_AUTH_TOKEN},push:process.env.VERCEL||remoteDatabase?false:undefined,migrationDir:path.resolve(directory,'cms/migrations')}),
+  db:sqliteAdapter({transactionOptions:{behavior:'immediate'},client:{url:process.env.DATABASE_URL||'file:./studio.db',authToken:process.env.DATABASE_AUTH_TOKEN},push:process.env.VERCEL||remoteDatabase?false:undefined,migrationDir:path.resolve(directory,'cms/migrations')}),
   plugins:[vercelBlobStorage({enabled:cloudReady,token:cloudReady?blobToken:undefined,collections:{media:true},alwaysInsertFields:true,clientUploads:true,addRandomSuffix:true})],
   typescript:{outputFile:path.resolve(directory,'payload-types.ts')},
   // Vercel seeds once during its build, rather than racing across cold starts.

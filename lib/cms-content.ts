@@ -1,4 +1,5 @@
 import 'server-only';
+import { platformsOf } from './resource-platforms';
 import { cache } from 'react';
 import { defaultContent,type StudioContent } from './studio-content';
 import { cmsConfigurationIssues } from './cms-runtime';
@@ -6,6 +7,7 @@ import { cmsConfigurationIssues } from './cms-runtime';
 type Row=Record<string,unknown>;
 const str=(value:unknown,fallback='')=>typeof value==='string'?value:fallback;
 const strings=(value:unknown)=>Array.isArray(value)?value.map(item=>str((item as Row).value)):[];
+const videos=(value:unknown)=>Array.isArray(value)?value.map(item=>({title:str((item as Row).title),url:str((item as Row).url)})):[];
 const imageURL=(value:unknown,fallback='')=>value&&typeof value==='object'?str((value as Row).url,fallback):fallback;
 
 export const getStudioContent=cache(async():Promise<StudioContent>=>{
@@ -20,10 +22,10 @@ export const getStudioContent=cache(async():Promise<StudioContent>=>{
   const info=contact as unknown as Row;
   return {
     assistant:{enabled:assistant.enabled!==false,welcomeMessage:assistant.welcomeMessage||defaultContent.assistant.welcomeMessage,fallbackMessage:assistant.fallbackMessage||defaultContent.assistant.fallbackMessage},
-    services:services.map((s,i)=>({slug:str(s.slug),number:String(i+1).padStart(2,'0'),title:str(s.title),short:str(s.short),description:str(s.description),tags:strings(s.tags),deliverables:strings(s.deliverables),symbol:str(s.symbol,'flower'),draft:Boolean(s.draft)})),
-    projects:projects.map(p=>({slug:str(p.slug),name:str(p.name),type:str(p.type),category:str(p.category),year:str(p.year),image:imageURL(p.image,str(p.imagePath)),color:str(p.color,'#f5eee9'),description:str(p.description),source:'',intro:str(p.intro),images:Array.isArray(p.gallery)?p.gallery.map(item=>{const row=item as Row;return {url:imageURL(row.image,str(row.imagePath)),alt:str(row.alt,str(p.name))};}).filter(image=>image.url):[]})),
+    services:services.map((s,i)=>({slug:str(s.slug),number:String(i+1).padStart(2,'0'),title:str(s.title),short:str(s.short),description:str(s.description),tags:strings(s.tags),deliverables:strings(s.deliverables),symbol:str(s.symbol,'flower'),draft:Boolean(s.draft),videos:videos(s.videos)})),
+    projects:projects.map(p=>({slug:str(p.slug),name:str(p.name),type:str(p.type),category:str(p.category),year:str(p.year),image:imageURL(p.image,str(p.imagePath)),color:str(p.color,'#f5eee9'),description:str(p.description),source:'',intro:str(p.intro),videos:videos(p.videos),images:Array.isArray(p.gallery)?p.gallery.map(item=>{const row=item as Row;return {url:imageURL(row.image,str(row.imagePath)),alt:str(row.alt,str(p.name))};}).filter(image=>image.url):[]})),
     articles:articles.map((a,i)=>({slug:str(a.slug),number:String(i+1).padStart(2,'0'),title:str(a.title),category:str(a.category),read:str(a.read),artwork:str(a.artwork,'type'),summary:str(a.summary),paragraphs:strings(a.paragraphs),image:imageURL(a.image),publishedAt:str(a.publishedAt)})),
-    resources:resources.map(r=>({id:str(r.slug),title:str(r.title),description:str(r.description),category:str(r.category),price:str(r.price),url:str(r.url)||null,icon:str(r.icon,'tool'),label:str(r.label)})),
+    resources:resources.map(r=>({id:str(r.slug),title:str(r.title),description:str(r.description),category:str(r.category),price:str(r.price),url:str(r.url)||null,icon:str(r.icon,'tool'),label:str(r.label),platforms:platformsOf(r.platforms),capabilities:str(r.capabilities),videos:videos(r.videos)})),
     faqs:faqs.map(f=>({question:str(f.question),answer:str(f.answer)})),
     socials:{instagram:str(info.instagram),linkedin:str(info.linkedin),behance:str(info.behance),whatsapp:str(info.whatsapp)},
     settings:{agencyName:str(settings.agencyName),studioName:str(settings.studioName),logo:imageURL(settings.logo,str(settings.logoPath,'/brand/wordmark.png')),mark:imageURL(settings.mark,str(settings.markPath,'/brand/mark.png')),headline:str(settings.headline),introduction:str(settings.introduction),aboutTitle:str(settings.aboutTitle),aboutText:str(settings.aboutText),email:str(info.email),calLink:str(info.calLink),welcomeSubject:str(info.welcomeSubject),welcomeBody:str(info.welcomeBody)},

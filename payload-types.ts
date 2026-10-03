@@ -67,6 +67,8 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    'chat-conversations': ChatConversation;
+    'chat-messages': ChatMessage;
     users: User;
     media: Media;
     services: Service;
@@ -85,6 +87,8 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    'chat-conversations': ChatConversationsSelect<false> | ChatConversationsSelect<true>;
+    'chat-messages': ChatMessagesSelect<false> | ChatMessagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
@@ -144,6 +148,27 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Use the live inbox on the dashboard to take over and reply.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-conversations".
+ */
+export interface ChatConversation {
+  id: number;
+  visitorKey: string;
+  visitorName: string;
+  visitorEmail?: string | null;
+  status: 'bot' | 'waiting' | 'human' | 'closed';
+  assignedTo?: (number | null) | User;
+  needsAttention?: boolean | null;
+  handoffAt?: string | null;
+  lastMessageAt: string;
+  preview?: string | null;
+  lastVisitorAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -169,6 +194,29 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-messages".
+ */
+export interface ChatMessage {
+  id: number;
+  conversation: number | ChatConversation;
+  role: 'visitor' | 'assistant' | 'staff' | 'system';
+  body: string;
+  requestKey: string;
+  staffName?: string | null;
+  reply?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -229,6 +277,16 @@ export interface Service {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional project walkthroughs, service demos, or tool tutorials. Paste a YouTube URL, not embed HTML.
+   */
+  videos?:
+    | {
+        title?: string | null;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   symbol?: ('flower' | 'orbit' | 'spark') | null;
   draft?: boolean | null;
   sortOrder?: number | null;
@@ -266,6 +324,16 @@ export interface Project {
   color?: string | null;
   description: string;
   intro: string;
+  /**
+   * Optional project walkthroughs, service demos, or tool tutorials. Paste a YouTube URL, not embed HTML.
+   */
+  videos?:
+    | {
+        title?: string | null;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -306,6 +374,24 @@ export interface Resource {
   slug: string;
   description: string;
   category: string;
+  /**
+   * Select every platform this tool actually supports.
+   */
+  platforms: ('wordpress' | 'shopify' | 'android' | 'ios' | 'custom' | 'pos' | 'other')[];
+  /**
+   * Searchable purposes and synonyms, e.g. inventory, stock tracking, low-stock alerts. The assistant uses these with the description.
+   */
+  capabilities?: string | null;
+  /**
+   * Optional project walkthroughs, service demos, or tool tutorials. Paste a YouTube URL, not embed HTML.
+   */
+  videos?:
+    | {
+        title?: string | null;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   price: 'Free' | 'Paid';
   label: string;
   /**
@@ -448,6 +534,14 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'chat-conversations';
+        value: number | ChatConversation;
+      } | null)
+    | ({
+        relationTo: 'chat-messages';
+        value: number | ChatMessage;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -535,6 +629,38 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-conversations_select".
+ */
+export interface ChatConversationsSelect<T extends boolean = true> {
+  visitorKey?: T;
+  visitorName?: T;
+  visitorEmail?: T;
+  status?: T;
+  assignedTo?: T;
+  needsAttention?: T;
+  handoffAt?: T;
+  lastMessageAt?: T;
+  preview?: T;
+  lastVisitorAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chat-messages_select".
+ */
+export interface ChatMessagesSelect<T extends boolean = true> {
+  conversation?: T;
+  role?: T;
+  body?: T;
+  requestKey?: T;
+  staffName?: T;
+  reply?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -612,6 +738,13 @@ export interface ServicesSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  videos?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        id?: T;
+      };
   symbol?: T;
   draft?: T;
   sortOrder?: T;
@@ -642,6 +775,13 @@ export interface ProjectsSelect<T extends boolean = true> {
   color?: T;
   description?: T;
   intro?: T;
+  videos?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        id?: T;
+      };
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -680,6 +820,15 @@ export interface ResourcesSelect<T extends boolean = true> {
   slug?: T;
   description?: T;
   category?: T;
+  platforms?: T;
+  capabilities?: T;
+  videos?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        id?: T;
+      };
   price?: T;
   label?: T;
   url?: T;
