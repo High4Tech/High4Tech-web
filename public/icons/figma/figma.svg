@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="348" height="522" viewBox="0 0 348 522" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon">
+<path id="Shape 05" d="M0 435C0 386.951 38.9512 348 87 348H174V435C174 483.049 135.049 522 87 522C38.9512 522 0 483.049 0 435Z" fill="#0ACF83"/>
+<rect id="Shape 04" x="174" y="174" width="174" height="174" rx="87" fill="#1ABCFE"/>
+<path id="Shape 03" d="M0 261C0 212.951 38.9512 174 87 174H174V348H87C38.9512 348 0 309.049 0 261Z" fill="#A259FF"/>
+<path id="Shape 02" d="M174 0H261C309.049 0 348 38.9512 348 87C348 135.049 309.049 174 261 174H174V0Z" fill="#FF7262"/>
+<path id="Shape 01" d="M0 87C0 38.9512 38.9512 0 87 0H174V174H87C38.9512 174 0 135.049 0 87Z" fill="#F24E1E"/>
+</g>
+</svg>

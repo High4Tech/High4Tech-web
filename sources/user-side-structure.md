@@ -100,3 +100,11 @@ Exact service list; preferred homepage emphasis; final hero message; verified pr
 ## First draft boundary
 
 After the structure discussion, build a responsive frontend with local sample content, public page templates, navigation, filters, 3D/GSAP treatments, and preview interaction states. Backend, CMS, database, real AI calls, email delivery, and payment flows stay outside this phase. No implementation was initialized while creating this reference pack.
+
+## Current implementation update — 2 October 2026
+
+The standalone landing has been replaced by the studio. `/` opens a Home window containing the agency introduction, expertise, black studio bento, selected projects, process, tools, journal, FAQs and contact. Existing routes open as windows within the same persistent shell. `/desktop` shows the workspace; a fresh load opens Home by default. The tour, theme, ambient music controls, desktop mascots and dock form the global visitor experience. Spotify/Apple Music shared-link playback is supported by embeds; personal account authorization remains future integration work.
+
+## Current additions — 3 October 2026
+
+Studio is the entry point. App Store holds external tools/resources; Gallery holds project images; Safari previews the former landing page; Toolkit is an installed-app grid. Newsroom replaces Journal, with legacy blog URLs retained. AI Zone, sample Pricing, and Play are additional studio apps. Sidebar navigation changes the current window; the dock can open other windows. See [studio-assets-and-behavior.md](studio-assets-and-behavior.md) for full behavior and source records.

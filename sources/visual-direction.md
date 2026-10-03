@@ -91,3 +91,26 @@ Detailed evidence and source URLs are in [Website references](references/website
 ## Current landing implementation
 
 The landing page now uses one contained black bento module as the visual counterweight to the white page. It groups services, motion language, mascot artwork, availability, and the working toolchain (Next.js, React, Three.js, GSAP, Payload, Figma, and Vercel) into compact cards. Cards reveal with GSAP as the section enters, while the orbit, spark, tool chips, and service rows carry small, low-noise motion. The black module stays an accent surface; the overall page remains white-led with High4Tech orange reserved for emphasis.
+
+## Studio-first update — 2 October 2026
+
+This update supersedes the standalone landing-page layout above. `/` now opens the studio directly, with Home open by default. `/desktop` is the desktop route. All public content remains reachable through the dock, Finder sidebar, and its existing URLs.
+
+- Boot: original High4Tech mark and restrained progress animation.
+- First visit: five-step, skippable tour; replay from Help. Completion stored locally.
+- Home: settings-style grouped services, projects, process, resources, journal, FAQs, and contact. A contained black studio bento preserves the Stokt reference direction.
+- Desktop: corner-aligned live widgets, local/London clocks (not claimed office locations), dynamic calendar, journal and counts from the content catalog. Welcome note and help sit directly below.
+- Appearance: system UI font stack, softer wave wallpaper, original wordmark, clear glass dock with rim highlights. Shared surface/text tokens cover light and dark states.
+- Mascots: first original face in the assistant; second follows the pointer only over desktop background. Disabled on touch and for reduced motion.
+- Loops: tools above the workspace and existing portfolio client names above the dock; no invented client logos or endorsements.
+- Music: three original synthesized ambient loops, default Soft Focus, starting after interaction. Pause, next, track selection and volume work locally. Spotify and Apple Music accept shared links and load official embedded players; personal account/library authorization is not connected in this frontend phase. External playback is controlled by the provider and may require sign-in/subscription.
+- Sound: short original synthesized interface tones for clicks, app openings and window controls; not extracted Apple system audio.
+- Existing contact, calendar, and assistant remain explicitly labeled frontend previews.
+
+Reference: https://displace.agency/ and user-supplied screenshots. Spotify embed guidance: https://developer.spotify.com/documentation/embeds . No third-party site code or private assets copied.
+
+## Latest studio direction — 3 October 2026
+
+See [studio-assets-and-behavior.md](studio-assets-and-behavior.md) for current app mappings, Figma icon provenance, sound assignments, same-window sidebar navigation, Newsroom, AI Zone, sample Pricing, and Play. These decisions supersede earlier landing-first and music-autoplay notes.
+
+The tools loop is restored at the top, using the same original tech logos as Toolkit. The client loop is centered with the bottom dock, with no “In good company” label. Remove the desktop welcome/help card and bottom shortcut/folder hint. Music stays paused until a visitor chooses to play it. Payload integration begins in a later task after this frontend is pushed.

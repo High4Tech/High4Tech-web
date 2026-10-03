@@ -3,6 +3,8 @@ import '@fontsource/unbounded/latin-700.css';
 import '@fontsource/unbounded/latin-900.css';
 import './globals.css';
 import './experience.css';
+import './studio.css';
+import './studio-premium.css';
 import { SiteShell } from '@/components/site-shell';
 
 export const metadata: Metadata = {

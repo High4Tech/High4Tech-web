@@ -1,0 +1,50 @@
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowRight, ArrowUpRight, Check, DollarSign, Workflow, Sparkles, Bot, Database, Gamepad2, RotateCcw, X, CheckCheck } from 'lucide-react';
+import { articles } from '@/lib/content';
+import { ArticleArt } from './ui';
+import { playUiSound } from './sound';
+
+export function BrandIcon({name}:{name:'whatsapp'|'instagram'|'behance'|'spotify'|'applemusic'}){return <img className={`brand-icon brand-${name}`} src={`/icons/${name}.svg`} alt="" aria-hidden="true"/>;}
+
+export function Newsroom({open,search}:{open:(path:string)=>void;search:string}){
+  const [category,setCategory]=useState('All');
+  const filtered=articles.filter(a=>(category==='All'||category===a.category)&&(a.title+' '+a.category).toLowerCase().includes(search.toLowerCase()));
+  return <div className="newsroom"><header><span>HIGH4TECH</span><h1>Newsroom</h1><p>The latest thinking from the studio.</p></header><nav aria-label="Newsroom topics">{['All','Design','Development','Studio'].map(c=><button key={c} aria-pressed={category===c} onClick={()=>setCategory(c)}>{c}</button>)}</nav><h2>Latest updates</h2><div className="newsroom-grid">{filtered.map((a,i)=><button className={i===0?'news-feature':''} key={a.slug} onClick={()=>open('/newsroom/'+a.slug)}><div className="news-art"><ArticleArt kind={a.artwork}/></div><div className="news-copy"><span>{a.category}</span><h3>{a.title}</h3><p>{a.summary}</p><small>Studio perspectives · {a.read}</small></div></button>)}</div>{!filtered.length&&<p className="os-empty">No stories match this search.</p>}<footer>Ideas worth sharing. Made at High4Tech.</footer></div>;
+}
+
+const aiServices=[
+  {name:'Workflow automation',icon:Workflow,text:'Connect the steps that slow your team down.',items:['Lead capture and routing','CRM and spreadsheet workflows','Approvals, reminders, and reporting']},
+  {name:'AI assistants',icon:Bot,text:'Give your knowledge a useful interface.',items:['Service and support assistants','Internal knowledge search','Human handoff and clear boundaries']},
+  {name:'Connected operations',icon:Database,text:'Help your tools work together.',items:['API and system integrations','Document intake and processing','Status dashboards and notifications']},
+];
+export function AIZone({open}:{open:(path:string)=>void}){
+  const [step,setStep]=useState(0);
+  return <div className="ai-zone"><header><div className="ai-orb"><Sparkles size={34}/></div><span className="os-kicker">AI ZONE</span><h1>More possibility.<br/><em>Less busywork.</em></h1><p>Practical automation and thoughtful AI, built around the way your business works.</p><button className="os-button" onClick={()=>open('/contact')}>Explore an idea <ArrowUpRight size={15}/></button></header><div className="ai-service-grid">{aiServices.map(s=><article key={s.name}><s.icon size={24} strokeWidth={1.4}/><h2>{s.name}</h2><p>{s.text}</p><ul>{s.items.map(i=><li key={i}><Check size={12}/>{i}</li>)}</ul></article>)}</div><section className="automation-demo"><div><span className="os-kicker">A WORKFLOW, EXPLAINED</span><h2>A new inquiry.<br/>A clear next step.</h2><p>A concept for turning an incoming message into a useful, reviewed action.</p></div><div className="automation-steps">{['Receive an inquiry','Organize the details','Prepare a response','Your team approves'].map((s,i)=><button key={s} onClick={()=>setStep(i)} aria-pressed={step===i}><span>{i+1}</span>{s}<ArrowRight size={15}/></button>)}<p aria-live="polite">{['A form or connected inbox starts the workflow.','Relevant details are organized so the team can review them.','An assistant prepares a draft using approved business information.','A person checks the draft and decides what to send.'][step]}</p></div></section><section className="ai-principles"><h2>Useful by design.</h2><p>We start with a specific task, agree on the data it needs, prototype the workflow, and test its limits. People stay in control of important decisions.</p><button className="os-text-button" onClick={()=>open('/pricing')}>Plan your project <ArrowUpRight size={15}/></button></section></div>;
+}
+
+const packages=[{title:'A focused project',price:'$1,490',unit:'project',label:'Design & development',intro:'One clear idea, built with care.',items:['Discovery and agreed scope','Design and implementation','Review, refinement, and handover']},{title:'A smarter workflow',price:'$990',unit:'workflow',label:'AI & automation',intro:'Less repetition. More room to think.',items:['Workflow discovery','A focused automation prototype','Testing and team handover']},{title:'A creative partner',price:'$790',unit:'month',label:'Ongoing collaboration',intro:'Support for what comes next.',items:['A shared list of priorities','Design and development support','A cadence that fits your team']}];
+export function Pricing({open}:{open:(path:string)=>void}){return <div className="pricing-page"><header><span className="pricing-symbol"><DollarSign size={30}/></span><span className="os-kicker">PRICING · SAMPLE PACKAGES</span><h1>Good work starts<br/>with a clear plan.</h1><p>Choose the kind of support you need. We’ll shape a proposal around your scope, timeline, and priorities.</p></header><div className="pricing-grid">{packages.map((p,i)=><article key={p.title} className={i===1?'pricing-featured':''}><span>{p.label}</span><h2>{p.title}</h2><p>{p.intro}</p><strong>{p.price}<small> / {p.unit}</small></strong><small>Illustrative USD price · not a live offer</small><ul>{p.items.map(t=><li key={t}><Check size={14}/>{t}</li>)}</ul><button className="os-button" onClick={()=>{sessionStorage.setItem('h4t-call-preference',JSON.stringify({topic:p.label,date:''}));open('/contact');}}>Request a quote <ArrowUpRight size={14}/></button></article>)}</div><div className="pricing-details"><h2>Clear before we begin.</h2><p>These are sample prices for the design preview. Final packages will be confirmed by the studio. Your proposal will outline deliverables, milestones, the revision process, and payment terms. Third-party subscriptions and hosting are discussed separately.</p><button onClick={()=>open('/calendar')}>Prefer a conversation? <ArrowRight size={14}/></button></div></div>;}
+
+export function PricingReminder({open,onPricing}:{open:(path:string)=>void;onPricing:boolean}){
+  const [visible,setVisible]=useState(false);const active=useRef(onPricing);
+  useEffect(()=>{active.current=onPricing;if(onPricing){setVisible(false);sessionStorage.setItem('h4t-pricing-seen','yes');}},[onPricing]);
+  useEffect(()=>{
+    if(sessionStorage.getItem('h4t-pricing-seen'))return;
+    const start=Number(sessionStorage.getItem('h4t-visit-start'))||Date.now();sessionStorage.setItem('h4t-visit-start',String(start));
+    const timer=setTimeout(()=>{if(active.current||sessionStorage.getItem('h4t-pricing-seen'))return;setVisible(true);sessionStorage.setItem('h4t-pricing-seen','yes');},Math.max(0,60000-(Date.now()-start)));
+    return()=>clearTimeout(timer);
+  },[]);
+  if(!visible)return null;
+  return <aside className="pricing-reminder" aria-label="Pricing reminder" role="status"><button className="reminder-close" aria-label="Dismiss pricing reminder" onClick={()=>setVisible(false)}><X size={16}/></button><span className="pricing-symbol"><DollarSign size={22}/></span><div><strong>Have a project in mind?</strong><p>Explore ways to work together. Pricing is always a click away in the top bar.</p><button className="os-button" onClick={()=>{setVisible(false);open('/pricing');}}>Explore pricing <ArrowRight size={14}/></button></div></aside>;
+}
+
+const symbols=['✳','✦','◈','●','✳','✦','◈','●'];
+export function PlayArea(){
+  const [deck,setDeck]=useState(symbols),[flipped,setFlipped]=useState<number[]>([]),[matched,setMatched]=useState<number[]>([]),[moves,setMoves]=useState(0),[started,setStarted]=useState(false);
+  const timer=useRef<ReturnType<typeof setTimeout>|null>(null);
+  useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current);},[]);
+  function reset(){if(timer.current)clearTimeout(timer.current);const next=[...symbols];for(let i=next.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[next[i],next[j]]=[next[j],next[i]];}setDeck(next);setFlipped([]);setMatched([]);setMoves(0);setStarted(true);}
+  function flip(i:number){if(!started||flipped.length===2||matched.includes(i)||flipped.includes(i))return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]]===deck[next[1]]){setMatched(m=>[...m,...next]);setFlipped([]);playUiSound('accept');}else timer.current=setTimeout(()=>setFlipped([]),850);}}
+  return <div className="play-area"><header><Gamepad2 size={34} strokeWidth={1.3}/><span className="os-kicker">PLAY AREA</span><h1>A little break.<br/>A fresh perspective.</h1><p>Small games for curious minds. Start with a round of Studio Pairs.</p></header><section className="memory-game"><div className="game-toolbar"><div><h2>Studio Pairs</h2><span>Find the four matching pairs.</span></div><span>{moves} {moves===1?'move':'moves'} · {matched.length/2}/4 pairs</span></div>{!started?<div className="game-start"><div aria-hidden="true">✳ ◈ ✦</div><button className="os-button" onClick={reset}>Let’s play <ArrowRight size={16}/></button></div>:<><div className="memory-grid">{deck.map((symbol,i)=><button key={i} className={`${flipped.includes(i)||matched.includes(i)?'revealed':''} ${matched.includes(i)?'matched':''}`} onClick={()=>flip(i)} disabled={matched.includes(i)||flipped.includes(i)||flipped.length===2} aria-label={`Card ${i+1}${flipped.includes(i)||matched.includes(i)?': '+symbol:''}${matched.includes(i)?', matched':''}`}><span>{flipped.includes(i)||matched.includes(i)?symbol:'4'}</span></button>)}</div><div className="game-result" role="status">{matched.length===deck.length?<><CheckCheck size={18}/> All paired up. Nicely done.</>:<span>A little observation goes a long way.</span>}<button onClick={reset}><RotateCcw size={14}/> New game</button></div></>}</section><p className="play-note">More little experiments will find a home here.</p></div>;
+}
