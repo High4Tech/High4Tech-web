@@ -6,6 +6,7 @@ import '../experience.css';
 import '../studio.css';
 import '../studio-premium.css';
 import '../forms.css';
+import '../interactions.css';
 import '../assistant.css';
 import { SiteShell } from '@/components/site-shell';
 import { ContentProvider } from '@/components/content-provider';

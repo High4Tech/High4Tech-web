@@ -17,7 +17,7 @@ const tips:Record<string,[string,string]>={
   gallery:['The bigger picture','Click a photo to open it. Use the arrows to browse, or jump into its project.'],
   safari:['A different view','The landing page lives inside Safari. Its links open the matching studio apps.'],
   toolkit:['Our everyday applications','Explore the tech behind the studio. Each icon opens its official website.'],
-  assistant:['Meet your companion','Ask about the studio, work, or tools. This preview uses a local studio guide.'],
+  assistant:['Meet your companion','Say hello, or ask about the studio, work, and tools in your own words. Business answers come from our published studio knowledge.'],
   music:['Your soundtrack, your choice','Press Play for studio ambient, or load a Spotify or Apple Music share link. Music stays off until you choose.'],
   windows:['Make room for ideas','Drag the title bar to move a window. Red closes, yellow minimizes, and green expands. Restore windows from the side tray or dock.'],
   theme:['Make yourself at home','Light or dark: your appearance choice is saved for your next visit.'],

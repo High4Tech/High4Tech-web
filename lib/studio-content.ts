@@ -5,7 +5,7 @@ export const defaultSettings = {
   agencyName: 'High4Tech', studioName: 'High4Tech Studio', logo: '/brand/wordmark.png', mark: '/brand/mark.png',
   headline: 'Make the digital feel alive.', introduction: 'We turn ideas into identities, websites, and digital experiences. Thoughtful design. Useful technology. A little personality.',
   aboutTitle: 'Independent minds. Shared curiosity.', aboutText: 'We’re High4Tech. A creative technology studio turning ideas into identities, websites, and digital experiences.',
-  email: 'sales@high4tech.io', calLink: '', welcomeSubject: 'Your next project starts here.',
+  email: 'high4tech360@gmail.com', calLink: '', welcomeSubject: 'Your next project starts here.',
   welcomeBody: 'Welcome to High4Tech. We bring design, development, and thoughtful automation together to turn ideas into useful digital experiences.\n\nHave a website, a brand, or a workflow in mind? Tell us about your project today. We’d love to hear what you’re planning and help shape the next step.\n\nReply to this message to start a conversation with our studio.',
 };
 export const defaultPricing = [

@@ -4,7 +4,7 @@
 
 The assistant answers with exact text from the studio's **published** approved Q&A and knowledge documents. Each answer identifies its source. It declines a question when its meaningful terms do not have a supported match, including unrelated subjects and mixed questions with unsupported terms. It never calls a general-purpose language model, browses the web, executes file instructions, or sends your knowledge to an external AI provider.
 
-This is a free retrieval assistant, not a trained or generative model. It may decline a paraphrase it cannot match. Add an approved Q&A with useful keywords for important visitor questions. There are no per-message model charges; normal website, database and storage provider limits/costs still apply.
+This is a free retrieval assistant, not a trained or generative model. It recognizes greetings, thanks, goodbyes and questions about using the assistant without requiring a knowledge upload. These conversational replies do not claim a business source. Business questions support common phrasing, related terms and unambiguous one-character spelling errors (including adjacent letter swaps). Unsupported or ambiguous questions still decline rather than invent an answer. Add an approved Q&A with useful keywords for important visitor questions. There are no per-message model charges; normal website, database and storage provider limits/costs still apply.
 
 ## Admin workflow
 
@@ -14,7 +14,7 @@ This is a free retrieval assistant, not a trained or generative model. It may de
 4. Save as a draft while preparing, then publish when ready.
 5. Test a visitor question on the dashboard. This uses the same `/api/assistant` endpoint as the website and reads published content only.
 
-**Approved answers** supports focused question/answer entries with keywords and optional local navigation links. **Assistant settings** controls enabled state, welcome message and fallback response.
+**Approved answers** supports focused question/answer entries with keywords and optional local navigation links. Public email and WhatsApp details also come directly from **Contact info**, so visitors can ask how to reach the studio. **Assistant settings** controls enabled state, welcome message and fallback response.
 
 Original files are not retained. The reviewed text, source filename and publication versions live in the CMS database. Document REST reads are admin-only. The anonymous assistant can return a matched passage from a published document; it never returns the full document as a download. Unpublished revisions preserve the last published answer. Deleting a source removes it from subsequent searches. Existing conversations may still display an answer received before a source changed; conversations are browser memory only.
 
@@ -42,4 +42,4 @@ Account-library syncing is deferred as requested. Spotify requires a registered 
 
 ## Verification
 
-`npm run assistant:verify` checks exact source replies, unrelated/mixed queries, injection attempts, empty knowledge and file parsing. `npm run assistant:verify:cms` creates a temporary document, verifies draft privacy, publication, private revisions, citations, deletion and request protection, then removes its fixture. It does not create users or edit existing knowledge.
+`npm run assistant:verify` checks greetings, basic conversational questions, common phrasing, spelling tolerance, contact details, exact source replies, unrelated/mixed queries, injection attempts, empty knowledge and file parsing. `npm run assistant:verify:cms` creates a temporary document, verifies draft privacy, publication, private revisions, citations, deletion and request protection, then removes its fixture. It does not create users or edit existing knowledge.

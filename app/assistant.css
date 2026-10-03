@@ -1,1 +1,49 @@
-.studio-os .assistant-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px 18px;color:var(--secondary);font-size:10px}.assistant-toolbar>span{display:flex;align-items:center;gap:6px}.assistant-toolbar>span i{width:5px;height:5px;border-radius:50%;background:#45aa6a}.assistant-toolbar button{display:flex;align-items:center;gap:6px;font-size:10px;padding:5px;color:var(--secondary)}.assistant-toolbar button:disabled{opacity:.35;cursor:default}.studio-os .assistant-intro h1{font-size:clamp(25px,3vw,34px);letter-spacing:-1px;line-height:1.12}.studio-os .assistant-intro p{max-width:360px;margin-inline:auto;line-height:1.7;font-size:13px}.studio-os .assistant-intro.has-messages p{max-width:none}.studio-os .os-message p{white-space:pre-wrap;line-height:1.7;font-size:13px;overflow-wrap:anywhere}.studio-os .os-message.assistant{border:1px solid var(--line);background:var(--card);border-radius:17px;padding:18px 20px}.studio-os .os-message.user{border-radius:17px}.studio-os .os-message.failed{border-color:#d77a5535}.studio-os .assistant-source{display:flex;align-items:center;gap:7px;margin-top:13px;padding-top:12px;border-top:1px solid var(--line);color:var(--secondary);font-size:10px;line-height:1.6}.assistant-source svg{flex:none}.studio-os .assistant-preview-note{display:block;font-size:9px;margin-top:8px}.studio-os .assistant-contact{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:var(--text);text-decoration:none;font-size:12px}.assistant-contact .brand-icon{width:16px;height:16px}.assistant-thinking{display:flex;gap:4px;align-items:center;padding:14px 18px;font-size:11px;color:var(--secondary)}.assistant-thinking i{height:4px;width:4px;border-radius:50%;background:#df782e;animation:assistantPulse 1s infinite alternate}.assistant-thinking i:nth-child(2){animation-delay:.2s}.assistant-thinking i:nth-child(3){animation-delay:.4s}.assistant-thinking span{margin-left:7px}.studio-os .assistant-disclaimer{text-transform:none;letter-spacing:0;font-size:10px;padding:10px;text-align:center}.studio-os .assistant-compose button:disabled{opacity:.35;cursor:default}.studio-os .assistant-prompts button{font-size:12px;padding:12px 14px;line-height:1.5}.studio-os .assistant-prompts{grid-template-columns:1fr;max-width:380px}.studio-os .assistant-compose input:disabled{opacity:.5}@keyframes assistantPulse{to{opacity:.25;transform:translateY(-2px)}}@media(prefers-reduced-motion:reduce){.assistant-thinking i{animation:none}}@media(max-width:600px){.studio-os .assistant-toolbar{font-size:9px;padding-inline:0}.studio-os .os-message.assistant{padding:14px}.studio-os .assistant-disclaimer{font-size:9px}}
+/* Messages: a single conversation, without an unrelated contacts sidebar. */
+.studio-os .os-assistant{--message-incoming:#e9e9eb;--message-outgoing:#0871df;--message-ink:#25252a;height:100%;background:var(--card)}
+.studio-os.theme-dark .os-assistant{--message-incoming:#36363c;--message-outgoing:#086ed5;--message-ink:#f5f5f7}
+.studio-os .app-assistant .window-scroll{overflow:hidden}
+.studio-os .assistant-toolbar{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 18px 14px;flex-shrink:0;border-bottom:1px solid var(--line);background:var(--surface);color:var(--text)}
+.assistant-toolbar>button,.assistant-toolbar-spacer{width:32px;height:32px}
+.assistant-toolbar>button{display:grid;place-items:center;border-radius:50%;color:var(--text)}
+.assistant-toolbar>button:hover:not(:disabled){background:var(--hover)}
+.assistant-toolbar>button:disabled{opacity:.35}
+.assistant-recipient{display:flex;flex-direction:column;align-items:center;gap:4px}
+.assistant-avatar{display:grid;place-items:center;width:42px;height:42px;background:#f97328;border-radius:50%}
+.assistant-avatar .mascot-face{width:33px;height:37px}
+.studio-os .assistant-recipient strong{font-size:13px;font-weight:600;line-height:1.3}
+.assistant-recipient>span:last-child{display:flex;align-items:center;gap:5px;color:var(--secondary);font-size:10px}
+.assistant-recipient i{width:5px;height:5px;border-radius:50%;background:#47976b}
+.studio-os .assistant-conversation{padding:18px 26px 24px;background:var(--card)}
+.assistant-date{color:var(--secondary);text-align:center;font-size:11px;margin:0 0 26px}
+.studio-os .assistant-intro{margin:28px auto 22px;max-width:340px}
+.studio-os .assistant-intro h1{font-size:22px;line-height:1.2;letter-spacing:-.6px}
+.studio-os .assistant-intro p{font-size:13px;line-height:1.6;margin:12px 0;color:var(--secondary)}
+.studio-os .assistant-prompts{grid-template-columns:1fr;max-width:340px;gap:8px;margin:0 auto}
+.studio-os .assistant-prompts button{padding:11px 14px;font-size:12px;line-height:1.5;border-radius:16px;background:var(--surface);color:var(--text)}
+.studio-os .os-messages{gap:14px}
+.studio-os .os-message{position:relative;width:fit-content;max-width:min(78%,530px);padding:10px 15px;border:0;border-radius:19px;color:var(--message-ink);background:var(--message-incoming);isolation:isolate}
+.studio-os .os-message.assistant{background:var(--message-incoming);border:0;border-radius:19px;padding:10px 15px}
+.studio-os .os-message.user{background:var(--message-outgoing);color:#fff;border-radius:19px}
+.studio-os .os-message::before{content:'';position:absolute;bottom:0;left:-5px;width:14px;height:18px;clip-path:path('M 13 0 C 12 9 8 13 0 16 C 6 18 12 16 14 13 Z');background:var(--message-incoming);z-index:-1}
+.studio-os .os-message.user::before{left:auto;right:-5px;transform:scaleX(-1);background:var(--message-outgoing)}
+.studio-os .os-message p{color:var(--message-ink);margin:0;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.studio-os .os-message.user p{color:#fff}
+.message-author{position:absolute;width:1px;height:1px;padding:0;margin:-1px;clip-path:inset(50%);overflow:hidden;white-space:nowrap}
+.studio-os .assistant-source{display:flex;gap:6px;align-items:flex-start;margin-top:10px;color:var(--secondary);font-size:10px;line-height:1.5}
+.assistant-source svg{flex:none;margin-top:1px}
+.studio-os .assistant-preview-note{display:block;font-size:9px;margin-top:5px;color:var(--secondary);letter-spacing:0}
+.studio-os .os-message :is(button,.assistant-contact){display:inline-flex;align-items:center;gap:6px;color:var(--message-ink);text-decoration:underline;text-underline-offset:3px;margin-top:10px;font-size:12px;line-height:1.5}
+.assistant-contact .brand-icon{width:16px;height:16px}
+.studio-os .assistant-thinking{display:flex;gap:5px;align-items:center;align-self:flex-start;background:var(--message-incoming);padding:14px 18px;border-radius:19px}
+.assistant-thinking i{width:6px;height:6px;background:var(--secondary);border-radius:50%;animation:assistantPulse 1s infinite alternate}
+.assistant-thinking i:nth-child(2){animation-delay:.2s}.assistant-thinking i:nth-child(3){animation-delay:.4s}
+.assistant-compose-area{flex-shrink:0;padding:12px 20px 8px;border-top:1px solid var(--line);background:var(--surface)}
+.studio-os .os-assistant .assistant-compose{margin:0;min-height:40px;padding:3px 5px 3px 14px;border-radius:22px;background:var(--card);border-color:var(--line);gap:8px}
+.studio-os .os-assistant .assistant-compose:focus-within{outline:none;border-color:#0871df;box-shadow:0 0 0 3px #0871df1a}
+.studio-os .assistant-compose input:not([type=radio]):not([type=checkbox]):not([type=range]):not([type=hidden]){font-size:14px;min-height:32px;padding:5px 0}
+.studio-os .assistant-compose>button,.studio-os.theme-dark .assistant-compose>button,.studio-os .assistant-compose>button:is(:hover,:focus-visible):not(:disabled),.studio-os.theme-dark .assistant-compose>button:is(:hover,:focus-visible):not(:disabled){width:29px;height:29px;min-height:29px;padding:0;flex:none;display:grid;place-items:center;color:#fff;background:var(--message-outgoing);border:0;box-shadow:none}
+.studio-os .assistant-compose>button:disabled{background:var(--hover);color:var(--secondary);opacity:1;cursor:default}
+.studio-os .assistant-disclaimer{text-transform:none;letter-spacing:0;font-size:10px;color:var(--secondary);padding:8px 0 0;text-align:center}
+@keyframes assistantPulse{to{opacity:.35;transform:translateY(-2px)}}
+@media(prefers-reduced-motion:reduce){.assistant-thinking i{animation:none}}
+@media(max-width:600px){.studio-os .assistant-conversation{padding:16px 20px 20px}.studio-os .os-message{max-width:88%}.assistant-compose-area{padding-inline:12px}.studio-os .assistant-disclaimer{font-size:9px}}

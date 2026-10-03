@@ -7,6 +7,7 @@ export async function seedContent(payload:Payload){
   if(settings.contentSeeded){
     const contact=await payload.findGlobal({slug:'contact-info'});
     if(contact.whatsapp==='https://wa.link/p3t9vf')await payload.updateGlobal({slug:'contact-info',data:{whatsapp:content.socials.whatsapp}});
+    if(contact.email==='sales@high4tech.io')await payload.updateGlobal({slug:'contact-info',data:{email:content.settings.email}});
     return;
   }
   const catalogs={

@@ -22,6 +22,10 @@ if(origin){
   assert.equal(body.settings.agencyName,'High4Tech');
   assert.ok(body.projects.length>0);
   assert.equal(body.socials.whatsapp,'https://wa.me/923256138361');
+  assert.equal(body.settings.email,'high4tech360@gmail.com');
+  const greetingResponse=await fetch(origin+'/api/assistant',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify({question:'Hello!'})});
+  assert.equal(greetingResponse.status,200);
+  assert.equal((await greetingResponse.json()).status,'conversation');
   const assistantResponse=await fetch(origin+'/api/assistant',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify({question:'What is the capital of France?'})});
   assert.equal(assistantResponse.status,200);
   const assistant=await assistantResponse.json();
