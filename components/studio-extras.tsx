@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronLeft, X, Play, Pause, Music2, SkipForward, Volume2 } from 'lucide-react';
-import { projects } from '@/lib/content';
+import { useStudioContent } from './content-provider';
 import { BrandIcon } from './studio-sections';
 import { FeatureTips } from './feature-tips';
 import { playUiSound } from './sound';
@@ -22,6 +22,7 @@ export function DesktopCompanion(){
 }
 
 export function DesktopLoops({kind}:{kind:'tools'|'clients'}){
+  const {projects}=useStudioContent();
   return <div className={`desktop-loop ${kind}-loop`} aria-label={kind==='tools'?'Studio tools':'Selected clients'}><div className="loop-mask"><div className="loop-track">{[0,1,2,3].map(n=><div key={n} aria-hidden={n>0}>{kind==='tools'?studioStack.map(tool=><span key={tool.icon}><img src={tool.icon==='figma'?'/icons/figma/figma.svg':`/icons/${tool.icon}.svg`} alt=""/>{tool.name}<i>✦</i></span>):projects.map(p=><span key={p.slug}>{p.name}<i>✦</i></span>)}</div>)}</div></div></div>;
 }
 

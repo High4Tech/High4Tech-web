@@ -1,13 +1,11 @@
 import { LandingV2 } from '@/components/landing-v2';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { services, projects, articles } from '@/lib/content';
+import { getStudioContent } from '@/lib/cms-content';
 import { ServicesPage, ServiceDetail, ProjectsPage, ProjectDetail, ResourcesPage, AboutPage, JournalPage, ArticlePage, ContactPage, PolicyPage } from '@/components/pages';
 
-export function generateStaticParams() {
-  return [{slug:[]}, ...['services','projects','tools-and-resources','about','blog','contact','privacy','terms','desktop','assistant','calendar','gallery','safari','toolkit','preview','newsroom','ai-zone','pricing','play'].map(s=>({slug:[s]})), ...services.map(s=>({slug:['services',s.slug]})), ...projects.map(p=>({slug:['projects',p.slug]})), ...articles.map(a=>({slug:['blog',a.slug]})),...articles.map(a=>({slug:['newsroom',a.slug]}))];
-}
 export async function generateMetadata({params}: {params:Promise<{slug?:string[]}>}): Promise<Metadata> {
+  const {services,projects,articles}=await getStudioContent();
   const {slug=[]} = await params;
   const path=slug.join('/');
   const names:Record<string,string> = {'':'Studio','services':'Services','projects':'Selected work','tools-and-resources':'Tools & resources','about':'The studio','blog':'Newsroom','newsroom':'Newsroom','ai-zone':'AI Zone','pricing':'Pricing','play':'Play area','contact':'Let’s talk','privacy':'Privacy preview','terms':'Site terms preview','desktop':'High4Tech OS','assistant':'Studio assistant','calendar':'Let’s talk','gallery':'Gallery','safari':'Safari','toolkit':'Toolkit','preview':'Landing preview'};
@@ -15,6 +13,7 @@ export async function generateMetadata({params}: {params:Promise<{slug?:string[]
   return {title};
 }
 export default async function Page({params}: {params:Promise<{slug?:string[]}>}) {
+  const {services,projects,articles}=await getStudioContent();
   const {slug=[]} = await params;
   const path=slug.join('/');
   if(path==='') return null;

@@ -1,6 +1,8 @@
+'use client';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, Plus } from 'lucide-react';
 import { services, projects, resources, articles, faqs } from '@/lib/content';
+import { useStudioContent } from './content-provider';
 import { BookingButton } from './site-shell';
 
 export function SectionHeading({ number, title, note, href, link }: { number: string; title: string; note?: string; href?: string; link?: string }) {
@@ -16,6 +18,7 @@ export function ProjectCard({ project, index }: { project: typeof projects[numbe
 }
 
 export function ServiceRows() {
+  const {services}=useStudioContent();
   return <div className="service-rows">{services.map(s => <Link href={`/services/${s.slug}`} className="service-row" key={s.slug} data-cursor="EXPLORE" data-reveal><span className="service-number">/{s.number}</span><div className="service-info"><h3>{s.short}<span className="orange">.</span></h3><div className="service-tags">{s.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div><Symbol kind={s.symbol} /><span className="service-arrow"><ArrowUpRight size={28} /></span></Link>)}</div>;
 }
 
@@ -31,6 +34,7 @@ export function ArticleCard({ article }: { article: typeof articles[number] }) {
   return <Link className="article-card" href={`/blog/${article.slug}`} data-cursor="READ" data-reveal><ArticleArt kind={article.artwork} /><div className="article-meta"><span>{article.category}</span><span>{article.read}</span></div><h3>{article.title}</h3><ArrowUpRight className="article-arrow" size={23} /></Link>;
 }
 export function FAQ() {
+  const {faqs}=useStudioContent();
   return <section className="faq-section wrap section-space"><SectionHeading number="07" title="A little clarity." note="COMMON QUESTIONS" /><div className="faq-list">{faqs.map((f,i) => <details key={f.question} data-reveal><summary><span className="faq-number">0{i+1}</span>{f.question}<Plus size={22} /></summary><p>{f.answer}</p></details>)}</div></section>;
 }
 export function ContactCTA() {

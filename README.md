@@ -1,44 +1,58 @@
-# High4Tech — first public website draft
+# High4Tech Studio
 
-Custom Next.js / React / TypeScript frontend with Three.js (React Three Fiber) and GSAP. Predominantly white, orange `#F97328`, black typography and accents. Unbounded headings with an Apple-style system font stack for descriptions and labels.
+Custom Next.js / React / TypeScript website with a desktop-inspired interface, Three.js and GSAP. Payload manages published website content in the same application. Brand orange is `#F97328`; the studio supports light and dark themes.
 
 ## Run locally
 
-Use Node.js 20.9 or newer.
+Use Node.js 22 or newer.
 
 ```sh
 npm install
+npm run cms:setup
 npm run dev
 ```
 
-Open `http://127.0.0.1:3000`. Production checks: `npm run typecheck` and `npm run build`. To preview a completed build: `npm run start`.
+Open `http://127.0.0.1:3000` for the studio or `http://127.0.0.1:3000/admin` for Payload. On the first admin visit, create your own email/password account. No default account is included.
 
-## Pages
+`cms:setup` generates a local secret in `.env` only when that file does not already exist. Local development uses `studio.db` (SQLite) and `media/` for uploaded images. These files and credentials are excluded from Git. Existing draft content is seeded once into an empty CMS; later edits and deletions are preserved.
 
-- Home `/`
-- Services `/services` and three service details
-- Portfolio `/projects` and two case studies
-- Toolbox `/tools-and-resources`, with search and free/paid/category filters
-- Studio `/about`
-- Journal `/blog` and three draft articles
-- Contact `/contact`
-- Preview policy pages `/privacy` and `/terms`
-- Custom missing-page screen
+## Content management
 
-## Interaction direction
+- **Services:** descriptions, deliverables and detail routes.
+- **Projects:** case studies, cover images and gallery uploads.
+- **Newsroom:** articles, categories, images and publication dates.
+- **Resources:** free/paid tools and external platform links.
+- **Pricing:** packages and the flag identifying illustrative prices.
+- **AI services:** automation and AI offerings.
+- **FAQs and Chatbot data:** public answers and the assistant’s keyword-based responses.
+- **Site settings:** agency name, logos, home introduction and about text.
+- **Contact info:** email, social links, booking link and Mail’s welcome message.
 
-The 3D orange four slowly moves and responds to the pointer. A shader reveals its wireframe inside an inspection lens. The X-ray button exposes the full wireframe for touch and keyboard users. The pause button stops motion. Rendering pauses when the hero leaves the viewport. Reduced-motion preferences suppress motion and the custom cursor.
+Save a draft while editing; use Publish to make collection content public. Globals become live when saved. The studio refreshes published data when the tab regains focus and every 30 seconds while visible. Newly published service, project and Newsroom slugs have their own routes. Layout, visual effects and fixed interface labels remain in the code.
 
-Contextual cursor labels appear over work, resources, the mascots, and actions. Inputs keep the native cursor. Navigation and controls remain usable without custom cursors or WebGL.
+The assistant still uses scripted responses; adding CMS knowledge does not connect a paid AI service. Mail displays a configurable welcome message and opens the visitor’s email app to reply. Project briefs validate locally and prepare an email; they do not send or store messages. Resources open the tool’s own platform for access or purchases. Music only plays when requested.
 
-## First-draft boundaries
+## Checks
 
-There is no CMS, database, backend, admin panel, payment gateway, or live AI integration. Tools open their own platforms. The assistant gives local scripted replies. Booking shows a clear preview and schedules nothing. The contact form validates and prepares an inquiry for the user's email app; it does not send messages itself or persist data.
+```sh
+npm run typecheck
+npm run build
+```
 
-The paid-tool slot awaits the real product names and platform links. Three original editorial draft articles demonstrate the journal. The digital-growth service outline needs confirmation. Case-study images come from the current High4Tech portfolio; no performance claims or invented testimonials are used. Policy pages are preview notices awaiting the final integrations. Preview metadata is set to noindex.
+With the development server running, `npm run cms:verify` checks public publishing, private drafts and revisions, unauthenticated write restrictions, and upload delivery. It creates and removes only temporary content/media fixtures; it never creates an admin account. `CMS_TEST_ORIGIN` can override the default local URL.
 
-## Content and references
+After schema changes, regenerate `payload-types.ts` and the admin import map using `npm run cms:types` and `npm run cms:importmap`. Generate a migration with `npx payload migrate:create descriptive_name`.
 
-`lib/content.ts` holds editable draft text and links. `sources/` preserves the approved direction, original assets, reference websites, repository links, and provenance. Brand assets in `public/brand/` include the supplied mascot artwork and favicon, plus a cropped copy of the supplied wordmark. The originals remain in `sources/assets/`.
+## Production
 
-Display font: Unbounded, packaged locally with Fontsource under OFL-1.1. Body: native platform fonts. GSAP controls subtle reveals. ShaderGradient and Liquid Logo are explored references and linked community resources, not dependencies in this draft.
+Use a persistent Node host with durable SQLite and image storage, or change the database/upload adapters for the selected host. Set a private `PAYLOAD_SECRET` and `DATABASE_URL` in the host’s environment. Keep the secret stable. A fresh production database needs `npm run cms:migrate` before build/start. The initial migration is included in `cms/migrations/`.
+
+Do not apply the initial migration to the auto-synced development database. Use a separate fresh production database and plan a content export/import when deploying existing local edits. Back up the database and uploaded media together. Database files and uploads are not transferred by Git.
+
+Configure a real Payload email adapter before relying on password-reset emails; the local development fallback logs email rather than delivering it. The public studio’s Reply action works through the visitor’s email app independently.
+
+Production preview: `npm run build`, then `npm run start`. Preview metadata currently remains `noindex` until the site is ready to launch.
+
+## References and assets
+
+`sources/` preserves the approved visual direction, reference websites, repository links, originals and asset provenance. Brand assets are under `public/brand/`. Display font: locally packaged Unbounded (OFL-1.1); interface and form text use native Apple/system fonts. See `sources/payload-cms.md` for the CMS editing map.

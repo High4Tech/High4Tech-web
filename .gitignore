@@ -5,3 +5,6 @@ work/
 *.tsbuildinfo
 .env*
 !.env.example
+*.db
+*.db-*
+media/

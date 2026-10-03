@@ -1,0 +1,54 @@
+/* One field system for the studio and the landing preview. */
+:is(.studio-os,.standalone-preview) :is(input:not([type=radio]):not([type=checkbox]):not([type=range]):not([type=hidden]),textarea,select){
+  box-sizing:border-box;display:block;min-width:0;width:100%;height:auto;min-height:42px;
+  padding:10px 13px;margin:0;border:1px solid var(--line,#d8d8df);border-radius:10px;
+  background:var(--card,#fff);color:var(--text,#242427);font:400 14px/1.45 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  letter-spacing:normal;text-transform:none;text-indent:0;text-shadow:none;transform:none;box-shadow:none;outline:0;
+  -webkit-text-fill-color:currentColor;transition:border-color .16s,box-shadow .16s;
+}
+:is(.studio-os,.standalone-preview) :is(input,textarea,select):focus-visible{border-color:#f97328;box-shadow:0 0 0 3px #f973281a}
+:is(.studio-os,.standalone-preview) :is(input,textarea)::placeholder{color:var(--secondary,#74747b);opacity:1;font:inherit;letter-spacing:normal;text-transform:none}
+:is(.studio-os,.standalone-preview) textarea{min-height:124px;resize:vertical}
+:is(.studio-os,.standalone-preview) input[type=date]{color-scheme:light}
+.studio-os.theme-dark input[type=date]{color-scheme:dark}
+:is(.studio-os,.standalone-preview) .contact-form{padding:0;border:0;gap:22px}
+:is(.studio-os,.standalone-preview) .contact-form :is(label,legend){font:500 13px/1.5 var(--os-font,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif);letter-spacing:normal;text-transform:none}
+:is(.studio-os,.standalone-preview) .contact-form label>:is(input,textarea,select){margin-top:8px}
+.studio-os .contact-form .form-actions{border:0;padding-top:0}
+.studio-os .contact-form .interest-options span{color:var(--text)!important;border-radius:10px}
+.studio-os :is(.finder-search,.installed-search,.search-field,.assistant-compose,.os-spotlight form){border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 10px;min-height:42px;gap:8px}
+.studio-os :is(.finder-search,.installed-search,.search-field,.assistant-compose,.os-spotlight) input:not([type=radio]):not([type=checkbox]):not([type=range]):not([type=hidden]){border:0;border-radius:0;background:transparent;min-height:40px;padding:9px 0;box-shadow:none;font-size:14px}
+.studio-os :is(.finder-search,.installed-search,.search-field,.assistant-compose):focus-within{outline:0;border-color:#f97328;box-shadow:0 0 0 3px #f973281a}
+.studio-os .finder-toolbar{height:56px}.studio-os .finder-search{max-width:180px;width:180px}
+.studio-os .os-spotlight form:focus-within{border-color:#f97328;box-shadow:0 0 0 3px #f973281a}
+.studio-os .calendar-preview label{display:block;font-size:13px;letter-spacing:normal;width:100%;text-align:left}
+.studio-os .calendar-preview label>:is(input,select){margin-top:8px}
+.studio-os .calendar-note{border:0;padding:14px 0;background:none}
+.studio-os .music-link-label input{margin:8px 0;font-size:14px}
+@media(max-width:700px){:is(.studio-os,.standalone-preview) :is(input:not([type=radio]):not([type=checkbox]):not([type=range]):not([type=hidden]),textarea,select){font-size:16px}.studio-os :is(.finder-search,.installed-search,.search-field,.assistant-compose,.os-spotlight) input:not([type=radio]):not([type=checkbox]):not([type=range]):not([type=hidden]){font-size:16px}}
+
+/* Mail has its own inbox, instead of the Finder navigation. */
+.studio-os .os-window.app-contact{left:365px;width:calc(100% - 390px);max-width:1180px}
+.studio-mail{display:grid;grid-template-columns:145px 215px minmax(0,1fr);height:100%;min-height:0;background:var(--card);color:var(--text);font-family:var(--os-font)}
+.app-contact .window-scroll{overflow:hidden}.mail-mailboxes{background:var(--surface);padding:23px 10px;display:flex;flex-direction:column;gap:5px}
+.mail-mailboxes>span{font-size:10px;font-weight:600;color:var(--secondary);padding:0 10px 12px;letter-spacing:.025em}
+.mail-mailboxes :is(button,a){display:flex;align-items:center;gap:8px;padding:9px 10px;font-size:12px;border-radius:8px;text-align:left;color:var(--text)}
+.mail-mailboxes .selected{background:var(--hover)}.mail-mailboxes b{margin-left:auto;font-size:10px;border-radius:5px;padding:1px 5px;background:var(--card)}
+.mail-mailboxes small{margin-top:auto;padding:10px;color:var(--secondary);font-size:10px;line-height:1.5}
+.mail-message-list{background:var(--surface);border-left:1px solid var(--line);padding:22px 10px;overflow:auto}
+.mail-list-heading{padding:0 9px 20px}.studio-os .mail-list-heading h1{font-size:23px;letter-spacing:-.7px}.mail-list-heading>span{font-size:11px;color:var(--secondary)}
+.mail-message-list>button{display:flex;gap:7px;padding:14px 9px;width:100%;border-radius:10px;text-align:left;background:var(--card);color:var(--text)}
+.mail-message-list>button.selected{background:color-mix(in srgb,#f97328 9%,var(--card))}.mail-unread{width:6px;height:6px;border-radius:50%;background:#f97328;flex:none;margin-top:5px}.mail-unread.is-read{background:transparent}
+.mail-message-list strong{font-size:12px}.mail-message-list b{display:block;font-size:12px;font-weight:500;margin-top:5px;line-height:1.45}.studio-os .mail-message-list p{font-size:11px;line-height:1.5;color:var(--secondary);margin-top:6px}
+.mail-reader{min-height:0;min-width:0;overflow:auto;background:var(--card)}.mail-reader-toolbar{display:flex;align-items:center;gap:13px;padding:13px 22px;min-height:56px;background:var(--card);position:sticky;top:0;z-index:1}
+.mail-reader-toolbar>span{font-size:11px;color:var(--secondary)}.mail-reader-toolbar .os-button{margin:0 0 0 auto;padding:8px 12px;font-size:12px}.mail-reader-toolbar>button{display:flex;align-items:center;gap:7px;font-size:12px}.mail-mobile-back{display:none!important}
+.mail-letter{padding:16px 27px 35px;max-width:760px;margin:auto}.mail-sender{display:flex;align-items:center;gap:11px;margin-bottom:27px}.mail-sender>img{width:37px;height:37px;object-fit:contain;border-radius:9px}.mail-sender strong{font-size:13px}.mail-sender span,.mail-sender small{display:block;font-size:11px;color:var(--secondary);margin-top:3px}
+.studio-os .mail-letter h1{font-size:clamp(25px,2.5vw,33px);line-height:1.15;letter-spacing:-1px;margin:0 0 24px}.studio-os .mail-letter p{font-size:14px;line-height:1.8;margin:0 0 18px;color:var(--text);white-space:pre-line}
+.mail-signature img{mix-blend-mode:multiply}.theme-dark .mail-signature img{mix-blend-mode:screen}
+.mail-signature{display:flex;flex-direction:column;align-items:start;gap:8px;margin:28px 0 20px}.mail-signature img{width:110px}.theme-dark .mail-signature img{filter:grayscale(1) invert(1)}.mail-signature span{font-size:11px;color:var(--secondary)}
+.mail-direct-link{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--secondary);margin-top:17px}.mail-empty{display:grid;place-content:center;justify-items:center;height:100%;gap:15px;color:var(--secondary)}
+.studio-mail.is-composing{grid-template-columns:145px minmax(0,1fr)}.mail-compose-content{padding:5px 28px 30px;max-width:760px;margin:auto}.mail-address{display:flex;gap:14px;align-items:center;font-size:13px;color:var(--secondary);margin:8px 0 25px}.mail-address strong{font-weight:400;color:var(--text)}.studio-os .mail-compose-content h1{font-size:27px;margin:0 0 25px;letter-spacing:-.8px}
+.news-art>img,.newsroom-cover{width:100%;height:100%;object-fit:cover}.newsroom-cover{height:auto;max-height:500px;border-radius:14px;margin:25px 0}
+@media(max-width:1150px){.studio-os .os-window.app-contact{left:310px;width:calc(100% - 330px)}.studio-mail{grid-template-columns:175px minmax(0,1fr)}.mail-mailboxes{display:none}.studio-mail.is-composing{grid-template-columns:1fr}.mail-letter{padding:14px 22px 30px}}
+@media(max-width:900px){.studio-os .os-window.app-contact{left:12px;width:calc(100% - 24px)}}
+@media(max-width:700px){.studio-mail{display:block;height:100%;overflow:auto}.mail-message-list{min-height:100%;border:0}.mail-reader{display:none;height:100%}.studio-mail.message-open .mail-reader,.studio-mail.is-composing .mail-reader{display:block}.studio-mail.message-open .mail-message-list{display:none}.mail-mobile-back{display:flex!important}.mail-reader-toolbar{padding:10px 18px}.mail-reader-toolbar>span{display:none}.mail-compose-content{padding:10px 18px 25px}.mail-letter{padding:20px}.studio-os :is(input,textarea,select){font-size:16px}.studio-os .finder-search{max-width:130px}.studio-os .os-window.app-contact{top:48px;height:calc(100dvh - 210px)}}

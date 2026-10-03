@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, LockKeyhole, RotateCw, Search } from 'lucide-react';
-import { projects } from '@/lib/content';
+import { useStudioContent } from './content-provider';
 
 // Geometry from the supplied Figma icon pack. Assets are served locally.
 export function MacIcon({name}:{name:'safari'|'finder'|'figma'|'photos'|'appstore'}) {
@@ -25,12 +25,14 @@ export function Toolkit(){
 }
 
 export function Gallery({open}:{open:(path:string)=>void}){
+  const {projects:catalog}=useStudioContent();
+  const projects=catalog.flatMap(project=>[...(project.image?[{...project}]:[]),...(project.images||[]).map(image=>({...project,image:image.url}))]);
   const [selected,setSelected]=useState<number|null>(null);
   const back=useRef<HTMLButtonElement>(null);
   const photo=selected===null?null:projects[selected];
   useEffect(()=>{if(selected!==null)back.current?.focus();},[selected]);
-  return <div className="studio-gallery" onKeyDown={e=>{if(selected===null)return;if(e.key==='Escape'){e.stopPropagation();setSelected(null);}if(e.key==='ArrowRight')setSelected((selected+1)%projects.length);if(e.key==='ArrowLeft')setSelected((selected-1+projects.length)%projects.length);}}>
-    {photo?<><div className="gallery-controls"><button ref={back} onClick={()=>setSelected(null)}><ArrowLeft size={16}/> All photos</button><span>{selected!+1} / {projects.length}</span><button aria-label="Previous photo" onClick={()=>setSelected((selected!-1+projects.length)%projects.length)}><ArrowLeft size={16}/></button><button aria-label="Next photo" onClick={()=>setSelected((selected!+1)%projects.length)}><ArrowRight size={16}/></button></div><div className="gallery-viewer"><img src={photo.image} alt={`${photo.name} — project design`}/></div><div className="gallery-caption"><div><h1>{photo.name}</h1><p>{photo.type} · {photo.year}</p></div><button className="os-button" onClick={()=>open('/projects/'+photo.slug)}>View project <ArrowUpRight size={14}/></button></div></>:<><div className="gallery-heading"><div><span className="os-kicker">THE STUDIO LIBRARY</span><h1>All photos</h1></div><span>{projects.length} photos</span></div><div className="gallery-grid">{projects.map((p,i)=><button key={p.slug} onClick={()=>setSelected(i)} aria-label={`View ${p.name} photo`}><img src={p.image} alt={`${p.name} project preview`}/><span>{p.name}<small>{p.year}</small></span></button>)}</div><p className="gallery-footnote">A closer look at the things we make.</p></>}
+  return <div className="studio-gallery" onKeyDown={e=>{if(selected===null||!projects.length)return;if(e.key==='Escape'){e.stopPropagation();setSelected(null);}if(e.key==='ArrowRight')setSelected((selected+1)%projects.length);if(e.key==='ArrowLeft')setSelected((selected-1+projects.length)%projects.length);}}>
+    {photo?<><div className="gallery-controls"><button ref={back} onClick={()=>setSelected(null)}><ArrowLeft size={16}/> All photos</button><span>{selected!+1} / {projects.length}</span><button aria-label="Previous photo" onClick={()=>setSelected((selected!-1+projects.length)%projects.length)}><ArrowLeft size={16}/></button><button aria-label="Next photo" onClick={()=>setSelected((selected!+1)%projects.length)}><ArrowRight size={16}/></button></div><div className="gallery-viewer"><img src={photo.image} alt={`${photo.name} — project design`}/></div><div className="gallery-caption"><div><h1>{photo.name}</h1><p>{photo.type} · {photo.year}</p></div><button className="os-button" onClick={()=>open('/projects/'+photo.slug)}>View project <ArrowUpRight size={14}/></button></div></>:<><div className="gallery-heading"><div><span className="os-kicker">THE STUDIO LIBRARY</span><h1>All photos</h1></div><span>{projects.length} photos</span></div><div className="gallery-grid">{projects.map((p,i)=><button key={`${p.slug}-${i}`} onClick={()=>setSelected(i)} aria-label={`View ${p.name} photo`}><img src={p.image} alt={`${p.name} project preview`}/><span>{p.name}<small>{p.year}</small></span></button>)}</div><p className="gallery-footnote">A closer look at the things we make.</p></>}
   </div>;
 }
 
