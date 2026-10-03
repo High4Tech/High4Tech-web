@@ -158,6 +158,8 @@ export interface ChatConversation {
   visitorKey: string;
   visitorName: string;
   visitorEmail?: string | null;
+  visitorPhone?: string | null;
+  channel?: ('chat' | 'inquiry') | null;
   status: 'bot' | 'waiting' | 'human' | 'closed';
   assignedTo?: (number | null) | User;
   needsAttention?: boolean | null;
@@ -165,6 +167,7 @@ export interface ChatConversation {
   lastMessageAt: string;
   preview?: string | null;
   lastVisitorAt?: string | null;
+  lastInquiryAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -635,6 +638,8 @@ export interface ChatConversationsSelect<T extends boolean = true> {
   visitorKey?: T;
   visitorName?: T;
   visitorEmail?: T;
+  visitorPhone?: T;
+  channel?: T;
   status?: T;
   assignedTo?: T;
   needsAttention?: T;
@@ -642,6 +647,7 @@ export interface ChatConversationsSelect<T extends boolean = true> {
   lastMessageAt?: T;
   preview?: T;
   lastVisitorAt?: T;
+  lastInquiryAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -1,6 +1,7 @@
 import 'server-only';
 import { platformsOf } from './resource-platforms';
 import { cache } from 'react';
+import { cachedPublicContent } from './public-content-cache';
 import { defaultContent,type StudioContent } from './studio-content';
 import { cmsConfigurationIssues } from './cms-runtime';
 
@@ -10,7 +11,7 @@ const strings=(value:unknown)=>Array.isArray(value)?value.map(item=>str((item as
 const videos=(value:unknown)=>Array.isArray(value)?value.map(item=>({title:str((item as Row).title),url:str((item as Row).url)})):[];
 const imageURL=(value:unknown,fallback='')=>value&&typeof value==='object'?str((value as Row).url,fallback):fallback;
 
-export const getStudioContent=cache(async():Promise<StudioContent>=>{
+export const getStudioContent=cache(() => cachedPublicContent(async():Promise<StudioContent>=>{
   if(cmsConfigurationIssues().length)return defaultContent;
   const [{getPayload},{default:config}]=await Promise.all([import('payload'),import('@payload-config')]);
   const payload=await getPayload({config});
@@ -33,4 +34,4 @@ export const getStudioContent=cache(async():Promise<StudioContent>=>{
     ai:ai.map(a=>({name:str(a.name),kind:str(a.kind),text:str(a.text),items:strings(a.items)})),
     knowledge:knowledge.map(k=>({question:str(k.question),answer:str(k.answer),keywords:str(k.keywords),link:str(k.link),label:str(k.label)})),
   };
-});
+}));

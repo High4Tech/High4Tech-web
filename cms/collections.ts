@@ -1,4 +1,5 @@
 import type { Access, CollectionConfig, Field, GlobalConfig } from 'payload';
+import { invalidatePublicContent } from '../lib/public-content-cache';
 import { chatCollections } from './chat-collections';
 import { resourcePlatforms, youtubeID } from '../lib/resource-platforms';
 import { assistantDefaults } from '../lib/assistant-search';
@@ -33,8 +34,12 @@ export const collections:CollectionConfig[]=[
   {slug:'knowledge-documents',labels:{singular:'Knowledge document',plural:'Knowledge documents'},access:{read:authenticated,readVersions:authenticated,create:authenticated,update:authenticated,delete:authenticated},versions:{drafts:true},admin:{useAsTitle:'title',group:'Assistant',description:'Import a data file, review its text, then publish. The assistant quotes published passages only; raw documents are private.',defaultColumns:['title','sourceName','_status','updatedAt']},fields:[{name:'title',type:'text',required:true,maxLength:200},{name:'importFile',type:'ui',admin:{components:{Field:'/cms/components/KnowledgeImport#KnowledgeImport'}}},{name:'sourceName',type:'text',maxLength:200,admin:{readOnly:true,description:'Original filename for your reference. The file itself is not stored.'}},{name:'content',type:'textarea',required:true,maxLength:MAX_KNOWLEDGE_CHARACTERS,admin:{description:'This text is the source of answers. Remove confidential material before publishing.'}},order]},
 ];
 
+for (const collection of collections) if (!collection.slug.startsWith('chat-') && collection.slug !== 'users' && collection.slug !== 'knowledge-documents') { collection.hooks = { ...collection.hooks, afterChange: [...(collection.hooks?.afterChange || []), ({doc}) => { invalidatePublicContent(); return doc; }], afterDelete: [...(collection.hooks?.afterDelete || []), ({doc}) => { invalidatePublicContent(); return doc; }] }; }
+
 export const globals:GlobalConfig[]=[
   {slug:'assistant-settings',label:'Assistant settings',access:{read:()=>true,update:authenticated},admin:{group:'Assistant'},fields:[{name:'enabled',type:'checkbox',defaultValue:true,label:'Enable studio assistant'},{name:'welcomeMessage',type:'textarea',required:true,maxLength:1000,defaultValue:assistantDefaults.welcomeMessage},{name:'fallbackMessage',type:'textarea',required:true,maxLength:1000,defaultValue:assistantDefaults.fallbackMessage}]},
   {slug:'site-settings',access:{read:()=>true,update:authenticated},admin:{group:'Settings'},fields:[text('agencyName'),text('studioName'),media('logo'),{name:'logoPath',type:'text'},media('mark'),{name:'markPath',type:'text'},text('headline'),{name:'introduction',type:'textarea'},text('aboutTitle'),{name:'aboutText',type:'textarea'},{name:'contentSeeded',type:'checkbox',admin:{hidden:true},access:{read:({req})=>Boolean(req.user),update:()=>false}}]},
   {slug:'contact-info',access:{read:()=>true,update:authenticated},admin:{group:'Settings'},fields:[{name:'email',type:'email',required:true},{name:'calLink',type:'text',validate:safeURL},{name:'whatsapp',type:'text',validate:safeURL},{name:'instagram',type:'text',validate:safeURL},{name:'linkedin',type:'text',validate:safeURL},{name:'behance',type:'text',validate:safeURL},text('welcomeSubject'),{name:'welcomeBody',type:'textarea',required:true}]},
 ];
+
+for (const global of globals) global.hooks = { ...global.hooks, afterChange: [...(global.hooks?.afterChange || []), ({doc}) => { invalidatePublicContent(); return doc; }] };

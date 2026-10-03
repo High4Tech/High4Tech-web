@@ -18,7 +18,8 @@
     "assistant:verify": "node --import tsx scripts/verify-assistant.ts",
     "assistant:verify:cms": "node --env-file=.env --import tsx scripts/verify-assistant-cms.ts",
     "resources:verify": "node --import tsx scripts/verify-resources.ts",
-    "chat:verify:cms": "node --env-file=.env --import tsx scripts/verify-chat-cms.ts"
+    "chat:verify:cms": "node --env-file=.env --import tsx scripts/verify-chat-cms.ts",
+    "chat:verify:network": "node --import tsx scripts/verify-chat-network.ts"
   },
   "dependencies": {
     "@fontsource/unbounded": "^5.2.0",

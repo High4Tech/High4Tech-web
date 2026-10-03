@@ -4,10 +4,16 @@ import { getPayload, type Payload, type PayloadRequest } from 'payload';
 import config from '@payload-config';
 import type { ChatConversation, ChatMessage } from './chat-types';
 import type { ChatConversation as ConversationRow } from '../payload-types';
+import type { VisitorProfile } from './chat-profile';
 
 export const CHAT_COOKIE = 'h4t-chat';
 export class ChatError extends Error { constructor(message: string, public status = 400) { super(message); } }
-export const chatJSON = (body: unknown, status = 200, token?: string) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store', ...(token ? { 'Set-Cookie': `${CHAT_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${process.env.NODE_ENV === 'production' ? '; Secure' : ''}` } : {}) } });
+export function chatJSON(body: unknown, status = 200, token?: string, request?: Request) {
+  const text = JSON.stringify(body);
+  const etag = request?.method === 'GET' && status === 200 ? '"' + createHash('sha256').update(text).digest('hex') + '"' : undefined;
+  const headers = { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store', Vary: 'Cookie', ...(etag ? { ETag: etag } : {}), ...(token ? { 'Set-Cookie': `${CHAT_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000${request && new URL(request.url).protocol === 'https:' ? '; Secure' : ''}` } : {}) };
+  return new Response(etag && request?.headers.get('if-none-match') === etag ? null : text, { status: etag && request?.headers.get('if-none-match') === etag ? 304 : status, headers });
+}
 export function tokenFrom(request: Request) {
   const value = request.headers.get('cookie')?.split(';').map(part => part.trim()).find(part => part.startsWith(CHAT_COOKIE + '='))?.slice(CHAT_COOKIE.length + 1);
   return value && /^[a-f0-9]{64}$/.test(value) ? value : undefined;
@@ -19,12 +25,12 @@ export function requireChatOrigin(request: Request) {
   try { if (origin && new URL(origin).host === (request.headers.get('host') || new URL(request.url).host) && ['http:', 'https:'].includes(new URL(origin).protocol)) return; } catch { /* Reject invalid origins. */ }
   throw new ChatError('Use chat on the High4Tech website.', 403);
 }
-export async function chatBody(request: Request): Promise<Record<string, unknown>> {
-  if (Number(request.headers.get('content-length') || 0) > 4096) throw new ChatError('Your message is too long.');
+export async function chatBody(request: Request, limit = 4096): Promise<Record<string, unknown>> {
+  if (Number(request.headers.get('content-length') || 0) > limit) throw new ChatError('Your message is too long.');
   const reader = request.body?.getReader();
   if (!reader) throw new ChatError('Send a valid message.');
   let size = 0, body = ''; const decoder = new TextDecoder();
-  try { while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > 4096) { await reader.cancel(); throw new ChatError('Your message is too long.'); } body += decoder.decode(value, { stream: true }); } } finally { reader.releaseLock(); }
+  try { while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > limit) { await reader.cancel(); throw new ChatError('Your message is too long.'); } body += decoder.decode(value, { stream: true }); } } finally { reader.releaseLock(); }
   try { const value = JSON.parse(body + decoder.decode()); if (value && typeof value === 'object' && !Array.isArray(value)) return value; } catch { /* Invalid JSON. */ }
   throw new ChatError('Send a valid message.');
 }
@@ -42,11 +48,11 @@ export async function chatTransaction<T>(payload: Payload, callback: (req: Parti
 export async function ownConversation(payload: Payload, token: string, req?: Partial<PayloadRequest>) {
   return (await payload.find({ collection: 'chat-conversations', where: { visitorKey: { equals: visitorKey(token) } }, limit: 1, depth: 0, overrideAccess: true, req })).docs[0];
 }
-export async function startConversation(payload: Payload, token: string, req: Partial<PayloadRequest>) {
-  return payload.create({ collection: 'chat-conversations', overrideAccess: true, req, data: { visitorKey: visitorKey(token), visitorName: `Visitor ${token.slice(0, 6).toUpperCase()}`, status: 'bot', lastMessageAt: new Date().toISOString() } });
+export async function startConversation(payload: Payload, token: string, req: Partial<PayloadRequest>, profile: VisitorProfile) {
+  return payload.create({ collection: 'chat-conversations', overrideAccess: true, req, data: { visitorKey: visitorKey(token), visitorName: profile.name, visitorEmail: profile.email, visitorPhone: profile.phone, channel: 'chat', status: 'bot', lastMessageAt: new Date().toISOString() } });
 }
 export function publicConversation(row: ConversationRow): ChatConversation {
-  return { id: row.id, visitorName: row.visitorName, visitorEmail: row.visitorEmail, status: row.status, needsAttention: Boolean(row.needsAttention), handoffAt: row.handoffAt, lastMessageAt: row.lastMessageAt, preview: row.preview, assignedTo: typeof row.assignedTo === 'number' ? row.assignedTo : row.assignedTo?.id };
+  return { id: row.id, visitorName: row.visitorName, visitorEmail: row.visitorEmail, visitorPhone: row.visitorPhone, channel: row.channel, status: row.status, needsAttention: Boolean(row.needsAttention), handoffAt: row.handoffAt, lastMessageAt: row.lastMessageAt, preview: row.preview, assignedTo: typeof row.assignedTo === 'number' ? row.assignedTo : row.assignedTo?.id };
 }
 export async function chatSnapshot(payload: Payload, row: ConversationRow | undefined, before?: number) {
   if (!row) return { mode: 'cms' as const, conversation: null, messages: [] };

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import { parseVisitorProfile } from '../lib/chat-profile';
+import { startChatPolling } from '../lib/chat-client';
+import { cachedPublicContent, invalidatePublicContent } from '../lib/public-content-cache';
+const wait=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
+assert.equal(parseVisitorProfile({name:'Test',email:'no',phone:'123'}),null);
+assert.deepEqual(parseVisitorProfile({name:' Test Visitor ',email:'TEST@example.com',phone:'+92 (325) 613-8361'}),{name:'Test Visitor',email:'test@example.com',phone:'+923256138361'});
+let calls=0;const load=async()=>{calls++;await wait(20);return 'published';};
+assert.deepEqual(await Promise.all([cachedPublicContent(load),cachedPublicContent(load)]),['published','published']);assert.equal(calls,1);
+invalidatePublicContent();await cachedPublicContent(load);assert.equal(calls,2);
+invalidatePublicContent();await assert.rejects(()=>cachedPublicContent(async()=>{throw Error('offline');}));assert.equal(await cachedPublicContent(load),'published','A failed fetch must not poison the cache');
+const browser=new EventTarget(),page=new EventTarget();Object.assign(page,{hidden:false});
+Object.defineProperty(globalThis,'window',{value:browser,configurable:true});Object.defineProperty(globalThis,'document',{value:page,configurable:true});Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+let active=0,max=0,finished=0;
+const stop=startChatPolling(async()=>{active++;max=Math.max(max,active);await wait(40);finished++;active--;},5);
+await wait(100);stop();await wait(45);assert.equal(max,1,'A slow response must never be superseded by overlapping polling');assert.ok(finished>=2,'Slow successful responses must be delivered');const previous=finished;await wait(25);assert.equal(finished,previous,'Stopped polling must not restart');
+Object.assign(page,{hidden:true});let hiddenCalls=0;const resume=startChatPolling(async()=>{hiddenCalls++;},5);await wait(15);assert.equal(hiddenCalls,0);Object.assign(page,{hidden:false});page.dispatchEvent(new Event('visibilitychange'));await wait(2);assert.equal(hiddenCalls,1);resume();
+console.log('PASS: required profile validation, public cache coalescing/invalidation/recovery, slow-network polling without overlap, hidden-tab pause and immediate resume.');

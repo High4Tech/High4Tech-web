@@ -64,3 +64,5 @@ Production preview: `npm run build`, then `npm run start`. Preview metadata curr
 ## References and assets
 
 `sources/` preserves the approved visual direction, reference websites, repository links, originals and asset provenance. Brand assets are under `public/brand/`. Display font: locally packaged Unbounded (OFL-1.1); interface and form text use native Apple/system fonts. See `sources/payload-cms.md` for the CMS editing map.
+
+Visitor chat now requires name, phone and email and remembers the browser profile/history. Mail project briefs can be sent directly to the live inbox. See [live support setup](sources/live-support.md) for private browser memory, caching, network recovery, and the shared hosted database needed for Vercel visitors.

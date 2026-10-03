@@ -8,12 +8,12 @@ export async function GET(request: Request) {
   try {
     const payload = await chatPayload(); await chatStaff(request, payload);
     const query = new URL(request.url).searchParams, id = Number(query.get('id'));
-    if (id) { const row = await payload.findByID({ collection: 'chat-conversations', id, depth: 0 }); return chatJSON(await chatSnapshot(payload, row, Number(query.get('before')) || undefined)); }
+    if (id) { const row = await payload.findByID({ collection: 'chat-conversations', id, depth: 0 }); return chatJSON(await chatSnapshot(payload, row, Number(query.get('before')) || undefined), 200, undefined, request); }
     const where: Where = {}, filter = query.get('filter'), search = query.get('search')?.slice(0, 100);
     if (filter === 'attention') where.needsAttention = { equals: true }; else if (['bot', 'waiting', 'human', 'closed'].includes(filter || '')) where.status = { equals: filter };
-    if (search) where.or = [{ visitorName: { contains: search } }, { visitorEmail: { contains: search } }, { preview: { contains: search } }];
+    if (search) where.or = [{ visitorName: { contains: search } }, { visitorEmail: { contains: search } }, { visitorPhone: { contains: search } }, { preview: { contains: search } }];
     const [conversations, attention, alerts] = await Promise.all([payload.find({ collection: 'chat-conversations', where, sort: '-lastMessageAt', depth: 0, limit: 30, page: Math.max(1, Math.min(10000, Number(query.get('page')) || 1)) }), payload.count({ collection: 'chat-conversations', where: { needsAttention: { equals: true } } }), payload.find({ collection: 'chat-conversations', where: { needsAttention: { equals: true } }, sort: '-lastMessageAt', depth: 0, limit: 8 })]);
-    return chatJSON({ conversations: conversations.docs.map(publicConversation), total: conversations.totalDocs, hasNextPage: conversations.hasNextPage, attention: attention.totalDocs, alerts: alerts.docs.map(publicConversation) });
+    return chatJSON({ storage: /^(libsql|https):\/\//.test(process.env.DATABASE_URL || '') ? 'shared' : 'local', conversations: conversations.docs.map(publicConversation), total: conversations.totalDocs, hasNextPage: conversations.hasNextPage, attention: attention.totalDocs, alerts: alerts.docs.map(publicConversation) }, 200, undefined, request);
   } catch (error) { return chatFailure(error); }
 }
 export async function POST(request: Request) {
