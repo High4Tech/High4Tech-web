@@ -1,0 +1,19 @@
+/* Window geometry belongs to the desktop, independent of each app's layout. */
+.studio-os{--studio-menu-height:30px}
+.studio-os .os-menubar{height:var(--studio-menu-height)}
+.studio-os .os-desktop{inset:var(--studio-menu-height) 0 0;isolation:isolate;z-index:1}
+.studio-os .os-window.is-maximized{position:absolute;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;border-radius:0;border:0;box-shadow:none}
+.studio-os .os-window.is-positioned:not(.is-maximized){transform:translate(var(--window-x),var(--window-y))!important}
+.studio-os .os-window.is-positioned:not(.window-minimize):not(.window-restore):not(.window-zoom){animation:none}
+.studio-os .os-window.is-maximized .window-scroll{padding-bottom:104px;scroll-padding-bottom:104px}
+.studio-os .app-ai.is-maximized .window-scroll{background:#09090b}
+.studio-os .dock-stage{z-index:1000}
+.studio-os.has-maximized-window .tools-loop{visibility:hidden;pointer-events:none}
+.studio-os.has-maximized-window .dock-stage .clients-loop{visibility:hidden;pointer-events:none}
+.studio-os .window-titlebar{touch-action:none;cursor:grab}
+.studio-os .window-titlebar:active{cursor:grabbing}
+.studio-os .window-titlebar button{cursor:pointer}
+.window-drag-corner{position:absolute;width:16px;height:16px;z-index:20;touch-action:none;cursor:grab}
+.window-drag-corner:active{cursor:grabbing}
+.corner-top-left{top:0;left:0}.corner-top-right{top:0;right:0}.corner-bottom-left{bottom:0;left:0}.corner-bottom-right{bottom:0;right:0}
+@media(max-width:700px){.studio-os .os-window.is-maximized .window-scroll{padding-bottom:88px;scroll-padding-bottom:88px}}

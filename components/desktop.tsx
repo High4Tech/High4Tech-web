@@ -31,7 +31,7 @@ const apps = [
   {id:'pricing',label:'Pricing',path:'/pricing',icon:DollarSign,color:'pricing'},
   {id:'play',label:'Play',path:'/play',icon:Gamepad2,color:'play'},
 ];
-type StudioWindow={id:string;path:string;x:number;y:number;z:number;minimized:boolean;maximized:boolean;motion?:'minimize'|'restore'|'zoom'};
+type StudioWindow={id:string;path:string;x:number;y:number;z:number;minimized:boolean;maximized:boolean;positioned?:boolean;motion?:'minimize'|'restore'|'zoom'};
 type OpenApp=(path:string)=>void;
 function appFor(path:string){if(path.startsWith('/blog'))path=path.replace('/blog','/newsroom');return apps.find(a=>path===a.path||(a.path!=='/'&&path.startsWith(a.path+'/')))||{id:'info',label:'Read me',path,icon:NotebookPen,color:'cream'};}
 function createWindow(path:string,z:number,index=0):StudioWindow {return {id:`window-${z}`,path,x:index*24,y:index*20,z,minimized:false,maximized:false};}
@@ -62,14 +62,14 @@ export function DesktopShell(){
   function zoom(id:string){setWindows(current=>current.map(w=>w.id===id?{...w,maximized:!w.maximized,motion:'zoom',z:++topZ.current}:w));}
   function showDesktop(){setWindows(current=>current.map(w=>({...w,minimized:true})));setMenu('');route('/desktop');}
   const results=[...apps.map(a=>({name:a.label,path:a.path,type:'Application'})),...projects.map(p=>({name:p.name,path:'/projects/'+p.slug,type:'Project'})),...articles.map(a=>({name:a.title,path:'/newsroom/'+a.slug,type:'Newsroom'}))].filter(r=>(r.name+' '+r.type).toLowerCase().includes(query.toLowerCase()));
-  return <div className={`studio-os theme-${theme}`}>
+  return <div className={`studio-os theme-${theme} ${windows.some(w=>w.maximized&&!w.minimized)?'has-maximized-window':''}`}>
     <div className="os-wallpaper" aria-hidden="true"><div className="wallpaper-side-glow left"/><div className="wallpaper-side-glow right"/><div className="wallpaper-fold one"/><div className="wallpaper-fold two"/><div className="wallpaper-glass-logo"><img src={settings.logo} alt=""/></div></div>
     <header className="os-menubar"><button onClick={()=>open("/")} className="os-system-mark" aria-label="Open Home"><img src={settings.mark} alt=""/></button><strong>{settings.agencyName} OS</strong><div className="os-menus">{['File','View','Help'].map(label=><div className="os-menu-wrap" key={label}><button aria-expanded={menu===label} onClick={()=>setMenu(menu===label?'':label)}>{label}</button>{menu===label&&<div className="os-menu-popover">{label==='File'?apps.slice(0,6).map(a=><button key={a.id} onClick={()=>open(a.path)}><a.icon size={14}/>{a.label}<ChevronRight size={12}/></button>):label==='View'?<><button onClick={showDesktop}>Show desktop</button><button onClick={()=>{setSpotlight(true);setMenu('');}}>Search the studio <span>⌘ K</span></button>{active&&<button onClick={()=>{zoom(active.id);setMenu('');}}>Toggle full window</button>}</>:<><button onClick={()=>{window.dispatchEvent(new Event("h4t:tour"));setMenu("");}}>Reset feature tips</button><button onClick={()=>open('/assistant')}>Ask the assistant</button><button onClick={()=>open('/contact')}>Contact the studio</button><a href={socials.whatsapp} target="_blank" rel="noopener noreferrer"><BrandIcon name="whatsapp"/>WhatsApp <ArrowUpRight size={13}/></a></>}</div>}</div>)}</div><div className="os-menu-right"><button className="menubar-pricing" data-tip="pricing" aria-label="Open Pricing" onClick={()=>open('/pricing')}><DollarSign size={15}/></button><button className="theme-toggle" data-tip="theme" aria-label={`Switch to ${theme==='light'?'dark':'light'} mode`} aria-pressed={theme==='dark'} onClick={()=>setTheme(theme==='light'?'dark':'light')}>{theme==='light'?<Moon size={14}/>:<Sun size={14}/>}</button><SoundToggle/><button aria-label="Search the studio" onClick={()=>setSpotlight(true)}><Search size={14}/></button><Wifi size={15}/><time suppressHydrationWarning>{clock}</time><button onClick={()=>open("/")} className="os-home">Home</button></div></header>
     {menu&&<button className="os-menu-dismiss" aria-label="Close menu" onClick={()=>setMenu('')}/>}
     <main id="main" className="os-desktop" aria-label="High4Tech desktop">
       <StudioLivePanel open={open}/>
       <div className="desktop-shortcuts">{[apps[0],apps[1],apps[2],apps[4],apps[3]].map(a=><button className="desktop-shortcut" data-tip={a.id} key={a.id} onClick={()=>open(a.path)}><span className={`desktop-folder ${a.color}`}>{<a.icon size={31} strokeWidth={1.5}/>}</span><span>{a.label}</span></button>)}</div>
-      {windows.map(w=><AppWindow key={w.id} window={w} active={active?.id===w.id} sidebar={sidebar} setSidebar={setSidebar} onFocus={()=>focus(w)} onClose={()=>close(w.id)} onMinimize={()=>minimize(w.id)} onZoom={()=>zoom(w.id)} onMotionEnd={()=>setWindows(current=>current.map(item=>item.id===w.id?{...item,minimized:item.motion==='minimize'?true:item.minimized,motion:undefined}:item))} onMove={(x,y)=>setWindows(current=>current.map(item=>item.id===w.id?{...item,x,y}:item))} open={path=>navigateWindow(w.id,path)}/>)}
+      {windows.map(w=><AppWindow key={w.id} window={w} active={active?.id===w.id} sidebar={sidebar} setSidebar={setSidebar} onFocus={()=>focus(w)} onClose={()=>close(w.id)} onMinimize={()=>minimize(w.id)} onZoom={()=>zoom(w.id)} onRestoreDrag={(x,y)=>setWindows(current=>current.map(item=>item.id===w.id?{...item,maximized:false,motion:undefined,positioned:true,x,y,z:++topZ.current}:item))} onMotionEnd={()=>setWindows(current=>current.map(item=>item.id===w.id?{...item,minimized:item.motion==='minimize'?true:item.minimized,motion:undefined}:item))} onMove={(x,y)=>setWindows(current=>current.map(item=>item.id===w.id?{...item,positioned:true,x,y}:item))} open={path=>navigateWindow(w.id,path)}/>)}
     </main>
     <aside className="minimized-tray" aria-label="Minimized windows">{windows.filter(w=>w.minimized).map(w=>{const app=appFor(w.path);return <button key={w.id} data-sound="open" aria-label={`Restore ${app.label}`} onClick={()=>{setWindows(current=>current.map(item=>item.id===w.id?{...item,minimized:false,motion:'restore',z:++topZ.current}:item));route(w.path);}}><span className="mini-window-preview"><i/><app.icon size={24} strokeWidth={1.25}/><b>{app.label}</b></span><small>{app.label}</small></button>;})}</aside>
     <PricingReminder open={open} onPricing={!!active&&appFor(active.path).id==='pricing'}/>
@@ -93,16 +93,46 @@ function StudioLivePanel({open}:{open:OpenApp}){
   </aside>;
 }
 
-function AppWindow({window:w,active,sidebar,setSidebar,onFocus,onClose,onMinimize,onZoom,onMove,onMotionEnd,open}:{window:StudioWindow;active:boolean;sidebar:boolean;setSidebar:(v:boolean)=>void;onFocus:()=>void;onClose:()=>void;onMinimize:()=>void;onZoom:()=>void;onMotionEnd:()=>void;onMove:(x:number,y:number)=>void;open:OpenApp}){
+function AppWindow({window:w,active,sidebar,setSidebar,onFocus,onClose,onMinimize,onZoom,onMove,onRestoreDrag,onMotionEnd,open}:{window:StudioWindow;active:boolean;sidebar:boolean;setSidebar:(v:boolean)=>void;onFocus:()=>void;onClose:()=>void;onMinimize:()=>void;onZoom:()=>void;onRestoreDrag:(x:number,y:number)=>void;onMotionEnd:()=>void;onMove:(x:number,y:number)=>void;open:OpenApp}){
   const {projects,services,articles,settings,socials}=useStudioContent();
-  const drag=useRef<{x:number;y:number;bx:number;by:number}|null>(null);const app=appFor(w.path);
+  const frame=useRef<HTMLElement>(null);
+  const normal=useRef<{left:number;top:number;width:number;height:number}|null>(null);
+  const drag=useRef<{x:number;y:number;bx:number;by:number;restore:boolean;anchorX:number;anchorY:number}|null>(null);const app=appFor(w.path);
+  useEffect(()=>{
+    const element=frame.current;if(!element||w.maximized)return;
+    const measure=()=>{normal.current={left:element.offsetLeft,top:element.offsetTop,width:element.offsetWidth,height:element.offsetHeight};};
+    measure();const observer=new ResizeObserver(measure);observer.observe(element);return()=>observer.disconnect();
+  },[w.maximized,app.id]);
+  function startDrag(event:React.PointerEvent<HTMLElement>){
+    if(event.button!==0||(event.target as HTMLElement).closest('button'))return;
+    const bounds=normal.current;if(!bounds)return;
+    const corner=event.currentTarget.dataset.windowCorner;
+    const current=frame.current!.getBoundingClientRect();
+    const anchorX=corner?(corner.includes('left')?12:bounds.width-12):Math.max(30,Math.min(bounds.width-30,(event.clientX-current.left)/current.width*bounds.width));
+    const anchorY=corner?(corner.includes('bottom')?bounds.height-12:12):event.clientY-current.top;
+    drag.current={x:event.clientX,y:event.clientY,bx:w.x,by:w.y,restore:w.maximized,anchorX,anchorY};
+    event.currentTarget.setPointerCapture(event.pointerId);event.preventDefault();
+  }
+  function moveDrag(event:React.PointerEvent<HTMLElement>){
+    const moving=drag.current,bounds=normal.current;if(!moving||!bounds)return;
+    const desktopTop=frame.current!.parentElement!.getBoundingClientRect().top;
+    const clamp=(x:number,y:number)=>({x:Math.max(96-bounds.width-bounds.left,Math.min(window.innerWidth-96-bounds.left,x)),y:Math.max(-bounds.top,Math.min(window.innerHeight-desktopTop-46-bounds.top,y))});
+    if(moving.restore){
+      if(Math.hypot(event.clientX-moving.x,event.clientY-moving.y)<5)return;
+      const position=clamp(event.clientX-moving.anchorX-bounds.left,event.clientY-moving.anchorY-desktopTop-bounds.top);
+      moving.restore=false;moving.x=event.clientX;moving.y=event.clientY;moving.bx=position.x;moving.by=position.y;
+      onRestoreDrag(position.x,position.y);
+    }else{const position=clamp(moving.bx+event.clientX-moving.x,moving.by+event.clientY-moving.y);onMove(position.x,position.y);}
+  }
+  const endDrag=()=>{drag.current=null;};
   const [search,setSearch]=useState('');const [list,setList]=useState(false);
   useEffect(()=>setSearch(''),[w.path]);
   const compact=['assistant','calendar','safari','contact','ai'].includes(app.id);
   const label=w.path.split('/').length>2?(projects.find(p=>w.path.endsWith(p.slug))?.name||services.find(s=>w.path.endsWith(s.slug))?.short||articles.find(a=>w.path.endsWith(a.slug))?.title||app.label):app.label;
-  return <section className={`os-window ${active?'is-active':''} ${w.minimized?'is-minimized':''} ${w.motion?'window-'+w.motion:''} ${w.maximized?'is-maximized':''} ${compact?'compact-window':''} app-${app.id} ${sidebar?'sidebar-open':''}`} style={{'--window-x':`${w.x}px`,'--window-y':`${w.y}px`,zIndex:w.z} as React.CSSProperties} onAnimationEnd={e=>{if(e.target===e.currentTarget)onMotionEnd();}} aria-label={`${app.label} window`} onPointerDown={onFocus}>
-    <header className="window-titlebar" data-tip="windows" onDoubleClick={e=>{if(!(e.target as HTMLElement).closest('button'))onZoom();}} onPointerDown={e=>{if((e.target as HTMLElement).closest('button')||w.maximized||window.innerWidth<=800)return;drag.current={x:e.clientX,y:e.clientY,bx:w.x,by:w.y};e.currentTarget.setPointerCapture(e.pointerId);}} onPointerMove={e=>{if(!drag.current)return;onMove(Math.max(-window.innerWidth*.3,Math.min(window.innerWidth*.3,drag.current.bx+e.clientX-drag.current.x)),Math.max(-35,Math.min(window.innerHeight-180,drag.current.by+e.clientY-drag.current.y)));}} onPointerUp={()=>{drag.current=null;}} onPointerCancel={()=>{drag.current=null;}}>
-      <div className="traffic-lights"><button className="close" aria-label={`Close ${app.label}`} onClick={onClose}><X size={9}/></button><button className="minimize" aria-label={`Minimize ${app.label}`} onClick={onMinimize}><Minus size={9}/></button><button className="maximize" aria-label={`Maximize ${app.label}`} onClick={onZoom}><Maximize2 size={8}/></button></div><span><app.icon size={13}/>{label}</span><button className="window-sidebar-toggle" aria-label="Toggle sidebar" onClick={()=>setSidebar(!sidebar)}><PanelLeft size={15}/></button>
+  return <section ref={frame} className={`os-window ${active?'is-active':''} ${w.minimized?'is-minimized':''} ${w.motion?'window-'+w.motion:''} ${w.maximized?'is-maximized':''} ${w.positioned?'is-positioned':''} ${compact?'compact-window':''} app-${app.id} ${sidebar?'sidebar-open':''}`} style={{'--window-x':`${w.x}px`,'--window-y':`${w.y}px`,zIndex:w.z} as React.CSSProperties} onAnimationEnd={e=>{if(e.target===e.currentTarget)onMotionEnd();}} aria-label={`${app.label} window`} onPointerDown={onFocus} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag} onLostPointerCapture={endDrag}>
+    {(['top-left','top-right','bottom-left','bottom-right'] as const).map(corner=><span key={corner} aria-hidden="true" className={`window-drag-corner corner-${corner}`} data-window-corner={corner} onPointerDown={startDrag}/>)}
+    <header className="window-titlebar" data-tip="windows" onDoubleClick={e=>{if(!(e.target as HTMLElement).closest('button'))onZoom();}} onPointerDown={startDrag}>
+      <div className="traffic-lights"><button className="close" aria-label={`Close ${app.label}`} onClick={onClose}><X size={9}/></button><button className="minimize" aria-label={`Minimize ${app.label}`} onClick={onMinimize}><Minus size={9}/></button><button className="maximize" aria-label={`${w.maximized?'Restore':'Maximize'} ${app.label}`} onClick={onZoom}><Maximize2 size={8}/></button></div><span><app.icon size={13}/>{label}</span><button className="window-sidebar-toggle" aria-label="Toggle sidebar" onClick={()=>setSidebar(!sidebar)}><PanelLeft size={15}/></button>
     </header>
     <div className="window-layout">{!compact&&<aside className="finder-sidebar"><span className="sidebar-label">FAVORITES</span>{apps.filter(a=>['home','work','services','studio','journal','ai','pricing'].includes(a.id)).sort((a,b)=>a.id==='home'?-1:b.id==='home'?1:0).map(a=><button key={a.id} data-tip={a.id} className={app.id===a.id?'selected':''} onClick={()=>open(a.path)}><a.icon size={16}/>{a.label}{a.id==='work'&&<small>{projects.length}</small>}</button>)}<a href={socials.whatsapp} target="_blank" rel="noopener noreferrer"><BrandIcon name="whatsapp"/>WhatsApp<ArrowUpRight size={11}/></a><div className="sidebar-brand"><img src={settings.logo} alt={settings.agencyName}/></div></aside>}
       <div className="window-main">{!compact&&<div className="finder-toolbar"><button aria-label="Back to folder" disabled={w.path===app.path} onClick={()=>open(app.path)}><ArrowLeft size={17}/></button><span className="finder-breadcrumb">High4Tech <ChevronRight size={12}/><strong>{app.label}</strong>{w.path!==app.path&&<><ChevronRight size={12}/><span>{label}</span></>}</span>{['work','tools','journal'].includes(app.id)&&w.path===app.path&&<><label className="finder-search"><Search size={13}/><input aria-label={`Search ${app.label}`} value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search"/></label>{app.id==='work'&&<button aria-label={list?'Show grid view':'Show list view'} onClick={()=>setList(!list)}>{list?<Grid2X2 size={17}/>:<List size={17}/>}</button>}</>}</div>}

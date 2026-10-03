@@ -9,6 +9,7 @@ import '../forms.css';
 import '../interactions.css';
 import '../assistant.css';
 import '../ai-zone.css';
+import '../windows.css';
 import { SiteShell } from '@/components/site-shell';
 import { ContentProvider } from '@/components/content-provider';
 import { getStudioContent } from '@/lib/cms-content';
