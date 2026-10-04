@@ -14,6 +14,9 @@ const publicContent=async()=>{
   assert.equal(response.status,200);
   return response.json();
 };
+// CLI edits run in another process. The public cache refreshes within 15s;
+// same-process dashboard edits invalidate immediately.
+async function untilContent(check:(content:any)=>boolean){for(let i=0;i<20;i++){const content=await publicContent();if(check(content))return content;await new Promise(resolve=>setTimeout(resolve,850));}throw new Error('Published content did not refresh within its cache lifetime.');}
 try {
   const article=await payload.create({collection:'newsroom',draft:true,data:{title:'CMS verification draft',slug,category:'Studio',read:'1 min read',summary:'Temporary verification article.',paragraphs:[{value:'This temporary content checks the publishing workflow.'}],artwork:'type'}});
   articleID=article.id;
@@ -21,7 +24,7 @@ try {
   const draftRead=await fetch(`${origin}/api/newsroom/${articleID}`);
   assert.equal(draftRead.status,404,'Anonymous readers must not access drafts');
   await payload.update({collection:'newsroom',id:articleID,data:{title:'CMS verification published',_status:'published'}});
-  assert.equal((await publicContent()).articles.find((a:{slug:string})=>a.slug===slug)?.title,'CMS verification published','Publish must reach the website');
+  await untilContent(content=>content.articles.find((a:{slug:string})=>a.slug===slug)?.title==='CMS verification published');
   await payload.update({collection:'newsroom',id:articleID,draft:true,data:{title:'Unpublished revision',_status:'draft'}});
   assert.equal((await publicContent()).articles.find((a:{slug:string})=>a.slug===slug)?.title,'CMS verification published','An unpublished revision must preserve the live version');
   for(const [url,method,body] of [

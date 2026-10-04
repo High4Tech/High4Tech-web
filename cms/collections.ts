@@ -1,28 +1,32 @@
-import type { Access, CollectionConfig, Field, GlobalConfig } from 'payload';
+import { APIError, type Access, type CollectionConfig, type Field, type GlobalConfig } from 'payload';
+import { securityCollections } from './security-collections';
+import { imageMimeTypes, validateImage } from './media-security';
+import { safeExternalURL, safeLocalPath } from '../lib/security-policy';
 import { invalidatePublicContent } from '../lib/public-content-cache';
 import { chatCollections } from './chat-collections';
 import { resourcePlatforms, youtubeID } from '../lib/resource-platforms';
 import { assistantDefaults } from '../lib/assistant-search';
 import { MAX_KNOWLEDGE_CHARACTERS } from '../lib/knowledge-files';
 
-const authenticated:Access=({req})=>Boolean(req.user);
-const published:Access=({req})=>req.user?true:{_status:{equals:'published'}};
+const authenticated:Access=({req})=>req.user?.collection === 'users';
+const published:Access=({req})=>req.user?.collection === 'users'?true:{_status:{equals:'published'}};
 const access={read:published,readVersions:authenticated,create:authenticated,update:authenticated,delete:authenticated};
 const text=(name:string,required=true):Field=>({name,type:'text',required});
 const list=(name:string):Field=>({name,type:'array',fields:[text('value')],admin:{description:'Add one item per row.'}});
 const slug:Field={name:'slug',type:'text',required:true,unique:true,index:true,validate:(value:unknown)=>typeof value==='string'&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)||'Use lowercase words separated by hyphens.'};
 const order:Field={name:'sortOrder',type:'number',defaultValue:0,admin:{position:'sidebar'}};
 const media=(name:string):Field=>({name,type:'upload',relationTo:'media'});
-const imagePath:Field={name:'imagePath',type:'text',admin:{description:'Optional existing local image path. An uploaded image takes priority.'}};
+const imagePath:Field={name:'imagePath',type:'text',validate:(v:unknown)=>safeLocalPath(v)||'Use a local image path.',admin:{description:'Optional existing local image path. An uploaded image takes priority.'}};
 const make=(name:string,fields:Field[],title='title'):CollectionConfig=>({slug:name,access,versions:{drafts:true},admin:{useAsTitle:title,group:'Website content',defaultColumns:[title,'_status','updatedAt']},fields:[...fields,order]});
-const safeURL=(value:unknown)=>!value||typeof value==='string'&&/^https?:\/\//i.test(value)||'Use a full https:// URL.';
+const safeURL=(value:unknown)=>safeExternalURL(value)||'Use a full HTTP(S) URL without credentials or spaces.';
 
 const videos:Field={name:'videos',type:'array',label:'YouTube videos',admin:{description:'Optional project walkthroughs, service demos, or tool tutorials. Paste a YouTube URL, not embed HTML.'},fields:[text('title',false),{name:'url',type:'text',required:true,validate:(v:unknown)=>Boolean(youtubeID(v))||'Use a valid HTTPS YouTube watch, shorts, embed, or youtu.be URL.'}]};
 
 export const collections:CollectionConfig[]=[
   ...chatCollections,
-  {slug:'users',auth:true,access:{read:authenticated,create:authenticated,update:authenticated,delete:authenticated},admin:{useAsTitle:'email',group:'Administration'},fields:[text('name',false)]},
-  {slug:'media',access:{read:()=>true,create:authenticated,update:authenticated,delete:authenticated},admin:{group:'Website content'},upload:{staticDir:'media',mimeTypes:['image/*'],imageSizes:[{name:'thumbnail',width:400,height:300,fit:'inside'}],adminThumbnail:'thumbnail'},fields:[text('alt')]},
+  ...securityCollections,
+  {slug:'users',auth:{maxLoginAttempts:5,lockTime:15*60*1000,tokenExpiration:7200,removeTokenFromResponses:true,cookies:{sameSite:'Lax',secure:process.env.SITE_URL?.startsWith('https://')}},access:{read:authenticated,create:authenticated,update:authenticated,delete:authenticated},hooks:{beforeOperation:[({req,operation})=>{if(operation==='create'&&req.payloadAPI!=='local'&&!req.user)throw new APIError('An administrator must create accounts. Run npm run cms:admin privately to create the first administrator.',403);}],beforeValidate:[({data})=>{if(data?.password&&(typeof data.password!=='string'||data.password.length<12||data.password.length>128))throw new APIError('Use a password between 12 and 128 characters.',400);return data;}]},admin:{useAsTitle:'email',group:'Administration'},fields:[text('name',false)]},
+  {slug:'media',access:{read:()=>true,create:authenticated,update:authenticated,delete:authenticated},hooks:{beforeOperation:[validateImage]},admin:{group:'Website content'},upload:{staticDir:'media',mimeTypes:imageMimeTypes,pasteURL:false,formatOptions:{format:'webp',options:{quality:90}},imageSizes:[{name:'thumbnail',width:400,height:300,fit:'inside'}],adminThumbnail:'thumbnail'},fields:[text('alt')]},
   make('services',[text('title'),slug,text('short'),{name:'description',type:'textarea',required:true},list('tags'),list('deliverables'),videos,{name:'symbol',type:'select',options:['flower','orbit','spark'],defaultValue:'flower'},{name:'draft',type:'checkbox',label:'Show scope preview note'}]),
   make('projects',[text('name'),slug,text('type'),text('category'),text('year'),media('image'),imagePath,{name:'gallery',type:'array',fields:[media('image'),imagePath,text('alt',false)]},text('color',false),{name:'description',type:'textarea',required:true},{name:'intro',type:'textarea',required:true},videos], 'name'),
   make('newsroom',[text('title'),slug,text('category'),text('read'),{name:'summary',type:'textarea',required:true},{name:'paragraphs',type:'array',minRows:1,fields:[{name:'value',type:'textarea',required:true}]},{name:'artwork',type:'select',options:['type','orbit','grid'],defaultValue:'type'},media('image'),{name:'publishedAt',type:'date'}]),
@@ -30,15 +34,15 @@ export const collections:CollectionConfig[]=[
   make('faqs',[text('question'),{name:'answer',type:'textarea',required:true}],'question'),
   make('pricing',[text('title'),text('price'),text('unit'),text('label'),{name:'intro',type:'textarea',required:true},list('items'),{name:'sample',type:'checkbox',defaultValue:true,label:'Illustrative price'}]),
   make('ai-services',[text('name'),{name:'kind',type:'select',options:['workflow','assistant','integration'],required:true},{name:'text',type:'textarea',required:true},list('items')],'name'),
-  {...make('chatbot-data',[text('question'),{name:'keywords',type:'text',required:true,admin:{description:'Comma-separated words or phrases, e.g. pricing, project cost. Avoid generic words such as “what”.'}},{name:'answer',type:'textarea',required:true,maxLength:6000},{name:'link',type:'text',validate:(v:unknown)=>!v||typeof v==='string'&&/^\/(?!\/)/.test(v)||'Use a local path such as /services.'},text('label',false)],'question'),labels:{singular:'Approved answer',plural:'Approved answers'},admin:{useAsTitle:'question',group:'Assistant',description:'Published answers are available to visitors. Drafts and unpublished revisions stay private.',defaultColumns:['question','_status','updatedAt']}},
+  {...make('chatbot-data',[text('question'),{name:'keywords',type:'text',required:true,admin:{description:'Comma-separated words or phrases, e.g. pricing, project cost. Avoid generic words such as “what”.'}},{name:'answer',type:'textarea',required:true,maxLength:6000},{name:'link',type:'text',validate:(v:unknown)=>safeLocalPath(v)||'Use a local path such as /services.'},text('label',false)],'question'),labels:{singular:'Approved answer',plural:'Approved answers'},admin:{useAsTitle:'question',group:'Assistant',description:'Published answers are available to visitors. Drafts and unpublished revisions stay private.',defaultColumns:['question','_status','updatedAt']}},
   {slug:'knowledge-documents',labels:{singular:'Knowledge document',plural:'Knowledge documents'},access:{read:authenticated,readVersions:authenticated,create:authenticated,update:authenticated,delete:authenticated},versions:{drafts:true},admin:{useAsTitle:'title',group:'Assistant',description:'Import a data file, review its text, then publish. The assistant quotes published passages only; raw documents are private.',defaultColumns:['title','sourceName','_status','updatedAt']},fields:[{name:'title',type:'text',required:true,maxLength:200},{name:'importFile',type:'ui',admin:{components:{Field:'/cms/components/KnowledgeImport#KnowledgeImport'}}},{name:'sourceName',type:'text',maxLength:200,admin:{readOnly:true,description:'Original filename for your reference. The file itself is not stored.'}},{name:'content',type:'textarea',required:true,maxLength:MAX_KNOWLEDGE_CHARACTERS,admin:{description:'This text is the source of answers. Remove confidential material before publishing.'}},order]},
 ];
 
-for (const collection of collections) if (!collection.slug.startsWith('chat-') && collection.slug !== 'users' && collection.slug !== 'knowledge-documents') { collection.hooks = { ...collection.hooks, afterChange: [...(collection.hooks?.afterChange || []), ({doc}) => { invalidatePublicContent(); return doc; }], afterDelete: [...(collection.hooks?.afterDelete || []), ({doc}) => { invalidatePublicContent(); return doc; }] }; }
+for (const collection of collections) if (!collection.slug.startsWith('chat-') && !collection.slug.startsWith('security-') && collection.slug !== 'users' && collection.slug !== 'knowledge-documents') { collection.hooks = { ...collection.hooks, afterChange: [...(collection.hooks?.afterChange || []), ({doc}) => { invalidatePublicContent(); return doc; }], afterDelete: [...(collection.hooks?.afterDelete || []), ({doc}) => { invalidatePublicContent(); return doc; }] }; }
 
 export const globals:GlobalConfig[]=[
   {slug:'assistant-settings',label:'Assistant settings',access:{read:()=>true,update:authenticated},admin:{group:'Assistant'},fields:[{name:'enabled',type:'checkbox',defaultValue:true,label:'Enable studio assistant'},{name:'welcomeMessage',type:'textarea',required:true,maxLength:1000,defaultValue:assistantDefaults.welcomeMessage},{name:'fallbackMessage',type:'textarea',required:true,maxLength:1000,defaultValue:assistantDefaults.fallbackMessage}]},
-  {slug:'site-settings',access:{read:()=>true,update:authenticated},admin:{group:'Settings'},fields:[text('agencyName'),text('studioName'),media('logo'),{name:'logoPath',type:'text'},media('mark'),{name:'markPath',type:'text'},text('headline'),{name:'introduction',type:'textarea'},text('aboutTitle'),{name:'aboutText',type:'textarea'},{name:'contentSeeded',type:'checkbox',admin:{hidden:true},access:{read:({req})=>Boolean(req.user),update:()=>false}}]},
+  {slug:'site-settings',access:{read:()=>true,update:authenticated},admin:{group:'Settings'},fields:[text('agencyName'),text('studioName'),media('logo'),{name:'logoPath',type:'text',validate:(v:unknown)=>safeLocalPath(v)||'Use a local image path.'},media('mark'),{name:'markPath',type:'text',validate:(v:unknown)=>safeLocalPath(v)||'Use a local image path.'},text('headline'),{name:'introduction',type:'textarea'},text('aboutTitle'),{name:'aboutText',type:'textarea'},{name:'contentSeeded',type:'checkbox',admin:{hidden:true},access:{read:({req})=>Boolean(req.user),update:()=>false}}]},
   {slug:'contact-info',access:{read:()=>true,update:authenticated},admin:{group:'Settings'},fields:[{name:'email',type:'email',required:true},{name:'calLink',type:'text',validate:safeURL},{name:'whatsapp',type:'text',validate:safeURL},{name:'instagram',type:'text',validate:safeURL},{name:'linkedin',type:'text',validate:safeURL},{name:'behance',type:'text',validate:safeURL},text('welcomeSubject'),{name:'welcomeBody',type:'textarea',required:true}]},
 ];
 

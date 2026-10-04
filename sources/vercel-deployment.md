@@ -12,7 +12,7 @@ This preview does not publish edits from your PC’s SQLite database. A Git push
 2. In the Vercel project’s Storage section, create/connect a **public** Blob store. Connect its token to the Production environment.
 3. In Project Settings → Environment Variables, configure the four values below for Production.
 4. Redeploy the current commit. Check the build log for the migrations, initial-content check and successful Next.js build.
-5. Open your deployed `/admin` and create your production admin account yourself.
+5. Set `SITE_URL` to your exact HTTPS public origin. Create the first administrator privately using `npm run cms:admin` with that database's environment loaded on your own machine/server; the command never accepts passwords in arguments or exposes public registration. Then sign in at the deployed `/admin`.
 
 | Variable | Value |
 | --- | --- |

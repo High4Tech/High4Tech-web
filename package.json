@@ -9,8 +9,10 @@
     "build:vercel": "node --import tsx scripts/vercel-build.ts",
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
+    "security:verify": "node --env-file=.env --import tsx scripts/verify-security.ts",
     "cms:types": "payload generate:types",
     "cms:setup": "node scripts/setup-cms.mjs",
+    "cms:admin": "node --env-file=.env --import tsx scripts/create-admin.ts",
     "cms:importmap": "payload generate:importmap",
     "cms:migrate": "payload migrate",
     "cms:verify": "node --env-file=.env --import tsx scripts/verify-cms.ts",
@@ -39,6 +41,8 @@
     "three": "^0.180.0"
   },
   "overrides": {
+    "dompurify": "3.4.16",
+    "@esbuild-kit/core-utils": { "esbuild": "0.28.2" },
     "sass": "1.105.1",
     "undici": "7.30.0"
   },

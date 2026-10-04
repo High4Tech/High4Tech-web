@@ -12,7 +12,7 @@ npm run cms:setup
 npm run dev
 ```
 
-Open `http://127.0.0.1:3000` for the studio or `http://127.0.0.1:3000/admin` for Payload. On the first admin visit, create your own email/password account. No default account is included.
+Open `http://127.0.0.1:3000` for the studio or `http://127.0.0.1:3000/admin` for Payload. On a new installation, run `npm run cms:admin` privately in your terminal to create the first administrator (hidden password prompt). Existing accounts continue to work. Public account registration is disabled; there is no default account.
 
 `cms:setup` generates a local secret in `.env` only when that file does not already exist. Local development uses `studio.db` (SQLite) and `media/` for uploaded images. These files and credentials are excluded from Git. Existing draft content is seeded once into an empty CMS; later edits and deletions are preserved.
 
@@ -32,7 +32,7 @@ Open `http://127.0.0.1:3000` for the studio or `http://127.0.0.1:3000/admin` for
 
 Save a draft while editing; use Publish to make collection content public. Globals become live when saved. The studio refreshes published data when the tab regains focus and every 30 seconds while visible. Newly published service, project and Newsroom slugs have their own routes. Layout, visual effects and fixed interface labels remain in the code.
 
-The assistant searches published studio knowledge, returns exact source passages with citations, and declines unsupported questions. It uses no paid AI API or external knowledge and saves conversations privately in the CMS when configured. Platform and purpose requests return matching published resource cards. The support inbox at `/admin/conversations` lists visitors, flags human requests, and lets a signed-in team member take over, reply, return control to the assistant, or resolve the chat. The admin dashboard includes source counts, import shortcuts and a visitor-answer test. See [the assistant guide](sources/assistant-knowledge.md) and [the live support guide](sources/live-support.md). Mail displays a configurable welcome message and opens the visitor’s email app to reply. Project briefs validate locally and prepare an email; they do not send or store messages. Resources open the tool’s own platform for access or purchases. Music only plays when requested.
+The assistant searches published studio knowledge, returns exact source passages with citations, and declines unsupported questions. It uses no paid AI API or external knowledge and saves conversations privately in the CMS when configured. Platform and purpose requests return matching published resource cards. The support inbox at `/admin/conversations` lists visitors, flags human requests, and lets a signed-in team member take over, reply, return control to the assistant, or resolve the chat. The admin dashboard includes source counts, import shortcuts and a visitor-answer test. See [the assistant guide](sources/assistant-knowledge.md) and [the live support guide](sources/live-support.md). Mail displays a configurable welcome message. Project briefs are delivered and stored privately in the support inbox when the CMS is connected; opening the visitor's email app is also available. Gmail messages are not automatically imported. Resources open the tool’s own platform for access or purchases. Music only plays when requested.
 
 ## Checks
 
@@ -48,6 +48,8 @@ With the development server running, `npm run cms:verify` checks public publishi
 `npm run resources:verify` checks platform/purpose searches and safe video URLs. With the local server running and its schema synced, `NODE_ENV=production npm run chat:verify:cms` checks saved chat privacy, handoff, staff replies, duplicate sends, draft resources and videos. This creates and deletes only temporary test records and a temporary test admin; it leaves existing accounts untouched. On PowerShell set `$env:NODE_ENV="production"` before running the verification.
 
 After schema changes, regenerate `payload-types.ts` and the admin import map using `npm run cms:types` and `npm run cms:importmap`. Generate a migration with `npx payload migrate:create descriptive_name`.
+
+`npm run security:verify` checks origins, browser nonces/headers, account privacy, login lockouts, shared rate limits and upload validation against a running local server using temporary fixtures. See [the security notes](sources/security.md) for implemented protections, deployment settings and the remaining upstream dependency advisory.
 
 ## Production
 

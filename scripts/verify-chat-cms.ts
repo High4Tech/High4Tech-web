@@ -11,9 +11,10 @@ const headers=(cookie='')=>({'Content-Type':'application/json',Origin:origin,...
 const wait=()=>new Promise(resolve=>setTimeout(resolve,850));
 async function guest(cookie:string,body:Record<string,unknown>){const response=await fetch(origin+'/api/chat',{method:'POST',headers:headers(cookie),body:JSON.stringify({requestId:randomUUID(),...body})});const data=await response.json();if(data.conversation)conversationIds.add(data.conversation.id);return {response,data,cookie:response.headers.get('set-cookie')?.split(';')[0] || cookie};}
 try {
-  const admin=await payload.create({collection:'users',data:{email:`${marker}@example.com`,password:randomBytes(24).toString('hex'),name:'Support verification'}});adminId=admin.id;
-  const {token}=await payload.login({collection:'users',data:{email:admin.email,password:await (async()=>{const password=randomBytes(24).toString('hex');await payload.update({collection:'users',id:admin.id,data:{password}});return password;})()}});
-  const staffCookie=`payload-token=${token}`;
+  const password=randomBytes(24).toString('hex');
+  const admin=await payload.create({collection:'users',data:{email:`${marker}@example.com`,password,name:'Support verification'}});adminId=admin.id;
+  const login=await fetch(origin+'/api/users/login',{method:'POST',headers:headers(),body:JSON.stringify({email:admin.email,password})});assert.equal(login.status,200);
+  const staffCookie=login.headers.get('set-cookie')!.split(';')[0];
   async function staff(id:number,action:string,message=''){const response=await fetch(origin+'/api/chat/admin',{method:'POST',headers:headers(staffCookie),body:JSON.stringify({id,action,message,requestId:randomUUID()})});const data=await response.json();assert.equal(response.status,200,JSON.stringify(data));return data;}
   const unauthorized=await fetch(origin+'/api/chat/admin');assert.equal(unauthorized.status,401);
   const resource=await payload.create({collection:'resources',draft:true,data:{title:marker+' Stock Desk',slug:marker,description:'Track stock and inventory alerts.',category:'Commerce',price:'Free',label:'Verification fixture',url:'https://example.com/',platforms:['shopify'],capabilities:'inventory stock alerts',videos:[{title:'Fixture video',url:'https://youtu.be/dQw4w9WgXcQ'}]}});resourceId=resource.id;

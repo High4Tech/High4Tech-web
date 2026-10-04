@@ -18,6 +18,7 @@ export function startChatPolling(task: () => Promise<void>, delay: number) {
   return () => { stopped = true; clearTimeout(timer); window.removeEventListener('online', wake); window.removeEventListener('focus', wake); document.removeEventListener('visibilitychange', wake); };
 }
 const recentResponses = new Map<string, { etag: string; data: unknown; savedAt: number }>();
+export class ChatRequestError extends Error { constructor(message: string, public status: number) { super(message); } }
 export async function chatRequest(url: string, options: RequestInit = {}) {
   const controller = new AbortController();
   const abort = () => controller.abort();
@@ -31,9 +32,10 @@ export async function chatRequest(url: string, options: RequestInit = {}) {
     if (cached && Date.now() - cached.savedAt < 30000) headers.set('If-None-Match', cached.etag);
     if (!get) recentResponses.clear();
     const response = await fetch(url, { ...options, headers, credentials: 'same-origin', cache: 'no-store', signal: controller.signal });
+    if (response.status === 401 || response.status === 403) recentResponses.clear();
     if (response.status === 304 && cached) return cached.data;
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || (response.status === 401 ? 'Sign in to the dashboard again.' : 'The studio couldn’t connect. Please retry.'));
+    if (!response.ok) throw new ChatRequestError(data.error || (response.status === 401 ? 'Sign in to the dashboard again.' : 'The studio couldn’t connect. Please retry.'), response.status);
     if (get && response.headers.get('etag')) { if (recentResponses.size >= 8) recentResponses.delete(recentResponses.keys().next().value!); recentResponses.set(url, { etag: response.headers.get('etag')!, data, savedAt: Date.now() }); }
     return data;
   } catch (error) {

@@ -8,6 +8,7 @@ import { importMap } from './admin/importMap';
 import { cmsConfigurationIssues } from '@/lib/cms-runtime';
 
 export const viewport={width:'device-width',initialScale:1};
+export const dynamic='force-dynamic';
 const serverFunction:ServerFunctionClient=async(args)=>{
   'use server';
   if(cmsConfigurationIssues().length)throw new Error('CMS setup is incomplete. Configure the server environment first.');

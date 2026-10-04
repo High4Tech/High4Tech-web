@@ -26,7 +26,7 @@ export const chatCollections: CollectionConfig[] = [
       { name: 'role', type: 'select', options: ['visitor', 'assistant', 'staff', 'system'], required: true },
       { name: 'body', type: 'textarea', required: true, maxLength: 6000 },
       { name: 'requestKey', type: 'text', required: true, unique: true, admin: { hidden: true } },
-      { name: 'staffName', type: 'text' }, { name: 'reply', type: 'json' },
+      { name: 'staffName', type: 'text' }, { name: 'reply', type: 'json',admin:{readOnly:true,components:{Field:'/cms/components/ReplyData#ReplyData'}} },
     ],
   },
 ];

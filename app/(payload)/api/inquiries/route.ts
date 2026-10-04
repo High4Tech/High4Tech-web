@@ -1,11 +1,13 @@
 import { cmsConfigurationIssues } from '@/lib/cms-runtime';
 import { parseVisitorProfile } from '@/lib/chat-profile';
+import { limitPublicRequest } from '@/lib/request-security';
 import { ChatError, chatJSON, chatBody, chatFailure, chatPayload, chatSnapshot, chatTransaction, newChatToken, ownConversation, requestID, requireChatOrigin, startConversation, tokenFrom } from '@/lib/chat-server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   try {
     requireChatOrigin(request);
+    await limitPublicRequest(request,'inquiries',8,120,3_600_000);
     if (cmsConfigurationIssues().length) throw new ChatError('The online inbox isn’t connected yet. Use Open email app to contact the studio.', 503);
     const body = await chatBody(request, 16384), profile = parseVisitorProfile(body), key = requestID(body.requestId);
     if (!profile) throw new ChatError('Add your name, a valid email, and phone number.');

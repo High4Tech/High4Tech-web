@@ -1,14 +1,16 @@
 import { cmsConfigurationIssues } from '@/lib/cms-runtime';
 import { ChatError, chatJSON, chatBody, chatFailure, chatPayload, chatSnapshot, chatStaff, chatTransaction, messageText, publicConversation, requestID, requireChatOrigin } from '@/lib/chat-server';
 import type { Where } from 'payload';
+import { limitReads, positiveID } from '@/lib/request-security';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   if (cmsConfigurationIssues().length) return chatJSON({ error: 'Connect the CMS database to use the live inbox.' }, 503);
   try {
     const payload = await chatPayload(); await chatStaff(request, payload);
-    const query = new URL(request.url).searchParams, id = Number(query.get('id'));
-    if (id) { const row = await payload.findByID({ collection: 'chat-conversations', id, depth: 0 }); return chatJSON(await chatSnapshot(payload, row, Number(query.get('before')) || undefined), 200, undefined, request); }
+    limitReads(request,'inbox',240);
+    const query = new URL(request.url).searchParams, id = positiveID(query.get('id'));
+    if (id) { const row = await payload.findByID({ collection: 'chat-conversations', id, depth: 0 }); return chatJSON(await chatSnapshot(payload, row, positiveID(query.get('before'))), 200, undefined, request); }
     const where: Where = {}, filter = query.get('filter'), search = query.get('search')?.slice(0, 100);
     if (filter === 'attention') where.needsAttention = { equals: true }; else if (['bot', 'waiting', 'human', 'closed'].includes(filter || '')) where.status = { equals: filter };
     if (search) where.or = [{ visitorName: { contains: search } }, { visitorEmail: { contains: search } }, { visitorPhone: { contains: search } }, { preview: { contains: search } }];

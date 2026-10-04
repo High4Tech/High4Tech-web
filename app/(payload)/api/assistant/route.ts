@@ -1,4 +1,5 @@
 import { answerAssistant } from '@/lib/assistant-response';
+import { limitPublicRequest, requireSameOrigin, securityFailure } from '@/lib/request-security';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,14 +22,8 @@ async function readBody(request: Request) {
   } finally { reader.releaseLock(); }
 }
 export async function POST(request: Request) {
-  const origin = request.headers.get('origin');
-  // Next can normalize request.url to localhost behind a proxy. Compare against
-  // the actual HTTP Host so the site's own browser requests are not rejected.
-  if (origin) {
-    let allowed = false;
-    try { const parsed = new URL(origin); allowed = ['http:', 'https:'].includes(parsed.protocol) && parsed.host === (request.headers.get('host') || new URL(request.url).host); } catch { /* Invalid/opaque origin. */ }
-    if (!allowed) return json({ error: 'Use the assistant on the studio website.' }, 403);
-  }
+  try { requireSameOrigin(request); await limitPublicRequest(request,'assistant',60,300); }
+  catch(error){return securityFailure(error);}
   let body: unknown;
   try { body = await readBody(request); }
   catch (error) { return json({ error: error instanceof Error && error.message === 'too-large' ? 'Your message is too long.' : 'Send a valid question.' }, 400); }

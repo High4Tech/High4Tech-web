@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     'chat-conversations': ChatConversation;
     'chat-messages': ChatMessage;
+    'security-rate-limits': SecurityRateLimit;
     users: User;
     media: Media;
     services: Service;
@@ -89,6 +90,7 @@ export interface Config {
   collectionsSelect: {
     'chat-conversations': ChatConversationsSelect<false> | ChatConversationsSelect<true>;
     'chat-messages': ChatMessagesSelect<false> | ChatMessagesSelect<true>;
+    'security-rate-limits': SecurityRateLimitsSelect<false> | SecurityRateLimitsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
@@ -218,6 +220,18 @@ export interface ChatMessage {
     | number
     | boolean
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "security-rate-limits".
+ */
+export interface SecurityRateLimit {
+  id: number;
+  key: string;
+  windowStart: number;
+  count: number;
   updatedAt: string;
   createdAt: string;
 }
@@ -545,6 +559,10 @@ export interface PayloadLockedDocument {
         value: number | ChatMessage;
       } | null)
     | ({
+        relationTo: 'security-rate-limits';
+        value: number | SecurityRateLimit;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -662,6 +680,17 @@ export interface ChatMessagesSelect<T extends boolean = true> {
   requestKey?: T;
   staffName?: T;
   reply?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "security-rate-limits_select".
+ */
+export interface SecurityRateLimitsSelect<T extends boolean = true> {
+  key?: T;
+  windowStart?: T;
+  count?: T;
   updatedAt?: T;
   createdAt?: T;
 }

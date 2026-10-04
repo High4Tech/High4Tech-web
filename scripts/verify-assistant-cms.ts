@@ -34,9 +34,9 @@ try {
     assert.ok(draftCount.totalDocs >= 1, 'Admin dashboard must count private draft revisions');
   }
   assert.equal((await ask('What is the capital of France?')).status, 'not-found');
-  const invalid = await fetch(origin + '/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: 'x'.repeat(501) }) });
+  const invalid = await fetch(origin + '/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origin }, body: JSON.stringify({ question: 'x'.repeat(501) }) });
   assert.equal(invalid.status, 400);
-  const oversized = await fetch(origin + '/api/assistant', { method: 'POST', body: 'x'.repeat(5000) });
+  const oversized = await fetch(origin + '/api/assistant', { method: 'POST', headers: {Origin:origin}, body: 'x'.repeat(5000) });
   assert.equal(oversized.status, 400);
   const foreign = await fetch(origin + '/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://unrelated.example' }, body: JSON.stringify({ question: 'Services?' }) });
   assert.equal(foreign.status, 403);

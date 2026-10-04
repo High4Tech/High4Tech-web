@@ -5,13 +5,15 @@ import config from '@payload-config';
 import type { ChatConversation, ChatMessage } from './chat-types';
 import type { ChatConversation as ConversationRow } from '../payload-types';
 import type { VisitorProfile } from './chat-profile';
+import { isSameOrigin, secureCookies } from './security-policy';
+import { RequestSecurityError, securityFailure } from './request-security';
 
 export const CHAT_COOKIE = 'h4t-chat';
 export class ChatError extends Error { constructor(message: string, public status = 400) { super(message); } }
 export function chatJSON(body: unknown, status = 200, token?: string, request?: Request) {
   const text = JSON.stringify(body);
   const etag = request?.method === 'GET' && status === 200 ? '"' + createHash('sha256').update(text).digest('hex') + '"' : undefined;
-  const headers = { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store', Vary: 'Cookie', ...(etag ? { ETag: etag } : {}), ...(token ? { 'Set-Cookie': `${CHAT_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000${request && new URL(request.url).protocol === 'https:' ? '; Secure' : ''}` } : {}) };
+  const headers = { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store', Vary: 'Cookie', ...(etag ? { ETag: etag } : {}), ...(token ? { 'Set-Cookie': `${CHAT_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000${secureCookies(request) ? '; Secure' : ''}` } : {}) };
   return new Response(etag && request?.headers.get('if-none-match') === etag ? null : text, { status: etag && request?.headers.get('if-none-match') === etag ? 304 : status, headers });
 }
 export function tokenFrom(request: Request) {
@@ -21,8 +23,7 @@ export function tokenFrom(request: Request) {
 export const newChatToken = () => randomBytes(32).toString('hex');
 const visitorKey = (token: string) => createHash('sha256').update(token).digest('hex');
 export function requireChatOrigin(request: Request) {
-  const origin = request.headers.get('origin');
-  try { if (origin && new URL(origin).host === (request.headers.get('host') || new URL(request.url).host) && ['http:', 'https:'].includes(new URL(origin).protocol)) return; } catch { /* Reject invalid origins. */ }
+  if (isSameOrigin(request)) return;
   throw new ChatError('Use chat on the High4Tech website.', 403);
 }
 export async function chatBody(request: Request, limit = 4096): Promise<Record<string, unknown>> {
@@ -68,4 +69,4 @@ export function wantsHuman(text: string) {
   if (/\b(?:don'?t|do not|no|not)\b.{0,25}\b(?:human|employee|person|agent|staff)\b/i.test(text)) return false;
   return /\b(?:human|employee|representative)\b|\b(?:talk|speak|chat|connect|transfer)\b.{0,40}\b(?:person|agent|someone|team|staff)\b/i.test(text);
 }
-export const chatFailure = (error: unknown) => chatJSON({ error: error instanceof ChatError ? error.message : 'Chat is temporarily unavailable. Please try again.' }, error instanceof ChatError ? error.status : 503);
+export const chatFailure = (error: unknown) => error instanceof RequestSecurityError ? securityFailure(error) : chatJSON({ error: error instanceof ChatError ? error.message : 'Chat is temporarily unavailable. Please try again.' }, error instanceof ChatError ? error.status : 503);

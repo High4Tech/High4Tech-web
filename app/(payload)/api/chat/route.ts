@@ -1,14 +1,16 @@
 import { cmsConfigurationIssues } from '@/lib/cms-runtime';
 import { answerAssistant } from '@/lib/assistant-response';
 import { hasVisitorProfile, parseVisitorProfile } from '@/lib/chat-profile';
+import { limitPublicRequest, limitReads, positiveID } from '@/lib/request-security';
 import { ChatError, chatJSON, chatBody, chatFailure, chatPayload, chatSnapshot, chatTransaction, messageText, newChatToken, ownConversation, requestID, requireChatOrigin, startConversation, tokenFrom, wantsHuman } from '@/lib/chat-server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   if (cmsConfigurationIssues().length) return chatJSON({ mode: 'preview', conversation: null, messages: [] });
   try {
+    limitReads(request,'chat-history');
     const token = tokenFrom(request) || newChatToken(), payload = await chatPayload();
-    const before = Number(new URL(request.url).searchParams.get('before')) || undefined;
+    const before = positiveID(new URL(request.url).searchParams.get('before'));
     return chatJSON(await chatSnapshot(payload, await ownConversation(payload, token), before), 200, token, request);
   } catch (error) { return chatFailure(error); }
 }
@@ -17,6 +19,7 @@ export async function POST(request: Request) {
     requireChatOrigin(request); const body = await chatBody(request);
     const action = body.action || 'send';
     if (!['send', 'handoff', 'new', 'profile'].includes(String(action))) throw new ChatError('Unknown chat action.');
+    await limitPublicRequest(request, action==='profile'||action==='new' ? 'chat-profile' : 'chat-write', action==='profile'||action==='new' ? 12 : 50, action==='profile'||action==='new' ? 120 : 300, action==='profile'||action==='new' ? 3_600_000 : 60_000);
     const previous = tokenFrom(request), token = action === 'new' ? newChatToken() : previous || newChatToken();
     const question = action === 'send' ? messageText(body.question) : action === 'handoff' ? 'I’d like to talk to a real human.' : '';
     const handoff = action === 'handoff' || wantsHuman(question);
