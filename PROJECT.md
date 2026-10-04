@@ -34,6 +34,8 @@ The original conversation remains in the desktop app. These files preserve its c
 
 Read this file and `sources/project-brief.md` before making changes. Use the existing folder and Git remote. Follow `AGENTS.md`, including the installed Next.js guide requirement before coding. Prefer the current brief and latest user decisions over historical planning notes. Update the brief as decisions change.
 
+Standing user instruction: after completing and verifying changes, commit and push them to the established `High4Tech/High4Tech-web` GitHub repository. Do not leave completed work only locally or ask for renewed push authorization. Report any actual push failure. Preserve private files and never force-push without explicit authorization.
+
 Current stack: Next.js, React, TypeScript, Three.js, GSAP, Lenis, Phosphor icons and Payload with SQLite/libSQL. PostgreSQL was discussed earlier but is not the implemented database. A hosted shared database, production media storage and delivery providers still require configuration.
 
 Frontend updates on 4 October add genuine bold supplied headings, bounded responsive content, a centered AI globe hero and shared Lenis/Phosphor motion/icon system. The latest Safari and AI Zone campaigns adapt the MIT Agency-AI template with original brand artwork, existing project media and the supplied motion film. See [campaign template notes](sources/templates/README.md) and [motion and icons](sources/motion-and-icons.md).

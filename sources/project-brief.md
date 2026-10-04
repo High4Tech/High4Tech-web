@@ -77,6 +77,7 @@ Security hardening includes private admin creation, login lockout, private conve
 
 1. Use the existing folder and established GitHub repository. Preserve CMS edits, visitor records and private environment files. Do not reseed/reset an existing database as a routine fix.
 2. Follow `AGENTS.md` and read the installed Next.js guide before code changes. Run checks appropriate to the changed subsystem; see the root README and package scripts.
+   Standing user preference: always commit and push completed, verified changes to `High4Tech/High4Tech-web`; report a blocker if the push fails. Existing authorization covers routine pushes. Keep private data excluded and do not force-push without explicit authorization.
 3. Replace dummy prices, sample services and placeholder customer content before launch. Publish only verified agency claims and authorized assets.
 4. Confirm Cal.com, production hosting/shared database/media storage, backups, email delivery and any external support alerts.
 5. Full Spotify/Apple Music account integration remains optional. Do not claim it is connected without a working provider authorization flow.
