@@ -70,6 +70,13 @@
   ],
   "repositories": [
     {
+      "id": "shadcn-dashboard",
+      "url": "https://github.com/shadcndashboard/shadcndashboard",
+      "role": "inner-app-layout-pattern-reference",
+      "license": "MIT",
+      "revision": "386235c3199168fa743db593d7acf014a40f1ca1"
+    },
+    {
       "id": "agency-ai",
       "url": "https://github.com/elyse502/agency-ai",
       "role": "implemented-campaign-template-adaptation",
@@ -152,20 +159,63 @@
     }
   ],
   "iconLibraries": [
-    { "id": "phosphor", "url": "https://phosphoricons.com/", "role": "selected-icon-family" },
-    { "id": "remix", "url": "https://remixicon.com/" },
-    { "id": "tabler", "url": "https://tabler.io/icons" },
-    { "id": "iconoir", "url": "https://iconoir.com/" },
-    { "id": "boxicons", "url": "https://boxicons.com/" },
-    { "id": "hugeicons", "url": "https://hugeicons.com/" },
-    { "id": "font-awesome", "url": "https://fontawesome.com/" },
-    { "id": "flaticon", "url": "https://flaticon.com/" },
-    { "id": "heroicons", "url": "https://heroicons.com/" },
-    { "id": "lucide", "url": "https://lucide.dev/" },
-    { "id": "material-symbols", "url": "https://fonts.google.com/icons" },
-    { "id": "noun-project", "url": "https://thenounproject.com/" },
-    { "id": "icons8", "url": "https://icons8.com/" },
-    { "id": "bootstrap", "url": "https://icons.getbootstrap.com/" }
+    {
+      "id": "phosphor",
+      "url": "https://phosphoricons.com/",
+      "role": "selected-icon-family"
+    },
+    {
+      "id": "remix",
+      "url": "https://remixicon.com/"
+    },
+    {
+      "id": "tabler",
+      "url": "https://tabler.io/icons"
+    },
+    {
+      "id": "iconoir",
+      "url": "https://iconoir.com/"
+    },
+    {
+      "id": "boxicons",
+      "url": "https://boxicons.com/"
+    },
+    {
+      "id": "hugeicons",
+      "url": "https://hugeicons.com/"
+    },
+    {
+      "id": "font-awesome",
+      "url": "https://fontawesome.com/"
+    },
+    {
+      "id": "flaticon",
+      "url": "https://flaticon.com/"
+    },
+    {
+      "id": "heroicons",
+      "url": "https://heroicons.com/"
+    },
+    {
+      "id": "lucide",
+      "url": "https://lucide.dev/"
+    },
+    {
+      "id": "material-symbols",
+      "url": "https://fonts.google.com/icons"
+    },
+    {
+      "id": "noun-project",
+      "url": "https://thenounproject.com/"
+    },
+    {
+      "id": "icons8",
+      "url": "https://icons8.com/"
+    },
+    {
+      "id": "bootstrap",
+      "url": "https://icons.getbootstrap.com/"
+    }
   ],
   "projectRepository": "https://github.com/High4Tech/High4Tech-web"
 }

@@ -87,7 +87,7 @@ function usePageMotion(wrapper: RefObject<HTMLDivElement | null>, content: RefOb
           '.project-folder-card', '.os-services > button', '.os-resource-grid > *',
           '.newsroom > header', '.newsroom-grid > button', '.installed-grid > a',
           '.gallery-grid > button', '.pricing-page > header', '.pricing-grid > article',
-          '.os-reading > h1', '.os-reading > h2', '[data-az-reveal]',
+          '.os-reading > h1', '.os-reading > h2', '[data-az-reveal]', '[data-inner-reveal]',
         ].join(',');
         page.querySelectorAll<HTMLElement>(selectors).forEach(element => {
           gsap.fromTo(element, { y: 24, opacity: 0 }, {

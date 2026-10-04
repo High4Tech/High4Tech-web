@@ -10,7 +10,7 @@ Lenis smooths active public content windows and the Safari preview, with GSAP sc
 
 Orange `#F97328` is the primary highlight. White dominates light mode; black is an accent and the surface for selected bento sections. Dark mode is supported throughout, with readable text, tags, inputs and hover states. Use the original High4Tech wordmark and mascots. Use the supplied PP Neue Montreal for display headings and Helvetica Neue for paragraphs, labels and controls, following the Untitled typography scale in [typography.md](typography.md). Use restrained liquid-glass surfaces. Avoid generic template styling, crowded labels and unnecessary taglines.
 
-Displace informs the desktop experience; Stōkt informs the black service/about bento, project presentation and motion. Apple Newsroom informs the editorial screen; Apple Messages informs the chat box. Armory and Globe.GL inform AI Zone. The MIT Agency-AI template informs the latest Safari and AI Zone campaign structure, adapted to our fonts, media and CMS content; see [template notes](templates/README.md). Reference copy, clients, awards and statistics are not High4Tech claims.
+Displace informs the desktop experience; Stōkt informs the black service/about bento, project presentation and motion. Apple Newsroom informs the editorial screen; Apple Messages informs the chat box. Armory and Globe.GL inform AI Zone. The MIT Agency-AI template informs the latest Safari and AI Zone campaign structure, adapted to our fonts, media and CMS content; see [template notes](templates/README.md). The latest inner app layouts adapt editorial and profile patterns from the MIT Shadcn Dashboard source, with distinct project, expertise, studio and pricing workspaces. Toolkit contains the same apps as the top loop, on white/black theme tiles. Reference copy, clients, awards and statistics are not High4Tech claims.
 
 ## Studio experience
 
@@ -18,9 +18,10 @@ Displace informs the desktop experience; Stōkt informs the black service/about 
 - Top menu stays visible. Dock overlays maximized windows; they fill the area below the menu to the bottom and cover the tools loop behind them. Dragging a maximized window restores its movable size.
 - Folder sidebar navigation replaces content in the same window. Windows support close, minimize, restore, maximize and dragging; minimized apps have a side tray. Short wave-like transitions respect reduced motion.
 - Contextual feature tips appear on first use, can be skipped and reset from Help. Avoid a large mandatory opening tour.
-- Left desktop bento stays near the corner: live clocks, date/booking, latest newsroom item, projects/resources and music. A clean gradient/wave wallpaper and restrained bottom logo support both themes.
+- Left desktop bento stays near the corner: live clocks, date/booking, a draggable stack of newsroom cards, projects/resources and music. A clean gradient/wave wallpaper and restrained bottom logo support both themes.
 - Tools logo loop stays at the top; the client loop is centered above the dock without “In good company.” The “Nice to meet you” card and bottom folder/Shift+K hints were removed.
 - One original mascot identifies the assistant; the other follows the pointer on the desktop background only. Hover motion suggests speech. Preserve face whites without extra white circular backgrounds.
+- The assistant greeting opens automatically after 30 seconds; closing it starts a 30-second pricing reminder countdown. Invitations run once per tab session and do not auto-submit chat/profile data.
 - Default pointer remains on ordinary navigation and CTAs. Custom hover treatment is reserved for useful project/link interactions.
 - Keep inputs and CTAs consistent and readable. Overlapping translucent panels need sufficient blur/opacity. Use original social/platform logos where supporting icons are needed, especially WhatsApp.
 

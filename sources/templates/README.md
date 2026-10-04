@@ -17,3 +17,18 @@ Cruip Open was reviewed but not incorporated. Stōkt and Armory remain visual re
 - CMS edits and private data remain intact. The campaigns read existing public content; there is no template CMS migration.
 
 Implementation: `components/landing-campaign.tsx`, `components/ai-zone.tsx`, `components/campaign-media.tsx`, `app/campaigns.css`. The retired `landing-v2.tsx` has been removed. License/source notes belong in this folder when further template material is adapted.
+
+## Inner studio app layouts
+
+Selected on 4 October 2026: [Shadcn Dashboard](https://github.com/shadcndashboard/shadcndashboard), reviewed at `386235c3199168fa743db593d7acf014a40f1ca1`. Its [MIT license](shadcn-dashboard/LICENSE.txt) is preserved. Reviewed the blog listing/featured card and user-profile workspace source. Editorial featured-story hierarchy, compact navigation and profile-panel organization inform the inner studio apps. This is a pattern adaptation into our existing React/CSS components, not a dependency on the dashboard application. No template images, statistics, client claims or business copy were imported.
+
+- Newsroom: featured editorial story, topic filters, reading cards and bounded article typography.
+- Projects: image-forward grid/list library, categories/search and case-study metadata.
+- Expertise: expandable discipline rows, deliverables and related-work details.
+- Studio/Home: original mascot identity, content-driven directory, principles, project/resource shortcuts and FAQs.
+- Pricing: selectable package workspace, comparison table and clearly marked sample prices.
+- Shared neutral light/dark surfaces, orange focus states, supplied fonts, window-scoped Lenis/GSAP and responsive content gutters. Toolkit tiles use the same `studioStack` as the desktop loop.
+
+Desktop Newsroom cards support left/right drag, arrow buttons and arrow keys. The actual assistant greeting appears once per tab session after 30 seconds in the app; dismissing it starts a separate 30-second countdown for the pricing reminder. Visiting the assistant or pricing app avoids duplicate invitations. Hidden tabs do not display prompts until visible. Opening the greeting never creates a visitor profile or submits a chat message.
+
+Implementation: `components/inner-pages.tsx`, `components/newsroom-stack.tsx`, `components/visitor-prompts.tsx`, `components/studio-sections.tsx`, `app/inner-pages.css`. All content continues to read the existing CMS; private data and database files are untouched.

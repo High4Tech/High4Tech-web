@@ -14,6 +14,7 @@ import '../typography.css';
 import '../content-layout.css';
 import '../motion.css';
 import '../campaigns.css';
+import '../inner-pages.css';
 import { SiteShell } from '@/components/site-shell';
 import { ContentProvider } from '@/components/content-provider';
 import { getStudioContent } from '@/lib/cms-content';
