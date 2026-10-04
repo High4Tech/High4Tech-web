@@ -36,7 +36,7 @@ Read this file and `sources/project-brief.md` before making changes. Use the exi
 
 Current stack: Next.js, React, TypeScript, Three.js, GSAP, Lenis, Phosphor icons and Payload with SQLite/libSQL. PostgreSQL was discussed earlier but is not the implemented database. A hosted shared database, production media storage and delivery providers still require configuration.
 
-Frontend updates on 4 October add genuine bold supplied headings, bounded responsive content, a centered AI globe hero, and the shared motion/icon system documented in [motion and icons](sources/motion-and-icons.md). Type checks, production build, and desktop/mobile browser checks passed for these changes.
+Frontend updates on 4 October add genuine bold supplied headings, bounded responsive content, a centered AI globe hero and shared Lenis/Phosphor motion/icon system. The latest Safari and AI Zone campaigns adapt the MIT Agency-AI template with original brand artwork, existing project media and the supplied motion film. See [campaign template notes](sources/templates/README.md) and [motion and icons](sources/motion-and-icons.md).
 
 Latest code milestone before this context pack: `008af87`, following security hardening `59dfc6a` and visitor profiles/inbox delivery `37b554d`. Previous implementation verification passed the production build, type checks, security, CMS, assistant, resources, chat and deployment checks. This context task changes no application behavior.
 

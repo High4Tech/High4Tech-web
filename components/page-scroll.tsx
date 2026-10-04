@@ -10,7 +10,9 @@ let documentScroll: Lenis | undefined;
 export function scrollPageTo(target: HTMLElement) {
   const pane = target.closest<HTMLElement>('.window-scroll');
   const instance = pane ? instances.get(pane) : documentScroll;
-  if (instance) instance.scrollTo(target, { offset: -24 });
+  const navigation = target.closest('.az-page')?.querySelector<HTMLElement>('.az-nav');
+  const offset = navigation && getComputedStyle(navigation).position === 'sticky' ? -navigation.offsetHeight - 24 : -24;
+  if (instance) instance.scrollTo(target, { offset });
   else target.scrollIntoView({
     behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
     block: 'start',

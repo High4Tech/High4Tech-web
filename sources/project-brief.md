@@ -10,11 +10,11 @@ Lenis smooths active public content windows and the Safari preview, with GSAP sc
 
 Orange `#F97328` is the primary highlight. White dominates light mode; black is an accent and the surface for selected bento sections. Dark mode is supported throughout, with readable text, tags, inputs and hover states. Use the original High4Tech wordmark and mascots. Use the supplied PP Neue Montreal for display headings and Helvetica Neue for paragraphs, labels and controls, following the Untitled typography scale in [typography.md](typography.md). Use restrained liquid-glass surfaces. Avoid generic template styling, crowded labels and unnecessary taglines.
 
-Displace informs the desktop experience; Stōkt informs the black service/about bento, project presentation and motion. Apple Newsroom informs the editorial screen; Apple Messages informs the chat box. Armory and Globe.GL inform AI Zone. Reference copy, clients, awards and statistics are not High4Tech claims.
+Displace informs the desktop experience; Stōkt informs the black service/about bento, project presentation and motion. Apple Newsroom informs the editorial screen; Apple Messages informs the chat box. Armory and Globe.GL inform AI Zone. The MIT Agency-AI template informs the latest Safari and AI Zone campaign structure, adapted to our fonts, media and CMS content; see [template notes](templates/README.md). Reference copy, clients, awards and statistics are not High4Tech claims.
 
 ## Studio experience
 
-- `/` enters the studio with a brief boot screen using High4Tech's original logo. The former landing design is retained as a Safari preview rather than the main entry.
+- `/` enters the studio with a brief boot screen using High4Tech's original logo. Safari contains a dedicated agency landing preview rather than the main entry.
 - Top menu stays visible. Dock overlays maximized windows; they fill the area below the menu to the bottom and cover the tools loop behind them. Dragging a maximized window restores its movable size.
 - Folder sidebar navigation replaces content in the same window. Windows support close, minimize, restore, maximize and dragging; minimized apps have a side tray. Short wave-like transitions respect reduced motion.
 - Contextual feature tips appear on first use, can be skipped and reset from Help. Avoid a large mandatory opening tour.
@@ -39,7 +39,7 @@ Displace informs the desktop experience; Stōkt informs the black service/about 
 | `/pricing` | User-authorized dummy prices, clearly illustrative until replaced |
 | `/assistant` | Branded Messages-style assistant and human handoff |
 | Mail | Welcome message, project brief and email-app reply |
-| `/safari` and `/preview` | Preview of the former landing design |
+| `/safari` and `/preview` | Editorial agency landing campaign with motion film, projects and black bento |
 | `/play` | Games; currently Studio Pairs |
 
 Resources support WordPress, Shopify, Android, iOS, Custom, POS and Other. Free/Paid is separate. Purchases and customer accounts belong to each resource's own platform; internal checkout is not required. Projects, services and resources accept optional validated YouTube links, loaded after visitor interaction.

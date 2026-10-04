@@ -1,8 +1,8 @@
 # AI Zone — visual direction and implementation
 
-Reference reviewed: [Armory](https://armory.framer.ai/) and the supplied 31-second website recording. The page alternates a dark hero and technical workflow surfaces with light editorial services, ideas, and FAQ sections. Large, tight system typography, restrained labels, thin dividers, and orange accents carry High4Tech's branding.
+Reference reviewed: [Armory](https://armory.framer.ai/) and the supplied 31-second website recording. The page alternates a dark hero and technical workflow surfaces with light editorial services, ideas, and FAQ sections. Large, bold PP Neue Montreal headings and Helvetica Neue descriptions, restrained labels, thin dividers, and orange accents carry High4Tech's branding.
 
-The supplied `9PJB6pimDu8LsjZi85rDKOpOc.mp4` is used as an optimized, muted decorative accent in the approach section. It is paused out of view and for reduced-motion visitors. The website recording is a study reference, not a shipped asset.
+The supplied `9PJB6pimDu8LsjZi85rDKOpOc.mp4` is used as an optimized, muted film in the prominent cinema panel and approach section, shared with Safari. It is paused out of view and for reduced-motion visitors. The website recording is a study reference, not a shipped asset.
 
 ## Interactive globe
 
@@ -22,4 +22,6 @@ The AI evolution copy describes connected tools and supervised workflows without
 
 GSAP supplies entrance/reveal motion. All layout styles are scoped to AI Zone; container queries adapt to the actual studio-window width rather than only the browser viewport.
 
-4 October refinement: the hero centers the globe's upper hemisphere above a centered, bold PP Neue Montreal headline and Helvetica description. The clipped square renderer is bounded at 1120px; pause/reset controls stay outside the masked globe surface. Section content is capped at 1280px while backgrounds fill the studio pane. The hero copy is capped at 860px. Narrow windows stack cards, the approach section, and FAQ columns.
+4 October refinement: the hero centers the globe's upper hemisphere above a centered, bold PP Neue Montreal headline and Helvetica description. The clipped square renderer is bounded at 1080px; pause/reset controls stay outside the masked globe surface. Section content is capped at 1280px while backgrounds fill the studio pane. The hero copy is capped at 860px. Narrow windows stack cards, the approach section, and FAQ columns.
+
+The current campaign adapts the MIT [Agency-AI template](templates/README.md): centered “Less busywork. More possibilities.” hero, a large film panel, light expandable service cards with pointer spotlights, a framed workflow demo, and consistent editorial rails. The original CMS service data and workflow interactions are retained. Films include manual playback controls.

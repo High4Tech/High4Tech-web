@@ -13,6 +13,7 @@ The frontend-only planning stage has ended. The current app includes the desktop
 
 ## Current implementation
 
+- [Safari and AI campaign template adaptation](templates/README.md)
 - [Typography system and supplied fonts](typography.md)
 - [Lenis motion and Phosphor icon system](motion-and-icons.md)
 - [Studio assets and interactions](studio-assets-and-behavior.md)

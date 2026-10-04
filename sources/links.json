@@ -70,6 +70,13 @@
   ],
   "repositories": [
     {
+      "id": "agency-ai",
+      "url": "https://github.com/elyse502/agency-ai",
+      "role": "implemented-campaign-template-adaptation",
+      "license": "MIT",
+      "revision": "b6cdf1688775cb4bddfea2862cc01cfb3daf8980"
+    },
+    {
       "id": "lenis",
       "url": "https://github.com/darkroomengineering/lenis",
       "role": "implemented-smooth-scroll-library"

@@ -1,5 +1,5 @@
 import { ResourceDetail } from '@/components/resource-browser';
-import { LandingV2 } from '@/components/landing-v2';
+import { LandingCampaign } from '@/components/landing-campaign';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getStudioContent } from '@/lib/cms-content';
@@ -18,7 +18,7 @@ export default async function Page({params}: {params:Promise<{slug?:string[]}>})
   const {slug=[]} = await params;
   const path=slug.join('/');
   if(path==='') return null;
-  if(path==='preview') return <LandingV2/>;
+  if(path==='preview') return <LandingCampaign/>;
   if(['desktop','assistant','calendar','gallery','safari','toolkit','preview','newsroom','ai-zone','pricing','play'].includes(path)) return null;
   if(path==='services') return <ServicesPage />;
   if(path==='projects') return <ProjectsPage />;

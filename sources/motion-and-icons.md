@@ -10,7 +10,7 @@ Each active content window owns its scroll wrapper and content element. Lenis an
 
 Wheel smoothing uses a restrained `0.105` interpolation value. Touch, browser zoom, horizontal controls, forms, chat history, Mail, and booking retain native behavior. The enhancement respects reduced-motion preferences; native scrolling remains a fallback. Do not add smooth scrolling to the CMS dashboard or interfere with chat scroll recovery.
 
-Content reveals use a 24px rise over 650ms with `power3.out`; cards and small glyphs have restrained hover motion. Shared transition tokens are 180ms and 320ms. Safari retains its GSAP project sequence, section reveals, and bento microanimations. Reduced motion removes decorative movement.
+Content reveals use a 24px rise over 650ms with `power3.out`; cards and small glyphs have restrained hover motion. Shared transition tokens are 180ms and 320ms. Safari uses GSAP entrance/reveal motion, subtle project-image scaling, and bento microanimations. AI section navigation accounts for its sticky header. Reduced motion removes decorative movement.
 
 Implementation: `components/page-scroll.tsx`, `app/motion.css`, and the existing landing/AI components. Keep content rails within the inner window, independently of the desktop sidebar.
 

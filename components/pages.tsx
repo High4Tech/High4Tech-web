@@ -3,7 +3,7 @@ import type { StudioContent } from '@/lib/studio-content';
 import { StudioVideos } from './studio-videos';
 import { ArrowUpRight, ArrowLeft, Plus } from '@/components/icons';
 import { Hero } from './hero';
-import { LandingV2 } from './landing-v2';
+import { LandingCampaign } from './landing-campaign';
 import { BookingButton } from './site-shell';
 import { ProjectGallery, ResourceCatalog, JournalGallery } from './catalog';
 import { ContactForm } from './contact-form';
@@ -11,7 +11,7 @@ import { SectionHeading, ProjectCard, ServiceRows, Symbol, ResourceCard, Article
 import { projects, services, articles, resources, socials } from '@/lib/content';
 
 export function HomePage() {
-  return <LandingV2 />;
+  return <LandingCampaign />;
 }
 export function OriginalHomePage() {
   return <><Hero /><div className="capability-strip"><div className="wrap"><span>DESIGN THAT CONNECTS</span><span className="orange">✳</span><span>CODE THAT DELIVERS</span><span className="orange">✳</span><span>A LITTLE DIFFERENT BY DESIGN</span><span className="orange">✳</span></div></div>
