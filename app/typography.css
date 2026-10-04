@@ -1,0 +1,303 @@
+/* Shared by the studio, Safari preview and Payload. Supplied fonts, hosted locally. */
+@font-face {
+  font-family: 'H4T PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal-medium.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal-bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal-italic.woff2') format('woff2');
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T Helvetica Neue';
+  src: url('/fonts/helvetica-neue-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T Helvetica Neue';
+  src: url('/fonts/helvetica-neue-medium.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T Helvetica Neue';
+  src: url('/fonts/helvetica-neue-bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T Helvetica Neue';
+  src: url('/fonts/helvetica-neue-italic.woff2') format('woff2');
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'H4T Helvetica Neue';
+  src: url('/fonts/helvetica-neue-bold-italic.woff2') format('woff2');
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --font-display: 'H4T PP Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'H4T Helvetica Neue', 'Helvetica Neue', Arial, sans-serif;
+  --display: var(--font-display);
+  --body: var(--font-body);
+  --os-font: var(--font-body);
+  --font-serif: var(--font-display);
+  --font-mono: var(--font-body);
+  --base-body-size: 16;
+
+  /* Untitled Typography / 1023:36826. Display tracking is -2%, not -2px. */
+  --display-2xl: 4.5rem;
+  --display-2xl-line: 1.25;
+  --display-xl: 3.75rem;
+  --display-xl-line: 1.2;
+  --display-lg: 3rem;
+  --display-lg-line: 1.25;
+  --display-md: 2.25rem;
+  --display-md-line: 1.222222;
+  --display-sm: 1.875rem;
+  --display-sm-line: 1.266667;
+  --display-xs: 1.5rem;
+  --display-xs-line: 1.333333;
+  --text-xl: 1.25rem;
+  --text-xl-line: 1.5;
+  --text-lg: 1.125rem;
+  --text-lg-line: 1.555556;
+  --text-md: 1rem;
+  --text-md-line: 1.5;
+  --text-sm: .875rem;
+  --text-sm-line: 1.428571;
+  --text-xs: .75rem;
+  --text-xs-line: 1.5;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 700;
+  --weight-bold: 700;
+  --tracking-display: -.02em;
+  --tracking-body: 0em;
+}
+
+/* Absolute reference sizes stay identical in Payload, whose default root is 13px. */
+html { font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-line);
+  letter-spacing: var(--tracking-body);
+  font-synthesis: none;
+}
+button, input, select, textarea, code, pre {
+  font-family: var(--font-body);
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-display);
+}
+p { letter-spacing: var(--tracking-body); }
+
+.studio-os {
+  --os-font: var(--font-body);
+  --display: var(--font-display);
+  --body: var(--font-body);
+  font-family: var(--font-body);
+}
+.studio-os .window-scroll {
+  container-type: inline-size;
+}
+.studio-os .live-clocks .clock-pair strong {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-line);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums;
+}
+.studio-os .clock-pair > div { min-width: 0; }
+.studio-os :is(h1, h2, h3, h4),
+.landing-v2 :is(h1, h2, h3), .landing-footer h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-display);
+}
+.studio-os :is(.os-page-heading h1, .os-reading h1, .newsroom h1,
+  .newsroom-article h1, .installed-heading h1, .gallery-heading h1,
+  .pricing-page header h1, .play-area header h1) {
+  font-size: clamp(var(--display-sm), 4cqw, var(--display-lg));
+  line-height: var(--display-lg-line);
+}
+.studio-os .home-intro h2 {
+  font-size: clamp(var(--display-md), 5cqw, var(--display-xl));
+  line-height: var(--display-xl-line);
+}
+.studio-os :is(.os-reading h2, .os-journal-list h2, .home-end h2,
+  .newsroom > h2, .pricing-details h2, .mail-compose-content h1,
+  .assistant-profile-heading h2) {
+  font-size: var(--display-xs);
+  line-height: var(--display-xs-line);
+  letter-spacing: 0;
+}
+.studio-os :is(.resource-info h3, .news-copy h3, .os-services h2,
+  .pricing-grid h2, .home-bento-world h3, .home-bento-people h3) {
+  font-size: var(--display-xs);
+  line-height: var(--display-xs-line);
+  letter-spacing: 0;
+}
+.studio-os :is(.news-feature h3, .mail-letter h1) {
+  font-size: var(--display-sm);
+  line-height: var(--display-sm-line);
+}
+.studio-os :is(.home-profile h1, .home-section-title h2,
+  .mail-list-heading h1, .gallery-caption h1, .assistant-intro h1,
+  .game-toolbar h2, .feature-ticket h2) {
+  font-family: var(--font-body);
+  letter-spacing: 0;
+  line-height: var(--text-lg-line);
+}
+.studio-os .home-section-title h2 {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-line);
+  font-weight: var(--weight-bold);
+}
+.studio-os :is(.home-intro > p, .os-reading > p, .newsroom-article > p,
+  .mail-letter p, .mail-compose-content > p) {
+  font-size: var(--text-md);
+  line-height: var(--text-md-line);
+}
+.studio-os :is(.home-bento-people p, .resource-info p,
+  .news-copy p, .pricing-grid p, .pricing-details p) {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-line);
+}
+.studio-os .az-page :is(h1, h2, h3) {
+  font-family: var(--font-display);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-display);
+}
+.studio-os .az-page .az-hero h1 {
+  font-size: clamp(var(--display-md), 7.6cqw, var(--display-2xl));
+  line-height: var(--display-2xl-line);
+}
+.studio-os .az-page h2 {
+  font-size: clamp(var(--display-sm), 4.4cqw, var(--display-lg));
+  line-height: var(--display-lg-line);
+}
+.studio-os .az-page :is(h3, .az-service-head h3, .az-idea-grid h3) {
+  font-size: var(--display-xs);
+  line-height: var(--display-xs-line);
+  letter-spacing: 0;
+}
+.studio-os .az-page :is(.az-evolution h2, .az-end > h2) {
+  font-size: clamp(var(--display-md), 6cqw, var(--display-xl)) !important;
+  line-height: var(--display-xl-line) !important;
+}
+.studio-os .az-page p {
+  font-size: var(--text-md);
+  line-height: var(--text-md-line);
+}
+
+/* Safari/editorial display roles use the same scale as the native studio apps. */
+.landing-v2 .editorial-hero-title,
+.landing-v2 .bento-heading h2,
+.landing-v2 .studio-collage h2,
+.landing-v2 .manifesto-type,
+.landing-footer .lf-invitation,
+.landing-footer h2,
+.cta-heading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(var(--display-lg), 7vw, var(--display-2xl));
+  line-height: var(--display-2xl-line);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-medium);
+}
+.landing-v2 :is(.work-cinema-top h2, .capability-preview h2,
+  .desktop-invitation h2, .statement-band h2, .landing-section-head h2),
+.section-heading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(var(--display-sm), 4vw, var(--display-lg));
+  line-height: var(--display-lg-line);
+  letter-spacing: var(--tracking-display);
+}
+.landing-v2 :is(.cinema-caption h3, .bento-toolbox h3) {
+  font-size: clamp(var(--display-xs), 3vw, var(--display-md));
+  line-height: var(--display-md-line);
+}
+.editorial-hero-title span, .about-caption, .mascot-note i {
+  font-family: var(--font-display);
+}
+.landing-v2 p {
+  font-size: var(--text-md);
+  line-height: var(--text-md-line);
+}
+
+/* Payload collection forms, authentication and our support dashboard. */
+.payload__app, .h4t-dashboard, .support-workspace {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-line);
+}
+.payload__app h1, .h4t-dashboard h1 {
+  font-family: var(--font-display);
+  font-size: clamp(var(--display-sm), 3vw, var(--display-md));
+  line-height: var(--display-md-line);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-medium);
+}
+.h4t-dashboard h2, .support-workspace .support-heading h2 {
+  font-family: var(--font-display);
+  font-size: var(--display-xs) !important;
+  line-height: var(--display-xs-line);
+  letter-spacing: 0;
+}
+.h4t-dashboard h3 {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--text-md-line);
+  letter-spacing: 0;
+}
+.h4t-dashboard p, .h4t-import p, .support-message p {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-line);
+}
+.h4t-dashboard-cards strong {
+  font-family: var(--font-display);
+  font-size: var(--display-md);
+  line-height: var(--display-md-line);
+}
+
+@media (max-width: 600px) {
+  .studio-os :is(.home-bento-world h3, .home-bento-people h3,
+    .resource-info h3, .news-copy h3) {
+    font-size: var(--text-xl);
+    line-height: var(--text-xl-line);
+  }
+  .studio-os :is(input, textarea, select) {
+    font-size: var(--text-md);
+  }
+}

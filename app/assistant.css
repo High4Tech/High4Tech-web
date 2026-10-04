@@ -10,13 +10,13 @@
 .assistant-recipient{display:flex;flex-direction:column;align-items:center;gap:4px}
 .assistant-avatar{display:grid;place-items:center;width:42px;height:42px;background:#f97328;border-radius:50%}
 .assistant-avatar .mascot-face{width:33px;height:37px}
-.studio-os .assistant-recipient strong{font-size:13px;font-weight:600;line-height:1.3}
+.studio-os .assistant-recipient strong{font-size:13px;font-weight:700;line-height:1.3}
 .assistant-recipient>span:last-child{display:flex;align-items:center;gap:5px;color:var(--secondary);font-size:10px}
 .assistant-recipient i{width:5px;height:5px;border-radius:50%;background:#47976b}
 .studio-os .assistant-conversation{padding:18px 26px 24px;background:var(--card)}
 .assistant-date{color:var(--secondary);text-align:center;font-size:11px;margin:0 0 26px}
 .studio-os .assistant-intro{margin:28px auto 22px;max-width:340px}
-.studio-os .assistant-intro h1{font-size:22px;line-height:1.2;letter-spacing:-.6px}
+.studio-os .assistant-intro h1{font-size:22px;line-height:1.2;letter-spacing:var(--tracking-display)}
 .studio-os .assistant-intro p{font-size:13px;line-height:1.6;margin:12px 0;color:var(--secondary)}
 .studio-os .assistant-prompts{grid-template-columns:1fr;max-width:340px;gap:8px;margin:0 auto}
 .studio-os .assistant-prompts button{padding:11px 14px;font-size:12px;line-height:1.5;border-radius:16px;background:var(--surface);color:var(--text)}

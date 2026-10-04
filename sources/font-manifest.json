@@ -1,0 +1,74 @@
+[
+  {
+    "file": "pp-neue-montreal-regular.woff2",
+    "source": "ppneuemontreal-book.otf",
+    "archive": "pp-neue-montreal-cufonfonts.zip",
+    "sourceWeight": 400,
+    "bytes": 54852,
+    "sha256": "12cee2a91ed9db2ecf6501af37b30704246fcd43bedd30b81392e531b3edfb92"
+  },
+  {
+    "file": "pp-neue-montreal-medium.woff2",
+    "source": "ppneuemontreal-medium.otf",
+    "archive": "pp-neue-montreal-cufonfonts.zip",
+    "sourceWeight": 500,
+    "bytes": 56692,
+    "sha256": "d117f8f945d3378162a37ed2a4f4ec4f1a13db2801c5923767085a5939b21d1d"
+  },
+  {
+    "file": "pp-neue-montreal-bold.woff2",
+    "source": "ppneuemontreal-bold.otf",
+    "archive": "pp-neue-montreal-cufonfonts.zip",
+    "sourceWeight": 700,
+    "bytes": 54760,
+    "sha256": "1348194b9e0693997bd238944827cad259b51dc4afd4fc02041b60cd5f12a463"
+  },
+  {
+    "file": "pp-neue-montreal-italic.woff2",
+    "source": "ppneuemontreal-italic.otf",
+    "archive": "pp-neue-montreal-cufonfonts.zip",
+    "sourceWeight": 400,
+    "bytes": 52212,
+    "sha256": "b0abf39f0c53b6604966f7d5e34b24f973b3c822090553d73c74347cb962771d"
+  },
+  {
+    "file": "helvetica-neue-regular.woff2",
+    "source": "HelveticaNeueRoman.otf",
+    "archive": "helvetica-neue-5.zip",
+    "sourceWeight": 400,
+    "bytes": 205720,
+    "sha256": "7891ccfa749e404bf4e407f0540b21b80bfb14159000335c62f5799efd212e16"
+  },
+  {
+    "file": "helvetica-neue-medium.woff2",
+    "source": "HelveticaNeueMedium.otf",
+    "archive": "helvetica-neue-5.zip",
+    "sourceWeight": 500,
+    "bytes": 92328,
+    "sha256": "5cdd38eaae97b4644e3d1d88e2b669229ced719e22cfaeac23d2a7c12b548079"
+  },
+  {
+    "file": "helvetica-neue-bold.woff2",
+    "source": "HelveticaNeueBold.otf",
+    "archive": "helvetica-neue-5.zip",
+    "sourceWeight": 700,
+    "bytes": 200512,
+    "sha256": "84cbe56e653d15a27b40d9859f750ed8b55f8e839f3df3370a5fd36cbb0b7d5a"
+  },
+  {
+    "file": "helvetica-neue-italic.woff2",
+    "source": "HelveticaNeueItalic.ttf",
+    "archive": "helvetica-neue-5.zip",
+    "sourceWeight": 400,
+    "bytes": 88604,
+    "sha256": "3277abd95cc83f8d3f0723f697ee0129fda55a0ecd3582d85191abdbc5edc896"
+  },
+  {
+    "file": "helvetica-neue-bold-italic.woff2",
+    "source": "HelveticaNeueBoldItalic.otf",
+    "archive": "helvetica-neue-5.zip",
+    "sourceWeight": 700,
+    "bytes": 197172,
+    "sha256": "c8fa788ea7a9fe19d725360d6fb1b3b514fa3c848256a5348e1a7cee68b85af4"
+  }
+]

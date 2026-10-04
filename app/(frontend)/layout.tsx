@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import '@fontsource/unbounded/latin-700.css';
-import '@fontsource/unbounded/latin-900.css';
 import '../globals.css';
 import '../experience.css';
 import '../studio.css';
@@ -11,6 +9,7 @@ import '../assistant.css';
 import '../ai-zone.css';
 import '../windows.css';
 import '../resources-chat.css';
+import '../typography.css';
 import { SiteShell } from '@/components/site-shell';
 import { ContentProvider } from '@/components/content-provider';
 import { getStudioContent } from '@/lib/cms-content';
