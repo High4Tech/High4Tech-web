@@ -4,6 +4,7 @@ import * as migration_20261003_110749_assistant_knowledge from './20261003_11074
 import * as migration_20261003_160640_platform_resources_live_chat from './20261003_160640_platform_resources_live_chat';
 import * as migration_20261003_190618_chat_profiles_and_inquiries from './20261003_190618_chat_profiles_and_inquiries';
 import * as migration_20261004_074737_platform_security from './20261004_074737_platform_security';
+import * as migration_20261004_171942_editorial_media_store from './20261004_171942_editorial_media_store';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261004_074737_platform_security.up,
     down: migration_20261004_074737_platform_security.down,
-    name: '20261004_074737_platform_security'
+    name: '20261004_074737_platform_security',
+  },
+  {
+    up: migration_20261004_171942_editorial_media_store.up,
+    down: migration_20261004_171942_editorial_media_store.down,
+    name: '20261004_171942_editorial_media_store'
   },
 ];

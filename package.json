@@ -19,6 +19,7 @@
     "deployment:verify": "node --import tsx scripts/verify-deployment.ts",
     "assistant:verify": "node --import tsx scripts/verify-assistant.ts",
     "assistant:verify:cms": "node --env-file=.env --import tsx scripts/verify-assistant-cms.ts",
+    "editorial:verify": "node --import tsx scripts/verify-editorial-store.ts",
     "resources:verify": "node --import tsx scripts/verify-resources.ts",
     "chat:verify:cms": "node --env-file=.env --import tsx scripts/verify-chat-cms.ts",
     "chat:verify:network": "node --import tsx scripts/verify-chat-network.ts"

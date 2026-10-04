@@ -8,9 +8,11 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Search, Wifi, Folder, Grid2X2, List, Home, Sparkles, Box, NotebookPen, Mail, CalendarDays, Send, Monitor, ChevronRight, MessageCircle, Command, X, PanelLeft, Minus, Maximize2, Sun, Moon, Clock3, Play, Pause, DollarSign, BrainCircuit, Gamepad2 } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { Symbol, ResourceCard, ArticleArt } from './ui';
-import { Newsroom, Pricing, PlayArea, BrandIcon } from './studio-sections';
+import { Pricing, PlayArea, BrandIcon } from './studio-sections';
 import { AIZone } from './ai-zone';
 import { StudioMail } from './studio-mail';
+import { ContactWorkspace, CalendarWorkspace } from './contact-workspace';
+import { NewsroomLibrary, NewsroomStory } from './newsroom';
 import { MacIcon, Toolkit, Gallery, SafariPreview } from './studio-apps';
 import { SoundToggle, playUiSound } from './sound';
 import { StudioOverview, ProjectLibrary, ProjectCase, ExpertiseLibrary, ExpertiseDetail } from './inner-pages';
@@ -25,7 +27,7 @@ const apps = [
   {id:'tools',label:'App Store',path:'/tools-and-resources',icon:Box,color:'cream'},
   {id:'studio',label:'The studio',path:'/about',icon:Monitor,color:'peach'},
   {id:'journal',label:'Newsroom',path:'/newsroom',icon:NotebookPen,color:'yellow'},
-  {id:'contact',label:'Mail',path:'/contact',icon:Mail,color:'blue'},
+  {id:'contact',label:'Mail',path:'/mail',icon:Mail,color:'blue'},
   {id:'assistant',label:'Assistant',path:'/assistant',icon:Sparkles,color:'orb'},
   {id:'calendar',label:'Calendar',path:'/calendar',icon:CalendarDays,color:'calendar'},
   {id:'home',label:'Home',path:'/',icon:Home,color:'home'},
@@ -38,7 +40,7 @@ const apps = [
 ];
 type StudioWindow={id:string;path:string;x:number;y:number;z:number;minimized:boolean;maximized:boolean;positioned?:boolean;motion?:'minimize'|'restore'|'zoom'};
 type OpenApp=(path:string)=>void;
-function appFor(path:string){if(path.startsWith('/blog'))path=path.replace('/blog','/newsroom');return apps.find(a=>path===a.path||(a.path!=='/'&&path.startsWith(a.path+'/')))||{id:'info',label:'Read me',path,icon:NotebookPen,color:'cream'};}
+function appFor(path:string){if(path==='/contact')return {...apps.find(a=>a.id==='contact')!,label:'Contact',path:'/contact'};if(path.startsWith('/blog'))path=path.replace('/blog','/newsroom');return apps.find(a=>path===a.path||(a.path!=='/'&&path.startsWith(a.path+'/')))||{id:'info',label:'Read me',path,icon:NotebookPen,color:'cream'};}
 function createWindow(path:string,z:number,index=0):StudioWindow {return {id:`window-${z}`,path,x:index*24,y:index*20,z,minimized:false,maximized:false};}
 
 export function DesktopShell(){
@@ -139,7 +141,7 @@ function AppWindow({window:w,active,sidebar,setSidebar,onFocus,onClose,onMinimiz
     <header className="window-titlebar" data-tip="windows" onDoubleClick={e=>{if(!(e.target as HTMLElement).closest('button'))onZoom();}} onPointerDown={startDrag}>
       <div className="traffic-lights"><button className="close" aria-label={`Close ${app.label}`} onClick={onClose}><X size={9}/></button><button className="minimize" aria-label={`Minimize ${app.label}`} onClick={onMinimize}><Minus size={9}/></button><button className="maximize" aria-label={`${w.maximized?'Restore':'Maximize'} ${app.label}`} onClick={onZoom}><Maximize2 size={8}/></button></div><span><app.icon size={13}/>{label}</span><button className="window-sidebar-toggle" aria-label="Toggle sidebar" onClick={()=>setSidebar(!sidebar)}><PanelLeft size={15}/></button>
     </header>
-    <div className="window-layout">{!compact&&<aside className="finder-sidebar"><span className="sidebar-label">FAVORITES</span>{apps.filter(a=>['home','work','services','studio','journal','ai','pricing'].includes(a.id)).sort((a,b)=>a.id==='home'?-1:b.id==='home'?1:0).map(a=><button key={a.id} data-tip={a.id} className={app.id===a.id?'selected':''} onClick={()=>open(a.path)}><a.icon size={16}/>{a.label}{a.id==='work'&&<small>{projects.length}</small>}</button>)}<a href={socials.whatsapp} target="_blank" rel="noopener noreferrer"><BrandIcon name="whatsapp"/>WhatsApp<ArrowUpRight size={11}/></a><div className="sidebar-brand"><img src={settings.logo} alt={settings.agencyName}/></div></aside>}
+    <div className="window-layout">{!compact&&<aside className="finder-sidebar"><span className="sidebar-label">FAVORITES</span>{apps.filter(a=>['home','work','services','tools','studio','journal','pricing'].includes(a.id)).sort((a,b)=>a.id==='home'?-1:b.id==='home'?1:0).map(a=><button key={a.id} data-tip={a.id} className={app.id===a.id?'selected':''} onClick={()=>open(a.path)}><a.icon size={16}/>{a.id==='tools'?'Tools & resources':a.label}{a.id==='work'&&<small>{projects.length}</small>}</button>)}<a href={socials.whatsapp} target="_blank" rel="noopener noreferrer"><BrandIcon name="whatsapp"/>WhatsApp<ArrowUpRight size={11}/></a><div className="sidebar-brand"><img src={settings.logo} alt={settings.agencyName}/></div></aside>}
       <div className="window-main">{!compact&&<div className="finder-toolbar"><button aria-label="Back to folder" disabled={w.path===app.path} onClick={()=>open(app.path)}><ArrowLeft size={17}/></button><span className="finder-breadcrumb">High4Tech <ChevronRight size={12}/><strong>{app.label}</strong>{w.path!==app.path&&<><ChevronRight size={12}/><span>{label}</span></>}</span>{['work','tools','journal'].includes(app.id)&&w.path===app.path&&<><label className="finder-search"><Search size={13}/><input aria-label={`Search ${app.label}`} value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search"/></label>{app.id==='work'&&<button aria-label={list?'Show grid view':'Show list view'} onClick={()=>setList(!list)}>{list?<Grid2X2 size={17}/>:<List size={17}/>}</button>}</>}</div>}
         <PageScroll key={w.path} active={active&&!w.minimized&&w.motion!=='minimize'} native={['assistant','safari','contact','calendar'].includes(app.id)}><AppContent path={w.path} open={open} search={search} list={list}/></PageScroll>
         {!compact&&<footer className="window-status"><span><Folder size={11}/> High4Tech / {app.label.toLowerCase()}</span><span>{app.id==='work'?`${projects.length} projects`:'Made of ideas.'}</span></footer>}
@@ -158,14 +160,15 @@ function AppContent({path,open,search,list}:{path:string;open:OpenApp;search:str
   if(path==='/safari')return <SafariPreview open={open}/>;
   if(path==='/toolkit')return <Toolkit/>;
   if(path==='/assistant')return <Assistant open={open}/>;
-  if(path==='/calendar')return <CalendarPreview open={open}/>;
+  if(path==='/calendar')return <CalendarWorkspace open={open}/>;
   if(path.startsWith('/projects'))return path==='/projects'?<ProjectLibrary open={open} search={search} list={list}/>:<ProjectCase slug={path.split('/')[2]} open={open}/>;
   if(path.startsWith('/services'))return path==='/services'?<ExpertiseLibrary open={open}/>:<ExpertiseDetail slug={path.split('/')[2]} open={open}/>;
   if(path.startsWith('/tools-and-resources/')){const resource=resources.find(r=>path==='/tools-and-resources/'+r.id);return resource?<ResourceDetail resource={resource} open={open}/>:<p className="os-empty">That resource is no longer available.</p>;}
-  if(path==='/tools-and-resources')return <div className="finder-content"><div className="os-page-heading"><div><span className="os-kicker">APP STORE / TOOLS & RESOURCES</span><h1>The right tool.<br/>For your platform.</h1><p>Explore the studio’s collection, from storefronts to custom builds.</p></div></div><ResourceBrowser open={open} search={search}/></div>;
+  if(path==='/tools-and-resources')return <ResourceBrowser open={open} search={search}/>;
   if(path==='/about')return <StudioOverview open={open}/>;
-  if(path.startsWith('/newsroom')||path.startsWith('/blog')){const article=articles.find(a=>path.endsWith('/'+a.slug));return article?<article className="newsroom-article"><button className="os-text-button" onClick={()=>open('/newsroom')}><ArrowLeft size={14}/> Newsroom</button><span className="os-kicker">{article.category} · {article.read}</span><h1>{article.title}</h1><p className="newsroom-summary">{article.summary}</p>{article.image?<img className="newsroom-cover" src={article.image} alt={article.title}/>:<ArticleArt kind={article.artwork}/>}<div className="newsroom-body">{article.paragraphs.map(p=><p key={p}>{p}</p>)}</div></article>:<Newsroom open={open} search={search}/>;}
-  if(path==='/contact')return <StudioMail/>;
+  if(path.startsWith('/newsroom')||path.startsWith('/blog')){const article=articles.find(a=>path.endsWith('/'+a.slug));return article?<NewsroomStory article={article} open={open}/>:<NewsroomLibrary open={open} search={search}/>;}
+  if(path==='/mail')return <StudioMail/>;
+  if(path==='/contact')return <ContactWorkspace/>;
   if(path==='/privacy'||path==='/terms')return <div className="os-reading"><span className="os-kicker">STUDIO NOTES / PREVIEW</span><h1>{path==='/privacy'?'Your privacy.':'A few ground rules.'}</h1><p>Inquiry forms let you review a draft, send a project brief to the support inbox, or open your email app. Assistant questions are sent to our server to search published studio knowledge. They are not sent to an external AI provider. When studio support is connected, conversations are saved for the team and associated with a private browser cookie. Name, phone number, and email are required to start chat. These self-reported details and a recent chat cache stay in your browser; a private cookie resumes the conversation on this browser. Email alone cannot recover another browser’s history. In preview mode, chat is not saved to the CMS.</p><p>External tools, social links, email, and WhatsApp open their respective services, whose own terms and privacy policies apply. No purchases or account creation take place on this website.</p><p>Final legal policies will be added before the public launch once the site’s services and integrations are finalized.</p><button className="os-button" onClick={()=>open('/contact')}>Contact the studio <ArrowUpRight size={15}/></button></div>;
   return <div className="os-reading"><h1>This folder is empty.</h1><p>That page could not be found.</p><Link href="/" className="os-button">Back to home <ArrowUpRight size={16}/></Link></div>;
 }
@@ -173,5 +176,3 @@ function AppContent({path,open,search,list}:{path:string;open:OpenApp;search:str
 function Assistant({open}:{open:OpenApp}){
   return <StudioAssistant open={open}/>;
 }
-
-function CalendarPreview({open}:{open:OpenApp}){const {settings}=useStudioContent();const [date,setDate]=useState('');const [topic,setTopic]=useState('A new website');return <div className="calendar-preview"><CalendarDays size={35} strokeWidth={1.2}/><span className="os-kicker">A FIRST CONVERSATION</span><h1>Big ideas.<br/>Small beginnings.</h1><p>A little time to talk about what you have in mind and where we could take it.</p>{settings.calLink&&<a className="os-button" href={settings.calLink} target="_blank" rel="noopener noreferrer">Book a discovery call <ArrowUpRight size={15}/></a>}<label>What’s on your mind?<select value={topic} onChange={e=>setTopic(e.target.value)}><option>A new website</option><option>Design & branding</option><option>An app or custom software</option><option>Something else</option></select></label><label>A date you have in mind<input type="date" value={date} onChange={e=>setDate(e.target.value)} min={new Date().toLocaleDateString('en-CA')}/></label><div className="calendar-note"><span>CALENDAR PREVIEW</span><p>{date?`Your preference: ${date}. `:''}Live availability will be added here. No meeting has been scheduled.</p></div><button className="os-button" onClick={()=>{sessionStorage.setItem('h4t-call-preference',JSON.stringify({topic,date}));open('/contact');}}>Prepare a call request <ArrowUpRight size={15}/></button></div>;}

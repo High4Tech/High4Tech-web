@@ -26,7 +26,7 @@ Collection records support drafts and published versions. An unfinished revision
 
 The server sends public content through `/api/studio-content`. The studio refreshes on tab focus and every 30 seconds while visible. Initial content is seeded once from `lib/studio-content.ts` / `lib/content.ts`; those files provide starting content rather than live editing.
 
-Mail is a configurable welcome message with a mailto Reply action, rather than a connected inbox. The assistant retrieves exact passages from published studio knowledge, cites the source and declines unsupported questions. It uses no external AI API and saves no conversation history. CMS password-reset emails require an email adapter. Paid tools use their external purchase platforms.
+Mail is a configurable welcome message with a mailto Reply action, rather than a connected inbox. The assistant retrieves exact passages from published studio knowledge, cites the source and declines unsupported questions. It uses no external AI API and saves private conversation history in the configured CMS. CMS password-reset emails require an email adapter. Paid tools use their external purchase platforms.
 
 The custom `/admin` dashboard contains assistant counts, file/Q&A shortcuts and a visitor-answer test panel. See [assistant-knowledge.md](assistant-knowledge.md) for imports, limits and publication behavior.
 
@@ -52,3 +52,15 @@ Vercel uses remote libSQL and the official Blob adapter. Until all hosted settin
 - [Access control](https://payloadcms.com/docs/access-control/overview)
 - [Database migrations](https://payloadcms.com/docs/database/migrations)
 - [Email adapters](https://payloadcms.com/docs/email/overview)
+
+## Editorial images and tool previews
+
+In **Newsroom**, set **Card image** for feed/Home cards and **Article banner image** for the inner page. The old **Legacy image** remains a fallback so existing articles keep working. With no uploaded media, original High4Tech editorial artwork appears. Set Published date to choose the recent-blog ordering; undated entries retain the existing sort order.
+
+Add **Images within the article** rows to place images after a 1-based paragraph number. Each row supports an uploaded image (or safe local path), alt text and optional caption. Images with an insertion number beyond the article length appear at its end. Save a draft to review privately, then publish.
+
+In **Resources**, add a **Tool preview image** or safe local image path, the existing YouTube demo links, platform/category/purpose information and Free/Paid status. **Demo checkout price (USD)** controls the illustrative amount only. The checkout form saves no customer/order and charges nothing. Use the resource URL for real external access or purchases.
+
+The additive `20261004_171942_editorial_media_store` migration supplies these fields in production. Follow the existing deployment migration workflow; do not apply the chain to an auto-synced development database. `npm run editorial:verify` uses its own isolated fixture database/media folder and checks the full chain, independent card/banner media and private revisions without touching the existing database.
+
+Local development note: Drizzle's schema push produced duplicate CREATE INDEX statements while normalizing the new SQLite media references. The existing local database was backed up and its pending schema normalization was tested on a private clone, then applied atomically with duplicate index statements removed. All tables/records, integrity and foreign keys were verified; the next schema inspection returned no pending changes. No backup or customer records are included in Git. Production uses the verified additive migration chain, not the development repair.

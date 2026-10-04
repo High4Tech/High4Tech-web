@@ -6,7 +6,7 @@ export const resourcePlatforms = [
 ] as const;
 export type ResourcePlatform = typeof resourcePlatforms[number]['value'];
 export type StudioVideo = { title?: string; url: string };
-export type StudioResource = { id: string; title: string; description: string; category: string; price: string; url: string | null; icon: string; label: string; platforms?: ResourcePlatform[]; capabilities?: string; videos?: StudioVideo[] };
+export type StudioResource = { id: string; title: string; description: string; category: string; price: string; url: string | null; icon: string; label: string; platforms?: ResourcePlatform[]; capabilities?: string; videos?: StudioVideo[]; image?:string; demoPrice?:number };
 export function platformsOf(value: unknown): ResourcePlatform[] {
   const platforms = Array.isArray(value) ? value.filter((p): p is ResourcePlatform => resourcePlatforms.some(option => option.value === p)) : [];
   return platforms.length ? platforms : ['custom'];

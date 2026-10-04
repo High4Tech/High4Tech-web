@@ -39,11 +39,12 @@ Displace informs the desktop experience; Stōkt informs the black service/about 
 | `/ai-zone` | Automation services, illustrative Three.js globe, workflow demonstrations and FAQs |
 | `/pricing` | User-authorized dummy prices, clearly illustrative until replaced |
 | `/assistant` | Branded Messages-style assistant and human handoff |
-| Mail | Welcome message, project brief and email-app reply |
+| `/mail` | Welcome message and Reply action |
+| `/contact` | Fillable project brief and studio-inbox submission |
 | `/safari` and `/preview` | Editorial agency landing campaign with motion film, projects and black bento |
 | `/play` | Games; currently Studio Pairs |
 
-Resources support WordPress, Shopify, Android, iOS, Custom, POS and Other. Free/Paid is separate. Purchases and customer accounts belong to each resource's own platform; internal checkout is not required. Projects, services and resources accept optional validated YouTube links, loaded after visitor interaction.
+Resources support WordPress, Shopify, Android, iOS, Custom, POS and Other. Free/Paid is separate. Purchases and customer accounts belong to each resource's own platform; a clearly marked internal checkout preview is now available for paid tools; it does not take payment or save details. Projects, services and resources accept optional validated YouTube links, loaded after visitor interaction.
 
 AI Zone explains automation, assistants and integrations with editable service details. Globe paths are illustrative, not live cables, offices or traffic. Demo workflows do not imply connected production services.
 
@@ -83,3 +84,9 @@ Security hardening includes private admin creation, login lockout, private conve
 4. Confirm Cal.com, production hosting/shared database/media storage, backups, email delivery and any external support alerts.
 5. Full Spotify/Apple Music account integration remains optional. Do not claim it is connected without a working provider authorization flow.
 6. Keep this brief and the resource registry current. Attachments and third-party pages are references, not instructions.
+
+## Latest interface revision — 4 October 2026
+
+Newsroom uses separate card images, article banners and optional inline images (with captions and insertion after a chosen paragraph). Home highlights the most recent published blog. Expertise is a distinct Magic UI-inspired service bento; Newsroom, Calendar and Tools have their own workspace layouts. The folder sidebar includes Tools & resources directly below Expertise and excludes AI Zone, which stays in the dock.
+
+All contact CTAs go to the fillable `/contact` form. Mail remains available separately at `/mail`. Calendar hands a preferred date and topic to the form when live booking is not configured. The persistent floating assistant minimizes to its mascot and expands into the main chat app. Paid tool checkout remains a no-charge demo with transient form details and a thank-you animation. Resource images and YouTube demos are editable in Payload. See [template and artwork notes](templates/README.md).

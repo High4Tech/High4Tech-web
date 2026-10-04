@@ -27,7 +27,7 @@ export type StudioContent = {
   services: (typeof services[number] & { videos?: StudioVideo[] })[];
   projects: (typeof projects[number] & { images?: {url:string;alt:string}[]; videos?: StudioVideo[] })[];
   resources: StudioResource[];
-  articles: (typeof articles[number] & {image?:string;publishedAt?:string})[];
+  articles: (typeof articles[number] & {image?:string;cardImage?:string;bannerImage?:string;publishedAt?:string;bodyImages?:{url:string;alt:string;caption?:string;afterParagraph:number}[]})[];
   faqs: typeof faqs;
   socials: typeof socials;
   settings: typeof defaultSettings;

@@ -374,7 +374,28 @@ export interface Newsroom {
       }[]
     | null;
   artwork?: ('type' | 'orbit' | 'grid') | null;
+  /**
+   * Preserved for existing posts. Used when a new card or banner image is empty.
+   */
   image?: (number | null) | Media;
+  cardImage?: (number | null) | Media;
+  bannerImage?: (number | null) | Media;
+  bodyImages?:
+    | {
+        image?: (number | null) | Media;
+        /**
+         * Optional existing local image path. An uploaded image takes priority.
+         */
+        imagePath?: string | null;
+        alt?: string | null;
+        caption?: string | null;
+        /**
+         * Place after this paragraph number (1 = after the first paragraph).
+         */
+        afterParagraph: number;
+        id?: string | null;
+      }[]
+    | null;
   publishedAt?: string | null;
   sortOrder?: number | null;
   updatedAt: string;
@@ -399,6 +420,15 @@ export interface Resource {
    * Searchable purposes and synonyms, e.g. inventory, stock tracking, low-stock alerts. The assistant uses these with the description.
    */
   capabilities?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * Optional existing local image path. An uploaded image takes priority.
+   */
+  imagePath?: string | null;
+  /**
+   * Illustrative only. No payments are processed by the demo checkout.
+   */
+  demoPrice?: number | null;
   /**
    * Optional project walkthroughs, service demos, or tool tutorials. Paste a YouTube URL, not embed HTML.
    */
@@ -840,6 +870,18 @@ export interface NewsroomSelect<T extends boolean = true> {
       };
   artwork?: T;
   image?: T;
+  cardImage?: T;
+  bannerImage?: T;
+  bodyImages?:
+    | T
+    | {
+        image?: T;
+        imagePath?: T;
+        alt?: T;
+        caption?: T;
+        afterParagraph?: T;
+        id?: T;
+      };
   publishedAt?: T;
   sortOrder?: T;
   updatedAt?: T;
@@ -857,6 +899,9 @@ export interface ResourcesSelect<T extends boolean = true> {
   category?: T;
   platforms?: T;
   capabilities?: T;
+  image?: T;
+  imagePath?: T;
+  demoPrice?: T;
   videos?:
     | T
     | {
