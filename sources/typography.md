@@ -4,7 +4,7 @@ Confirmed 4 October 2026. This supersedes earlier Unbounded, Georgia and system-
 
 Display headings use **PP Neue Montreal**. Paragraphs, navigation, buttons, forms, conversation text and small interface headings use **Helvetica Neue**. The original wordmark remains an image; do not recreate it in either font.
 
-The system follows the user's [Untitled High4Tech typography library](https://www.figma.com/design/NU1SlgUvw6zmalvW1Qhj6K/?node-id=18-1951), inspected at its Typography frame `1023:36826`. Its font families are replaced by High4Tech's supplied families; its type scale and tracking are retained.
+The system follows the user's [Untitled High4Tech typography library](https://www.figma.com/design/NU1SlgUvw6zmalvW1Qhj6K/?node-id=18-1951), inspected at its Typography frame `1023:36826`. Its font families are replaced by High4Tech's supplied families. The reference scale below supplies the size tokens; large display roles use the tighter leading requested in the follow-up.
 
 | Role | Size / line height | Tracking | High4Tech family |
 | --- | --- | --- | --- |
@@ -22,6 +22,12 @@ The system follows the user's [Untitled High4Tech typography library](https://ww
 
 Large headings interpolate between scale endpoints to fit resizable studio windows. Reading copy uses Text md; compact cards use Text sm. OS chrome retains compact sizes where fixed menu/dock geometry requires them. Small UI headings use Helvetica. Mobile form controls use at least 16px. Theme changes never switch the fonts.
 
+Large headings use the supplied **PP Neue Montreal Bold (700)**, with −2% relative tracking and balanced wrapping. Page titles use 1.12 line height; Home/Safari hero headings use 1.10 and the centered AI Zone headline uses 1.08. Smaller headings and body copy retain the reference leading. Do not synthesize an unavailable Extra Bold or Black face.
+
+## Responsive content widths
+
+Page content grids stop at **1280px** and center inside the available window pane. Reading pages stop at 760px, newsroom articles at 900px with a narrower reading body, and long paragraphs at 68 characters. Responsive gutters and container queries follow the actual window width. Finder sidebars, toolbars, window frames, Safari controls, and Mail's application layout remain outside these content rails. AI Zone section backgrounds fill the pane; their content stays inside the 1280px rail, with an 860px centered hero copy column and a bounded upper-hemisphere globe above it.
+
 Regular and medium use supplied 400 and 500 files; bold uses 700. The inspected library's semibold token resolves to 700, so semibold and bold both use the supplied bold face. Unsupported intermediate weights are replaced; synthetic weight/style rendering is disabled. Italic assets cover editorial emphasis.
 
 ## Assets and implementation
@@ -30,5 +36,6 @@ Regular and medium use supplied 400 and 500 files; bold uses 700. The inspected 
 - Selected static faces are compressed to WOFF2 without glyph subsetting, stored in `public/fonts/`, and loaded on demand with `font-display: swap`.
 - [Font manifest](font-manifest.json) records source names, source weights, compressed sizes and hashes.
 - `app/typography.css` defines shared faces, scale tokens and role mappings. Both the frontend and Payload layouts import it after their component styles.
+- `app/content-layout.css` defines frontend content rails independently of the desktop chrome.
 - Existing `--display`, `--body`, `--os-font` and Payload `--font-body` aliases resolve to the shared families. There are no Google Fonts requests or active Unbounded imports.
 - Maintain this pairing in future screens; select a semantic scale token instead of introducing another font family.

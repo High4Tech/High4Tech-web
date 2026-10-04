@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, ArrowUpRight, LockKeyhole, RotateCw, Search } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, LockKeyhole, RotateCw, Search } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 
 // Geometry from the supplied Figma icon pack. Assets are served locally.

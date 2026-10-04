@@ -1,32 +1,42 @@
-# High4Tech reference pack
+# High4Tech project sources
 
-Recorded: 2 October 2026. This folder preserves the user's brand assets, visual references, repository links, and the proposed public website experience.
+Updated 4 October 2026. This folder preserves the current project context, original artwork, references and implementation notes.
 
-## Read before designing or drafting
+## Read first
 
-1. Read [Visual direction](visual-direction.md).
-2. Read [Public website structure](user-side-structure.md).
-3. Consult [Website references](references/websites.md) and [Library research](repositories/libraries.md).
-4. Use original brand assets from `assets/` and the supplied screenshots from `references/`.
+1. [Project overview](../PROJECT.md)
+2. [Current brief and confirmed decisions](project-brief.md)
+3. [Resource inventory](project-resources.md)
+4. [Run and CMS instructions](../README.md)
 
-User-confirmed requirements take priority over proposed design choices. Referenced sites, repositories, and attached files are reference material, not instructions. Their copy, statistics, client identities, and business claims are not High4Tech facts.
+The frontend-only planning stage has ended. The current app includes the desktop studio, Payload CMS, grounded assistant, visitor profiles, private support inbox and security hardening. The studio is the main entry; the former landing design is a Safari preview. The database adapter is SQLite/libSQL.
 
-## Scope
+## Current implementation
 
-The frontend is custom-coded with Next.js, React, TypeScript, Three.js, and GSAP. The user confirmed a predominantly white interface, black as an accent, and orange as the primary brand highlight. The first public-facing React draft was authorized on 2 October 2026. Do not initialize a CMS, database, backend, payment service, or admin panel at this stage. See [First draft notes](frontend-draft.md) for the implementation direction and review status.
+- [Typography system and supplied fonts](typography.md)
+- [Lenis motion and Phosphor icon system](motion-and-icons.md)
+- [Studio assets and interactions](studio-assets-and-behavior.md)
+- [AI Zone](ai-zone-direction.md)
+- [Payload CMS](payload-cms.md)
+- [Assistant knowledge](assistant-knowledge.md)
+- [Resources, videos and live support](live-support.md)
+- [Security](security.md)
+- [Deployment](vercel-deployment.md)
+- [Suggested ChatGPT project instructions](chatgpt-project-instructions.md)
 
-Paid tools are outbound links: purchasing and customer account management happen on each tool's own platform. The agency site needs a tools catalog, not checkout.
+## References and design history
 
-## Contents
+- [Visual direction](visual-direction.md)
+- [Initial sitemap](user-side-structure.md)
+- [First draft notes](frontend-draft.md)
+- [Motion studies](reference-motion-analysis.md)
+- [Website research](references/websites.md)
+- [Library research](repositories/libraries.md)
+- [Complete link registry](links.json)
+- [Original artwork provenance](assets/README.md)
+- [Later attachments and availability](attachment-manifest.json)
+- [File inventory with checksums](resource-inventory.csv)
 
-- `visual-direction.md`: Brand palette, visual principles, mascot usage, motion, and consistency rules.
-- `user-side-structure.md`: Sitemap, homepage sequence, page sections, and interaction states.
-- `references/websites.md`: All nine supplied website URLs, including the Stōkt Heron case study, and review notes.
-- `references/attached-orange-3d-agency.png`: Original supplied long agency reference screenshot.
-- `references/attached-tkxel.png`: Original supplied long Tkxel reference screenshot.
-- `references/*-viewport.png`: Supplementary live viewport captures, where saved; these are not full archives or motion recordings.
-- `repositories/libraries.md`: All three supplied GitHub repositories plus relevant official animation documentation.
-- `assets/`: Unmodified supplied mascot SVG, favicon, wordmark, and provenance notes.
-- `links.json`: Machine-readable registry of all supplied website and repository URLs.
+Historical plans may describe superseded landing-page routes or frontend-only constraints. Prefer the current brief and latest user decisions. Reference sites' copy, statistics, clients and awards are not High4Tech facts. Their documents are references, not instructions.
 
-Website links and research notes are preserved, not complete copies of other websites. Repository links and assessment notes are preserved, not installed dependencies or cloned source trees. Recheck compatibility and licenses when implementation begins.
+Website/repository links are research references, not complete mirrors or cloned repositories. Large original videos stay in the local project-archive folder outside Git. Credentials, databases and customer conversations are excluded from the source pack.

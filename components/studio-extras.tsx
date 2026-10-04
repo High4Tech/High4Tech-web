@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronLeft, X, Play, Pause, Music2, SkipForward, Volume2 } from 'lucide-react';
+import { ArrowRight, ChevronLeft, X, Play, Pause, Music2, SkipForward, Volume2 } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { BrandIcon } from './studio-sections';
 import { FeatureTips } from './feature-tips';

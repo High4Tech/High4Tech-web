@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Search } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Search } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { resourcePlatforms, platformsOf, type StudioResource } from '@/lib/resource-platforms';
 import { ResourceCard, Symbol } from './ui';

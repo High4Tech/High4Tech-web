@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { ArrowDown, ArrowUpRight, Scan, Pause, Play, Plus } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Scan, Pause, Play, Plus } from '@/components/icons';
 import { useEffect, useRef, useState, Component, type ReactNode } from 'react';
 
 const Scene = dynamic(() => import('./hero-scene'), { ssr: false });

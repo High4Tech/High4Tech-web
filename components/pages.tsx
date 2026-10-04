@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { StudioContent } from '@/lib/studio-content';
 import { StudioVideos } from './studio-videos';
-import { ArrowUpRight, ArrowLeft, Plus } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, Plus } from '@/components/icons';
 import { Hero } from './hero';
 import { LandingV2 } from './landing-v2';
 import { BookingButton } from './site-shell';

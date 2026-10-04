@@ -1,7 +1,7 @@
 'use client';
 import { playUiSound } from './sound';
 import { useState, useEffect } from 'react';
-import { ArrowUpRight, Check, Copy, Mail, ArrowLeft } from 'lucide-react';
+import { ArrowUpRight, Check, Copy, Mail, ArrowLeft } from '@/components/icons';
 import { chatRequest } from '@/lib/chat-client';
 import { readVisitorCache, writeVisitorCache } from '@/lib/chat-cache';
 import { parseVisitorProfile } from '@/lib/chat-profile';

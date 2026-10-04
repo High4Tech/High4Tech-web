@@ -1,0 +1,101 @@
+{
+  "recorded": "2026-10-04",
+  "note": "Original brand artwork and the first screenshots are already preserved; see sources/assets/README.md. Eight sound originals are preserved under public/audio/ui with mappings in studio-assets-and-behavior.md. Unavailable means missing at the supplied original location, not a claim about every backup.",
+  "attachments": [
+    {
+      "original": "codex-clipboard-cff0a105-1a0a-41d7-ba0b-b2015e5de626.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/stokt-services-bento.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-9dd142a6-c7f5-4d52-96b5-e0d06ff96eb1.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/stokt-about-bento.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-d5771232-e4d2-474d-bedb-650de31b1e33.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/stokt-toolbox-testimonials.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-63a98d0c-395d-4961-a452-2ed5ff5e3afe.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/displace-live-widgets.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-c6aa6c92-bb46-413f-8614-2202bf4c64b1.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/displace-desktop-dock.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-26abe1ff-1cbf-4510-b2e1-e7e711bf417d.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/stokt-bento-layout.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-a9fad367-3b7e-417b-ad8e-e41f27f09385.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/local-server-error-history.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-cb4f8ebe-b089-4a79-9763-40538cfaff87.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/vercel-server-error-history.png",
+      "status": "preserved"
+    },
+    {
+      "original": "codex-clipboard-d8af6182-9621-4eb6-8f04-6e1db3825c2a.png",
+      "role": "user-supplied screenshot",
+      "preservedPath": "sources/references/attachments/apple-messages-reference.png",
+      "status": "preserved"
+    },
+    {
+      "original": "20261002-0923-26.9258019.mp4",
+      "role": "user-supplied original video",
+      "status": "unavailable at supplied path",
+      "preservedPath": null,
+      "retainedStudy": "sources/references/video-studies/video-1-contact-sheet.jpg"
+    },
+    {
+      "original": "20261002-0925-30.1784477.mp4",
+      "role": "user-supplied original video",
+      "status": "unavailable at supplied path",
+      "preservedPath": null,
+      "retainedStudy": "sources/references/video-studies/video-2-contact-sheet.jpg"
+    },
+    {
+      "original": "20261002-0926-41.4519491.mp4",
+      "role": "user-supplied original video",
+      "status": "unavailable at supplied path",
+      "preservedPath": null,
+      "retainedStudy": "sources/references/video-studies/video-3-contact-sheet.jpg"
+    },
+    {
+      "original": "20261002-0927-38.4349345.mp4",
+      "role": "user-supplied original video",
+      "status": "unavailable at supplied path",
+      "preservedPath": null,
+      "retainedStudy": "sources/references/video-studies/video-4-contact-sheet.jpg"
+    },
+    {
+      "original": "20261003-1235-29.7251075.mp4",
+      "role": "user-supplied original video",
+      "status": "local archive; excluded from Git",
+      "preservedPath": "project-archive/videos/20261003-1235-29.7251075.mp4"
+    },
+    {
+      "original": "9PJB6pimDu8LsjZi85rDKOpOc.mp4",
+      "role": "user-supplied original video",
+      "status": "local archive; excluded from Git",
+      "preservedPath": "project-archive/videos/9PJB6pimDu8LsjZi85rDKOpOc.mp4",
+      "runtimeDerivative": "public/ai/neural-surface.mp4"
+    }
+  ]
+}

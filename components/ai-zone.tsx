@@ -1,9 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Plus, Play, Workflow, Bot, Database, Sparkles, FileText, Inbox, ShieldCheck, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight, Check, Plus, Play, Workflow, Bot, Database, Sparkles, FileText, Inbox, ShieldCheck, X } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { defaultAI } from '@/lib/studio-content';
+import { scrollPageTo } from './page-scroll';
 
 const Globe = dynamic(() => import('./ai-globe'), { ssr: false, loading: () => <div className="az-globe-loading"><img src="/ai/globe-fallback.svg" alt="Global network"/></div> });
 const workflows = [
@@ -39,19 +40,15 @@ export function AIZone({ open }: { open: (path: string) => void }) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const current = workflows[selected];
   useEffect(() => {
-    let disposed = false, context: { revert: () => void } | undefined, observer: IntersectionObserver | undefined;
+    let disposed = false, context: { revert: () => void } | undefined;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     void import('gsap').then(({ gsap }) => {
       if (disposed || !root.current) return;
-      context = gsap.context(self => {
+      context = gsap.context(() => {
         gsap.fromTo('[data-az-hero]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .8, stagger: .09, ease: 'power3.out' });
-        observer = new IntersectionObserver(entries => entries.forEach(entry => {
-          if (entry.isIntersecting) { self.add(() => { gsap.fromTo(entry.target, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .7, ease: 'power2.out' }); }); observer?.unobserve(entry.target); }
-        }), { root: root.current?.closest('.window-scroll'), threshold: .12 });
-        root.current?.querySelectorAll('[data-az-reveal]').forEach(element => observer?.observe(element));
       }, root);
     });
-    return () => { disposed = true; observer?.disconnect(); context?.revert(); };
+    return () => { disposed = true; context?.revert(); };
   }, []);
   useEffect(() => {
     if (!running) return;
@@ -59,13 +56,13 @@ export function AIZone({ open }: { open: (path: string) => void }) {
     timer.current = setTimeout(() => setStep(value => value + 1), matchMedia('(prefers-reduced-motion: reduce)').matches ? 250 : 1100);
     return () => { if (timer.current) clearTimeout(timer.current); };
   }, [running, step]);
-  const jump = (ref: React.RefObject<HTMLElement | null>) => ref.current?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+  const jump = (ref: React.RefObject<HTMLElement | null>) => { if (ref.current) scrollPageTo(ref.current); };
   function changeWorkflow(index: number) { setRunning(false); setSelected(index); setStep(0); }
   return <div className="ai-zone az-page" ref={root}>
     <nav className="az-nav" aria-label="AI Zone navigation"><div><img src={settings.logo} alt={settings.agencyName}/><span>AI ZONE</span></div><div><button onClick={() => jump(serviceSection)}>Capabilities</button><button onClick={() => jump(workflowSection)}>Workflows</button><button className="az-nav-contact" onClick={() => open('/contact')}>Let’s build <ArrowUpRight size={13}/></button></div></nav>
     <header className="az-hero">
-      <div className="az-hero-copy"><span className="az-eyebrow" data-az-hero><i/>INTELLIGENCE, PUT TO WORK.</span><h1 data-az-hero>Make room<br/>for your<br/><em>next move.</em></h1><p data-az-hero>AI assistants. Connected systems. Workflows that move your business forward—while your team stays in control.</p><div className="az-actions" data-az-hero><button className="az-cta az-primary" onClick={() => open('/contact')}>Build a workflow <ArrowUpRight size={15}/></button><button className="az-link" onClick={() => jump(workflowSection)}>See what’s possible <ArrowDown size={14}/></button></div><div className="az-hero-note" data-az-hero><span>HUMAN IDEAS.</span><span>INTELLIGENT EXECUTION.</span></div></div>
       <div className="az-hero-visual"><Globe/></div>
+      <div className="az-hero-copy"><span className="az-eyebrow" data-az-hero><i/>INTELLIGENCE, PUT TO WORK.</span><h1 data-az-hero>Make room for your<br/><em>next move.</em></h1><p data-az-hero>AI assistants. Connected systems. Workflows that move your business forward—while your team stays in control.</p><div className="az-actions" data-az-hero><button className="az-cta az-primary" onClick={() => open('/contact')}>Build a workflow <ArrowUpRight size={15}/></button><button className="az-link" onClick={() => jump(workflowSection)}>See what’s possible <ArrowDown size={14}/></button></div><div className="az-hero-note" data-az-hero><span>HUMAN IDEAS.</span><span>INTELLIGENT EXECUTION.</span></div></div>
       <div className="az-hero-footer"><span>HIGH4TECH / APPLIED AI</span><span>SCROLL TO CONNECT THE DOTS <ArrowDown size={12}/></span></div>
     </header>
     <section className="az-evolution" data-az-reveal><span className="az-eyebrow">THE SHIFT IS ALREADY HERE</span><div><h2>From answering questions<br/>to <em>moving work forward.</em></h2><p>AI is becoming part of the workflow: finding information, interpreting documents, and working with connected tools. The useful part is choosing the right task and building a dependable path around it.</p><div className="az-shift"><span>01 <strong>Understand</strong></span><ArrowRight size={14}/><span>02 <strong>Connect</strong></span><ArrowRight size={14}/><span>03 <strong>Act, with review</strong></span></div><a className="az-research" href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener noreferrer">Read about workflows & agents <ArrowUpRight size={11}/></a></div></section>

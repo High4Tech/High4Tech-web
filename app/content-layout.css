@@ -1,0 +1,74 @@
+/* Content rails belong to pages, never the Finder sidebar or window chrome. */
+:root {
+  --content-max: 1280px;
+  --reading-max: 760px;
+  --content-gutter: clamp(20px, 3cqw, 48px);
+}
+
+.studio-os .window-page-content > :is(.finder-content, .studio-home-content,
+  .os-project-detail, .os-about, .newsroom, .installed-apps,
+  .studio-gallery, .pricing-page, .play-area) {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  min-width: 0;
+}
+.studio-os :is(.finder-content, .studio-home-content, .newsroom,
+  .installed-apps, .studio-gallery, .pricing-page, .play-area) {
+  padding-inline: var(--content-gutter);
+}
+.studio-os .os-reading {
+  width: 100%;
+  max-width: var(--reading-max);
+  margin-inline: auto;
+}
+.studio-os .newsroom-article {
+  width: 100%;
+  max-width: 900px;
+  margin-inline: auto;
+}
+.studio-os :is(.os-reading, .newsroom-body, .mail-letter) p {
+  max-width: 68ch;
+  overflow-wrap: break-word;
+}
+.studio-os :is(.home-intro > p, .os-page-heading > p) {
+  max-width: 60ch;
+}
+.studio-os :is(.os-page-heading h1, .os-reading h1, .newsroom h1,
+  .newsroom-article h1, .home-intro h2) {
+  max-width: 24ch;
+  text-wrap: balance;
+}
+.studio-os .mail-compose-content {
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+}
+.studio-os :is(.resource-info, .news-copy, .pricing-grid > *,
+  .os-services > *, .installed-app) { min-width: 0; }
+
+/* Small resizable windows need the same adaptation as small browser screens. */
+@container (max-width: 600px) {
+  .studio-os :is(.finder-content, .studio-home-content, .newsroom,
+    .installed-apps, .studio-gallery, .pricing-page, .play-area) {
+    padding-inline: 20px;
+  }
+  .studio-os :is(.os-reading, .newsroom-article) { padding-inline: 20px; }
+  .studio-os :is(.pricing-grid, .newsroom-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .studio-os .newsroom-grid .news-feature { display: block; }
+  .studio-os .pricing-grid > article { display: flex; }
+  .studio-os .pricing-grid article > strong { align-self: flex-start; }
+  .studio-os .pricing-grid .os-button { align-self: stretch; }
+  .studio-os .home-bento { grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); }
+  .studio-os .home-bento-world { grid-column: 1 / -1; }
+  .studio-os .home-bento-people { flex-direction: column; align-items: stretch; }
+  .studio-os .home-bento-people img { width: 100%; max-width: 260px; margin-inline: auto; }
+}
+@container (max-width: 440px) {
+  .studio-os :is(.installed-grid, .gallery-grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+  }
+}

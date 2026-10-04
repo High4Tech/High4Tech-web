@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { ArrowUpRight, ArrowRight, Plus } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Plus } from '@/components/icons';
 import { services, projects, resources, articles, faqs } from '@/lib/content';
 import { useStudioContent } from './content-provider';
 import { BookingButton } from './site-shell';

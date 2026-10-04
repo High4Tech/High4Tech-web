@@ -1,6 +1,6 @@
 'use client';
 import { useEffect,useRef,useState } from 'react';
-import { Inbox,Send,PenSquare,Reply,ArrowLeft,Mail } from 'lucide-react';
+import { Inbox,Send,PenSquare,Reply,ArrowLeft,Mail } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { ContactForm } from './contact-form';
 

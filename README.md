@@ -2,6 +2,8 @@
 
 Custom Next.js / React / TypeScript website with a desktop-inspired interface, Three.js and GSAP. Payload manages published website content in the same application. Brand orange is `#F97328`; the studio supports light and dark themes.
 
+Start with [PROJECT.md](PROJECT.md) for the current brief, conversation context, resource inventory and continuation notes. References and original artwork are organized in [sources/](sources/README.md).
+
 ## Run locally
 
 Use Node.js 22 or newer.

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '../globals.css';
+import 'lenis/dist/lenis.css';
 import '../experience.css';
 import '../studio.css';
 import '../studio-premium.css';
@@ -10,6 +11,8 @@ import '../ai-zone.css';
 import '../windows.css';
 import '../resources-chat.css';
 import '../typography.css';
+import '../content-layout.css';
+import '../motion.css';
 import { SiteShell } from '@/components/site-shell';
 import { ContentProvider } from '@/components/content-provider';
 import { getStudioContent } from '@/lib/cms-content';

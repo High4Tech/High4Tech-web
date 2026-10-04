@@ -1,9 +1,10 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from '@/components/icons';
 import { DesktopShell } from './desktop';
 import { ClickSounds } from './sound';
+import { PreviewScroll } from './page-scroll';
 
 export function BookingButton({ className = 'button orange-button', children = 'Book a discovery call' }: { className?: string; children?: React.ReactNode }) {
   return <button className={className} onClick={() => window.dispatchEvent(new Event('high4tech:booking'))}>{children}<ArrowUpRight size={18} /></button>;
@@ -24,5 +25,5 @@ function LandingPreview({children}:{children:React.ReactNode}){
     document.addEventListener('click',navigate,true);window.addEventListener('high4tech:booking',booking);
     return()=>{clearTimeout(timer);document.removeEventListener('click',navigate,true);window.removeEventListener('high4tech:booking',booking);};
   },[]);
-  return <main id="main" className="standalone-preview">{children}<ClickSounds/></main>;
+  return <main id="main" className="standalone-preview"><PreviewScroll/>{children}<ClickSounds/></main>;
 }

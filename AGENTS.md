@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## High4Tech project context
+
+Before feature work, read `PROJECT.md` and `sources/project-brief.md`. They consolidate confirmed user decisions and link the resource inventory. Earlier planning notes may describe superseded scope. Preserve CMS data and private environment files; never include visitor profiles or private transcripts in repository documentation.

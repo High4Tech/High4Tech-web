@@ -21,3 +21,5 @@ Three examples cover leads, documents, and knowledge questions. Tabs, step selec
 The AI evolution copy describes connected tools and supervised workflows without fabricated performance figures or invented client endorsements. Background reading: [Anthropic — Building effective agents](https://www.anthropic.com/engineering/building-effective-agents).
 
 GSAP supplies entrance/reveal motion. All layout styles are scoped to AI Zone; container queries adapt to the actual studio-window width rather than only the browser viewport.
+
+4 October refinement: the hero centers the globe's upper hemisphere above a centered, bold PP Neue Montreal headline and Helvetica description. The clipped square renderer is bounded at 1120px; pause/reset controls stay outside the masked globe surface. Section content is capped at 1280px while backgrounds fill the studio pane. The hero copy is capped at 860px. Narrow windows stack cards, the approach section, and FAQ columns.

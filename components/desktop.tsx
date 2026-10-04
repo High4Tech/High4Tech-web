@@ -1,10 +1,11 @@
 'use client';
 import { ResourceBrowser, ResourceDetail } from './resource-browser';
+import { PageScroll } from './page-scroll';
 import { StudioVideos } from './studio-videos';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Search, Wifi, Folder, Grid2X2, List, Home, Sparkles, Box, NotebookPen, Mail, CalendarDays, Send, Monitor, ChevronRight, MessageCircle, Command, X, PanelLeft, Minus, Maximize2, Sun, Moon, Clock3, Play, Pause, DollarSign, BrainCircuit, Gamepad2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Search, Wifi, Folder, Grid2X2, List, Home, Sparkles, Box, NotebookPen, Mail, CalendarDays, Send, Monitor, ChevronRight, MessageCircle, Command, X, PanelLeft, Minus, Maximize2, Sun, Moon, Clock3, Play, Pause, DollarSign, BrainCircuit, Gamepad2 } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { Symbol, ResourceCard, ArticleArt } from './ui';
 import { Newsroom, Pricing, PricingReminder, PlayArea, BrandIcon } from './studio-sections';
@@ -138,7 +139,7 @@ function AppWindow({window:w,active,sidebar,setSidebar,onFocus,onClose,onMinimiz
     </header>
     <div className="window-layout">{!compact&&<aside className="finder-sidebar"><span className="sidebar-label">FAVORITES</span>{apps.filter(a=>['home','work','services','studio','journal','ai','pricing'].includes(a.id)).sort((a,b)=>a.id==='home'?-1:b.id==='home'?1:0).map(a=><button key={a.id} data-tip={a.id} className={app.id===a.id?'selected':''} onClick={()=>open(a.path)}><a.icon size={16}/>{a.label}{a.id==='work'&&<small>{projects.length}</small>}</button>)}<a href={socials.whatsapp} target="_blank" rel="noopener noreferrer"><BrandIcon name="whatsapp"/>WhatsApp<ArrowUpRight size={11}/></a><div className="sidebar-brand"><img src={settings.logo} alt={settings.agencyName}/></div></aside>}
       <div className="window-main">{!compact&&<div className="finder-toolbar"><button aria-label="Back to folder" disabled={w.path===app.path} onClick={()=>open(app.path)}><ArrowLeft size={17}/></button><span className="finder-breadcrumb">High4Tech <ChevronRight size={12}/><strong>{app.label}</strong>{w.path!==app.path&&<><ChevronRight size={12}/><span>{label}</span></>}</span>{['work','tools','journal'].includes(app.id)&&w.path===app.path&&<><label className="finder-search"><Search size={13}/><input aria-label={`Search ${app.label}`} value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search"/></label>{app.id==='work'&&<button aria-label={list?'Show grid view':'Show list view'} onClick={()=>setList(!list)}>{list?<Grid2X2 size={17}/>:<List size={17}/>}</button>}</>}</div>}
-        <div className="window-scroll" key={w.path}><AppContent path={w.path} open={open} search={search} list={list}/></div>
+        <PageScroll key={w.path} active={active&&!w.minimized&&w.motion!=='minimize'} native={['assistant','safari','contact','calendar'].includes(app.id)}><AppContent path={w.path} open={open} search={search} list={list}/></PageScroll>
         {!compact&&<footer className="window-status"><span><Folder size={11}/> High4Tech / {app.label.toLowerCase()}</span><span>{app.id==='work'?`${projects.length} projects`:'Made of ideas.'}</span></footer>}
       </div>
     </div>

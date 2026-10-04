@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowUp, ArrowUpRight, BookOpen, SquarePen, UserRound } from 'lucide-react';
+import { ArrowUp, ArrowUpRight, BookOpen, SquarePen, UserRound } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { MascotFace } from './studio-extras';
 import { BrandIcon } from './studio-sections';

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
+import { X } from '@/components/icons';
 
 const tips:Record<string,[string,string]>={
   ai:['Make room for better work','Explore assistants, automations, and an example workflow. Click its steps to see how it works.'],

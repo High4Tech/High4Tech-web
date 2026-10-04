@@ -2,6 +2,7 @@ node_modules/
 .next/
 work/
 /outputs/
+/project-archive/
 *.tsbuildinfo
 .env*
 !.env.example

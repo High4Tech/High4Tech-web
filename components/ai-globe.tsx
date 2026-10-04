@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Pause, Play, RotateCcw } from 'lucide-react';
+import { Pause, Play, RotateCcw } from '@/components/icons';
 import type { GlobeInstance } from 'globe.gl';
 
 // Illustrative links, not a live cable map or a claim about studio locations.
@@ -19,6 +19,7 @@ const routes = [
   { name: 'Western Pacific link', coords: [[140,36],[147,22],[153,8],[157,-12],[151,-34]] },
 ];
 const nodes = [{lat:40,lng:-74},{lat:51,lng:0},{lat:25,lng:67},{lat:1,lng:104},{lat:36,lng:140},{lat:38,lng:-122},{lat:-34,lng:151},{lat:-34,lng:18},{lat:-23,lng:-43}];
+const initialView = { lat: 24, lng: 45, altitude: 1.65 };
 
 export default function AIGlobe() {
   const host = useRef<HTMLDivElement>(null), instance = useRef<GlobeInstance | null>(null);
@@ -51,7 +52,7 @@ export default function AIGlobe() {
           .pointsData(nodes).pointColor(() => '#ffae76').pointAltitude(.012).pointRadius(.32)
           .onGlobeReady(() => { if (!disposed) { setReady(true); visibility(); } });
         instance.current = globe;
-        globe.pointOfView({ lat: 24, lng: 45, altitude: 2.25 }, 0);
+        globe.pointOfView(initialView, 0);
         const controls = globe.controls();
         controls.enableZoom = false; controls.enablePan = false; controls.autoRotate = rotation.current; controls.autoRotateSpeed = .45;
         globe.renderer().setPixelRatio(Math.min(devicePixelRatio, 1.6));
@@ -74,9 +75,11 @@ export default function AIGlobe() {
   }, []);
   function toggle() { rotation.current = !rotation.current; setRotating(rotation.current); if (instance.current) { instance.current.controls().autoRotate = rotation.current; instance.current.pathDashAnimateTime(rotation.current ? 8500 : 0); instance.current.pathDashLength(rotation.current ? .28 : 1); } }
   return <div className={`az-globe ${ready && !failed ? 'is-ready' : ''}`}>
+    <div className="az-globe-viewport">
     <img className="az-globe-fallback" src="/ai/globe-fallback.svg" alt="An orange network connecting regions across a globe"/>
     <div ref={host} className="az-globe-canvas" role="img" aria-label="Interactive globe with illustrative global connections. Drag to rotate."/>
+    </div>
     <div className="az-globe-top"><span><i/>CONNECTED POSSIBILITIES</span><span>01 / EARTH</span></div>
-    <div className="az-globe-bottom"><span>{failed ? 'Global connections' : 'Drag to explore'}<small>Illustrative network</small></span><div><button aria-label={rotating ? 'Pause globe motion' : 'Resume globe motion'} aria-pressed={rotating} onClick={toggle} disabled={!ready || failed}>{rotating ? <Pause size={13}/> : <Play size={13}/>}</button><button aria-label="Reset globe view" disabled={!ready || failed} onClick={() => instance.current?.pointOfView({lat:24,lng:45,altitude:2.25},matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 700)}><RotateCcw size={13}/></button></div></div>
+    <div className="az-globe-bottom"><span>{failed ? 'Global connections' : 'Drag to explore'}<small>Illustrative network</small></span><div><button aria-label={rotating ? 'Pause globe motion' : 'Resume globe motion'} aria-pressed={rotating} onClick={toggle} disabled={!ready || failed}>{rotating ? <Pause size={13}/> : <Play size={13}/>}</button><button aria-label="Reset globe view" disabled={!ready || failed} onClick={() => instance.current?.pointOfView(initialView,matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 700)}><RotateCcw size={13}/></button></div></div>
   </div>;
 }

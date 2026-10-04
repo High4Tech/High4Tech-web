@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Check, DollarSign, Gamepad2, RotateCcw, X, CheckCheck } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, DollarSign, Gamepad2, RotateCcw, X, CheckCheck } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { ArticleArt } from './ui';
 import { playUiSound } from './sound';

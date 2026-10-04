@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX } from '@/components/icons';
 const clips = { click:'click', open:'open', close:'off', minimize:'minimize', maximize:'maximize', accept:'accept', error:'error', notification:'notification', off:'off' } as const;
 export type UiSound = keyof typeof clips;
 let current: HTMLAudioElement | undefined;

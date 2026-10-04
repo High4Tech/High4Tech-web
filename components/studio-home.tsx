@@ -1,5 +1,5 @@
 'use client';
-import { ArrowUpRight, ChevronRight, Code2, Palette, TrendingUp, Globe2, Check, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, ChevronRight, Code2, Palette, TrendingUp, Globe2, Check, MessageCircle } from '@/components/icons';
 import { useStudioContent } from './content-provider';
 import { Symbol } from './ui';
 

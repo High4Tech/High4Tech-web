@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ArrowDown, FolderOpen, Plus, Minus, Monitor, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ArrowDown, FolderOpen, Plus, Minus, Monitor, ArrowRight, Sparkles } from '@/components/icons';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Hero } from './hero';

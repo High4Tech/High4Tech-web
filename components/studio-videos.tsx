@@ -1,5 +1,5 @@
 'use client';
-import { Play } from 'lucide-react';
+import { Play } from '@/components/icons';
 import { useState } from 'react';
 import { youtubeID, type StudioVideo } from '@/lib/resource-platforms';
 function Video({ video }: { video: StudioVideo }) {

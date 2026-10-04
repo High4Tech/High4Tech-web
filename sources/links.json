@@ -1,6 +1,6 @@
 {
   "recorded": "2026-10-02",
-  "scope": "Public frontend reference planning only",
+  "scope": "High4Tech Studio frontend, CMS, assistant, support, security and reference archive",
   "websites": [
     {
       "id": "current-high4tech",
@@ -46,9 +46,44 @@
       "id": "stokt-heron",
       "url": "https://wearestokt.com/case-study-collection/heron",
       "role": "visual-and-case-study-reference"
+    },
+    {
+      "id": "stokt",
+      "url": "https://wearestokt.com/",
+      "role": "landing-and-black-bento-reference"
+    },
+    {
+      "id": "apple-newsroom",
+      "url": "https://www.apple.com/newsroom/",
+      "role": "newsroom-reference"
+    },
+    {
+      "id": "armory",
+      "url": "https://armory.framer.ai/?via=eyitayo64",
+      "role": "ai-zone-reference"
+    },
+    {
+      "id": "globe-submarine-cables",
+      "url": "https://globe.gl/example/submarine-cables/",
+      "role": "interactive-globe-reference"
     }
   ],
   "repositories": [
+    {
+      "id": "lenis",
+      "url": "https://github.com/darkroomengineering/lenis",
+      "role": "implemented-smooth-scroll-library"
+    },
+    {
+      "id": "satus",
+      "url": "https://github.com/darkroomengineering/satus",
+      "role": "motion-architecture-starter-reference"
+    },
+    {
+      "id": "phosphor-react",
+      "url": "https://github.com/phosphor-icons/react",
+      "role": "implemented-public-ui-icon-library"
+    },
     {
       "id": "react-three-fiber",
       "url": "https://github.com/pmndrs/react-three-fiber",
@@ -73,6 +108,11 @@
       "id": "macos-web-simulator",
       "url": "https://github.com/LikhithSP/MacOS-Web-Simulator",
       "role": "open-source-macOS-interaction-reference"
+    },
+    {
+      "id": "globe-gl",
+      "url": "https://github.com/vasturiano/globe.gl",
+      "role": "implemented-globe-library"
     }
   ],
   "additionalDocumentation": [
@@ -84,5 +124,41 @@
       "id": "scrolltrigger",
       "url": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/"
     }
-  ]
+  ],
+  "updated": "2026-10-04",
+  "designFiles": [
+    {
+      "id": "figma-mac-ios-icons",
+      "url": "https://www.figma.com/design/dIjWorlPr6LTOBUQBZlYVr/Free-Mac---iOS-Custom-icon-pack--made-in-Figma--V-1.8--Community-?node-id=0-1",
+      "role": "dock-and-app-icon-pack"
+    },
+    {
+      "id": "figma-go-chatbot",
+      "url": "https://www.figma.com/design/dxZUj3AlKSm8II2xgIvFwY/GO-chatbot-design-_-GO",
+      "role": "chat-and-inbox-reference"
+    },
+    {
+      "id": "untitled-high4tech-typography",
+      "url": "https://www.figma.com/design/NU1SlgUvw6zmalvW1Qhj6K/?node-id=18-1951",
+      "role": "implemented-typography-system-with-supplied-brand-fonts",
+      "inspectedFrame": "1023:36826"
+    }
+  ],
+  "iconLibraries": [
+    { "id": "phosphor", "url": "https://phosphoricons.com/", "role": "selected-icon-family" },
+    { "id": "remix", "url": "https://remixicon.com/" },
+    { "id": "tabler", "url": "https://tabler.io/icons" },
+    { "id": "iconoir", "url": "https://iconoir.com/" },
+    { "id": "boxicons", "url": "https://boxicons.com/" },
+    { "id": "hugeicons", "url": "https://hugeicons.com/" },
+    { "id": "font-awesome", "url": "https://fontawesome.com/" },
+    { "id": "flaticon", "url": "https://flaticon.com/" },
+    { "id": "heroicons", "url": "https://heroicons.com/" },
+    { "id": "lucide", "url": "https://lucide.dev/" },
+    { "id": "material-symbols", "url": "https://fonts.google.com/icons" },
+    { "id": "noun-project", "url": "https://thenounproject.com/" },
+    { "id": "icons8", "url": "https://icons8.com/" },
+    { "id": "bootstrap", "url": "https://icons.getbootstrap.com/" }
+  ],
+  "projectRepository": "https://github.com/High4Tech/High4Tech-web"
 }

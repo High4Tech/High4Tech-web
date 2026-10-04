@@ -118,7 +118,7 @@ button, input, select, textarea, code, pre {
 }
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-display);
 }
 p { letter-spacing: var(--tracking-body); }
@@ -143,33 +143,39 @@ p { letter-spacing: var(--tracking-body); }
 .studio-os :is(h1, h2, h3, h4),
 .landing-v2 :is(h1, h2, h3), .landing-footer h2 {
   font-family: var(--font-display);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-display);
 }
 .studio-os :is(.os-page-heading h1, .os-reading h1, .newsroom h1,
   .newsroom-article h1, .installed-heading h1, .gallery-heading h1,
   .pricing-page header h1, .play-area header h1) {
   font-size: clamp(var(--display-sm), 4cqw, var(--display-lg));
-  line-height: var(--display-lg-line);
+  font-weight: var(--weight-bold);
+  line-height: 1.12;
+  text-wrap: balance;
 }
 .studio-os .home-intro h2 {
   font-size: clamp(var(--display-md), 5cqw, var(--display-xl));
-  line-height: var(--display-xl-line);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
 }
 .studio-os :is(.os-reading h2, .os-journal-list h2, .home-end h2,
   .newsroom > h2, .pricing-details h2, .mail-compose-content h1,
   .assistant-profile-heading h2) {
+  font-weight: var(--weight-bold);
   font-size: var(--display-xs);
   line-height: var(--display-xs-line);
   letter-spacing: 0;
 }
 .studio-os :is(.resource-info h3, .news-copy h3, .os-services h2,
   .pricing-grid h2, .home-bento-world h3, .home-bento-people h3) {
+  font-weight: var(--weight-bold);
   font-size: var(--display-xs);
   line-height: var(--display-xs-line);
   letter-spacing: 0;
 }
 .studio-os :is(.news-feature h3, .mail-letter h1) {
+  font-weight: var(--weight-bold);
   font-size: var(--display-sm);
   line-height: var(--display-sm-line);
 }
@@ -197,16 +203,18 @@ p { letter-spacing: var(--tracking-body); }
 }
 .studio-os .az-page :is(h1, h2, h3) {
   font-family: var(--font-display);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-display);
 }
 .studio-os .az-page .az-hero h1 {
-  font-size: clamp(var(--display-md), 7.6cqw, var(--display-2xl));
-  line-height: var(--display-2xl-line);
+  font-size: clamp(var(--display-md), 6.4cqw, var(--display-2xl));
+  line-height: 1.08;
+  text-wrap: balance;
 }
 .studio-os .az-page h2 {
   font-size: clamp(var(--display-sm), 4.4cqw, var(--display-lg));
-  line-height: var(--display-lg-line);
+  line-height: 1.12;
+  text-wrap: balance;
 }
 .studio-os .az-page :is(h3, .az-service-head h3, .az-idea-grid h3) {
   font-size: var(--display-xs);
@@ -215,7 +223,7 @@ p { letter-spacing: var(--tracking-body); }
 }
 .studio-os .az-page :is(.az-evolution h2, .az-end > h2) {
   font-size: clamp(var(--display-md), 6cqw, var(--display-xl)) !important;
-  line-height: var(--display-xl-line) !important;
+  line-height: 1.12 !important;
 }
 .studio-os .az-page p {
   font-size: var(--text-md);
@@ -232,17 +240,20 @@ p { letter-spacing: var(--tracking-body); }
 .cta-heading h2 {
   font-family: var(--font-display);
   font-size: clamp(var(--display-lg), 7vw, var(--display-2xl));
-  line-height: var(--display-2xl-line);
+  line-height: 1.1;
   letter-spacing: var(--tracking-display);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-bold);
+  text-wrap: balance;
 }
 .landing-v2 :is(.work-cinema-top h2, .capability-preview h2,
   .desktop-invitation h2, .statement-band h2, .landing-section-head h2),
 .section-heading h2 {
   font-family: var(--font-display);
   font-size: clamp(var(--display-sm), 4vw, var(--display-lg));
-  line-height: var(--display-lg-line);
+  line-height: 1.12;
   letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-bold);
+  text-wrap: balance;
 }
 .landing-v2 :is(.cinema-caption h3, .bento-toolbox h3) {
   font-size: clamp(var(--display-xs), 3vw, var(--display-md));
@@ -267,10 +278,11 @@ p { letter-spacing: var(--tracking-body); }
   font-size: clamp(var(--display-sm), 3vw, var(--display-md));
   line-height: var(--display-md-line);
   letter-spacing: var(--tracking-display);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-bold);
 }
 .h4t-dashboard h2, .support-workspace .support-heading h2 {
   font-family: var(--font-display);
+  font-weight: var(--weight-bold);
   font-size: var(--display-xs) !important;
   line-height: var(--display-xs-line);
   letter-spacing: 0;

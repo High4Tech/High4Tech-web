@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ArrowDown, X, Menu, Monitor, MessageCircle, Bot } from 'lucide-react';
+import { ArrowUpRight, ArrowDown, X, Menu, Monitor, MessageCircle, Bot } from '@/components/icons';
 import gsap from 'gsap';
 import { useStudioContent } from './content-provider';
 import { SoundToggle } from './sound';
