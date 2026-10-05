@@ -87,6 +87,8 @@ Security hardening includes private admin creation, login lockout, private conve
 
 ## Latest interface revision — 4 October 2026
 
+The 5 October follow-up adds a resources ticket to the left desktop bento, a distinct visual Home launchpad, saved dock reordering and browser-local personal Trash for notes/documents/messages/blog cards. Pricing now offers separate Web, App and AI & automation calculators with sample USD rates, scope/add-ons and optional monthly support. Rates are code-configured for this dummy phase; existing CMS price records remain intact. [Details and source attribution](personal-desktop-and-pricing.md).
+
 Newsroom uses separate card images, article banners and optional inline images (with captions and insertion after a chosen paragraph). Home highlights the most recent published blog. Expertise is a distinct Magic UI-inspired service bento; Newsroom, Calendar and Tools have their own workspace layouts. The folder sidebar includes Tools & resources directly below Expertise and excludes AI Zone, which stays in the dock.
 
 All contact CTAs go to the fillable `/contact` form. Mail remains available separately at `/mail`. Calendar hands a preferred date and topic to the form when live booking is not configured. The persistent floating assistant minimizes to its mascot and expands into the main chat app. Paid tool checkout remains a no-charge demo with transient form details and a thank-you animation. Resource images and YouTube demos are editable in Payload. See [template and artwork notes](templates/README.md).

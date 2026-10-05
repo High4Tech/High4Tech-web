@@ -44,6 +44,8 @@ Latest code milestone before this context pack: `008af87`, following security ha
 
 ## Private files
 
+The 5 October desktop revision separates Home's visual launchpad from the Studio directory, adds a compact resources ticket, a saved draggable dock and personal Trash. Pricing is now a Web/App/AI calculator with dummy rates and optional monthly support. Safari and AI Zone use the requested Let's Scroll seek pattern with the existing film. See [implementation and scope notes](sources/personal-desktop-and-pricing.md).
+
 `.env`, database files, `media/`, build output, dependencies, test fixtures and the original-video archive are excluded from Git and the portable source bundle. Never upload credentials, visitor profiles or private transcripts as project sources. Repository checkout alone does not restore the local CMS database.
 
 Newsroom now has independent card/banner images and optional inline images in Payload, plus a Recent blog highlight on Home. Contact CTAs open the form directly; Mail remains separate. Calendar, Tools & Resources and floating assistant controls have been rebuilt. Paid checkout is an explicitly no-charge preview and saves no order or customer details. `npm run editorial:verify` checks the complete migration chain and image/publication behavior using a fresh disposable database under ignored `outputs/`.

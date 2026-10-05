@@ -9,7 +9,7 @@ export async function generateMetadata({params}: {params:Promise<{slug?:string[]
   const {services,projects,articles,resources}=await getStudioContent();
   const {slug=[]} = await params;
   const path=slug.join('/');
-  const names:Record<string,string> = {'':'Studio','services':'Services','projects':'Selected work','tools-and-resources':'Tools & resources','about':'The studio','blog':'Newsroom','newsroom':'Newsroom','ai-zone':'AI Zone','pricing':'Pricing','play':'Play area','contact':'Let’s talk','mail':'Mail','privacy':'Privacy preview','terms':'Site terms preview','desktop':'High4Tech OS','assistant':'Studio assistant','calendar':'Let’s talk','gallery':'Gallery','safari':'Safari','toolkit':'Toolkit','preview':'Landing preview'};
+  const names:Record<string,string> = {'':'Studio','services':'Services','projects':'Selected work','tools-and-resources':'Tools & resources','about':'The studio','blog':'Newsroom','newsroom':'Newsroom','ai-zone':'AI Zone','pricing':'Pricing','play':'Play area','contact':'Let’s talk','mail':'Mail','privacy':'Privacy preview','terms':'Site terms preview','desktop':'High4Tech OS','assistant':'Studio assistant','calendar':'Let’s talk','gallery':'Gallery','safari':'Safari','trash':'Trash','toolkit':'Toolkit','preview':'Landing preview'};
   const title = names[path] || services.find(s=>slug[0]==='services'&&s.slug===slug[1])?.title || projects.find(p=>slug[0]==='projects'&&p.slug===slug[1])?.name || articles.find(a=>(slug[0]==='blog'||slug[0]==='newsroom')&&a.slug===slug[1])?.title || resources.find(r=>slug[0]==='tools-and-resources'&&r.id===slug[1])?.title || 'Page not found';
   return {title};
 }
@@ -19,7 +19,7 @@ export default async function Page({params}: {params:Promise<{slug?:string[]}>})
   const path=slug.join('/');
   if(path==='') return null;
   if(path==='preview') return <LandingCampaign/>;
-  if(['mail','desktop','assistant','calendar','gallery','safari','toolkit','preview','newsroom','ai-zone','pricing','play'].includes(path)) return null;
+  if(['trash','mail','desktop','assistant','calendar','gallery','safari','toolkit','preview','newsroom','ai-zone','pricing','play'].includes(path)) return null;
   if(path==='services') return <ServicesPage />;
   if(path==='projects') return <ProjectsPage />;
   if(path==='tools-and-resources') return <ResourcesPage />;

@@ -9,6 +9,7 @@
     "build:vercel": "node --import tsx scripts/vercel-build.ts",
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
+    "pricing:verify": "node --import tsx scripts/verify-pricing.ts",
     "security:verify": "node --env-file=.env --import tsx scripts/verify-security.ts",
     "cms:types": "payload generate:types",
     "cms:setup": "node scripts/setup-cms.mjs",

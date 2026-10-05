@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
+import { ScrollFilm } from './scroll-film';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDown, ArrowRight, ArrowUpRight, Code2, Sparkles } from './icons';
 import { useStudioContent } from './content-provider';
-import { SurfaceFilm, useCardSpotlight } from './campaign-media';
+import { useCardSpotlight } from './campaign-media';
 import { MascotFace } from './studio-extras';
 import { BrandIcon } from './studio-sections';
 import { studioStack } from './studio-apps';
@@ -16,6 +17,7 @@ import { ArticleArt } from './ui';
 export function LandingCampaign() {
   const { projects, services, resources, articles, settings, socials } = useStudioContent();
   const root = useRef<HTMLDivElement>(null);
+  useEffect(() => { root.current?.classList.toggle('lp-embedded', window.self !== window.top); }, []);
   useCardSpotlight(root);
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -44,13 +46,7 @@ export function LandingCampaign() {
       <p data-lp-hero>{settings.introduction}</p>
       <div className="lp-actions" data-lp-hero><Link href="/contact" className="lp-button lp-button-orange">Start a project <ArrowUpRight size={17} /></Link><a href="#selected-work" className="lp-inline">Explore our work <ArrowDown size={16} /></a></div>
     </section>
-    <div className="lp-rail lp-film-wrap" data-lp-reveal>
-      <SurfaceFilm className="lp-film">
-        <div className="lp-film-top"><span>HIGH4TECH / MOTION STUDY</span><span>DESIGN × TECHNOLOGY</span></div>
-        <img className="lp-film-logo" src={settings.logo} alt="" aria-hidden="true" />
-        <div className="lp-film-caption"><span className="lp-label">A LITTLE DIFFERENT BY DESIGN</span><strong>Good ideas<br />deserve movement.</strong></div>
-      </SurfaceFilm>
-    </div>
+    <div className="lp-rail"><ScrollFilm label="HIGH4TECH / DESIGN IN MOTION" title="Give your ideas a little space." body="Design, technology and character. Connected by the way you move."/></div>
     <section className="lp-work lp-rail lp-section" id="selected-work">
       <div className="lp-section-heading" data-lp-reveal><div><span className="lp-label">01 / SELECTED WORK</span><h2>A point of view.<br /><em>Made tangible.</em></h2></div><Link href="/projects" className="lp-inline">All projects <ArrowUpRight size={17} /></Link></div>
       <div className="lp-project-grid">{projects.slice(0, 4).map((project, index) => <Link className="lp-project" href={`/projects/${project.slug}`} key={project.slug} data-lp-reveal data-cursor="VIEW PROJECT">

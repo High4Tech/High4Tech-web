@@ -1,9 +1,10 @@
 'use client';
+import { useDesktopStorage } from './desktop-storage';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from './icons';
 import { useStudioContent } from './content-provider';
 export function NewsroomStack({open}:{open:(path:string)=>void}){
- const {articles}=useStudioContent();const [index,setIndex]=useState(0),[offset,setOffset]=useState(0);const deck=useRef<HTMLDivElement>(null),origin=useRef<number|null>(null),dragged=useRef(false);const count=articles.length;
+ const {articles:allArticles}=useStudioContent();const {trashed}=useDesktopStorage();const articles=allArticles.filter(a=>!trashed.some(f=>f.id==='blog-'+a.slug));const [index,setIndex]=useState(0),[offset,setOffset]=useState(0);const deck=useRef<HTMLDivElement>(null),origin=useRef<number|null>(null),dragged=useRef(false);const count=articles.length;
  function move(direction:number){if(count)setIndex(i=>(i+direction+count)%count);setOffset(0);}
  const current=count?index%count:0;
  useEffect(()=>{if(deck.current?.contains(document.activeElement))deck.current.querySelector<HTMLButtonElement>('[data-depth="0"]')?.focus({preventScroll:true});},[current]);

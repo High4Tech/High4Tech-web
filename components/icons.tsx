@@ -1,3 +1,4 @@
+import { TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
 import { ArrowBendUpLeftIcon } from '@phosphor-icons/react/dist/ssr/ArrowBendUpLeft';
 import { ArrowClockwiseIcon } from '@phosphor-icons/react/dist/ssr/ArrowClockwise';
 import { ArrowCounterClockwiseIcon } from '@phosphor-icons/react/dist/ssr/ArrowCounterClockwise';
@@ -136,3 +137,5 @@ export const VolumeX = glyph(SpeakerSlashIcon, 'SpeakerSlash', 'duotone');
 export const Wifi = glyph(WifiHighIcon, 'WifiHigh', 'regular');
 export const Workflow = glyph(FlowArrowIcon, 'FlowArrow', 'duotone');
 export const X = glyph(XIcon, 'X', 'bold');
+
+export const Trash2 = glyph(TrashIcon, 'Trash', 'duotone');

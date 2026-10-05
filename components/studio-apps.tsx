@@ -4,7 +4,8 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, LockKeyhole, RotateCw, Search } fr
 import { useStudioContent } from './content-provider';
 
 // Geometry from the supplied Figma icon pack. Assets are served locally.
-export function MacIcon({name}:{name:'safari'|'finder'|'figma'|'photos'|'appstore'}) {
+export function MacIcon({name,full=false}:{name:'safari'|'finder'|'figma'|'photos'|'appstore'|'toolkit'|'trash';full?:boolean}) {
+  if(name==='trash')return <span className={`mac-icon mac-trash ${full?'is-full':''}`}><img src='/icons/figma/trash.svg' alt=''/>{full&&<i/>}</span>;
   if(name==='photos')return <span className="mac-icon mac-photos"><img src="/icons/figma/photos.png" alt=""/></span>;
   if(name==='appstore')return <span className="mac-icon mac-appstore"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M23 13 46 52M40 13 17 52M11 40h42" fill="none" stroke="white" strokeWidth="6" strokeLinecap="round"/></svg></span>;
   return <span className={`mac-icon mac-${name}`}><img src={`/icons/figma/${name}.svg`} alt=""/></span>;

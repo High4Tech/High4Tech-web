@@ -1,5 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { ScrollFilm } from './scroll-film';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Plus, Play, Workflow, Bot, Database, Sparkles, FileText, Inbox, ShieldCheck, X } from '@/components/icons';
 import { useStudioContent } from './content-provider';
@@ -54,7 +55,7 @@ export function AIZone({ open }: { open: (path: string) => void }) {
       <div className="az-hero-copy"><span className="az-eyebrow" data-az-hero><i/>HIGH4TECH / APPLIED INTELLIGENCE</span><h1 data-az-hero>Less busywork.<br/><em>More possibilities.</em></h1><p data-az-hero>AI assistants. Connected systems. Workflows that move your business forward—while your team stays in control.</p><div className="az-actions" data-az-hero><button className="az-cta az-primary" onClick={() => open('/contact')}>Build a workflow <ArrowUpRight size={15}/></button><button className="az-link" onClick={() => jump(workflowSection)}>See what’s possible <ArrowDown size={14}/></button></div><div className="az-proof-strip" data-az-hero><span><Bot size={14}/>Your knowledge</span><span><Workflow size={14}/>Your tools</span><span><ShieldCheck size={14}/>Human control</span></div></div>
       <div className="az-hero-footer"><span>HIGH4TECH / APPLIED AI</span><span>SCROLL TO CONNECT THE DOTS <ArrowDown size={12}/></span></div>
     </header>
-    <section className="az-cinema" aria-label="Applied intelligence motion study" data-az-reveal><SurfaceFilm><div className="az-cinema-label">THE SHAPE OF WHAT’S NEXT</div><div className="az-cinema-copy"><h2>If it repeats,<br/><em>we can rethink it.</em></h2><p>Make space for the work<br/>only your people can do.</p></div></SurfaceFilm></section>
+    <div className="az-cinematic-journey"><ScrollFilm label="HIGH4TECH / CONNECTED INTELLIGENCE" title="Rethink the repeating work." body="Your tools, your knowledge, your people. A better flow between them."/></div>
     <section className="az-evolution" data-az-reveal><span className="az-eyebrow">THE SHIFT IS ALREADY HERE</span><div><h2>From answering questions<br/>to <em>moving work forward.</em></h2><p>AI is becoming part of the workflow: finding information, interpreting documents, and working with connected tools. The useful part is choosing the right task and building a dependable path around it.</p><div className="az-shift"><span>01 <strong>Understand</strong></span><ArrowRight size={14}/><span>02 <strong>Connect</strong></span><ArrowRight size={14}/><span>03 <strong>Act, with review</strong></span></div><a className="az-research" href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener noreferrer">Read about workflows & agents <ArrowUpRight size={11}/></a></div></section>
     <section className="az-capabilities" ref={serviceSection}>
       <div className="az-section-heading" data-az-reveal><span className="az-eyebrow">WHAT WE CAN BUILD / 01</span><div><h2>Big possibilities.<br/><em>Specific solutions.</em></h2><p>Start with the work that gets in your way.<br/>We’ll help you design what comes next.</p></div></div>

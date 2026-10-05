@@ -1,4 +1,9 @@
 'use client';
+import { StudioHome } from './studio-home';
+import { ResourceTicket } from './resource-ticket';
+import { DesktopStorageProvider, TrashWorkspace } from './desktop-storage';
+import { StudioDock } from './studio-dock';
+import { Trash2 } from './icons';
 import { ResourceBrowser, ResourceDetail } from './resource-browser';
 import { PageScroll } from './page-scroll';
 import { StudioVideos } from './studio-videos';
@@ -36,6 +41,7 @@ const apps = [
   {id:'toolkit',label:'Toolkit',path:'/toolkit',icon:Grid2X2,color:'toolkit'},
   {id:'ai',label:'AI Zone',path:'/ai-zone',icon:BrainCircuit,color:'ai'},
   {id:'pricing',label:'Pricing',path:'/pricing',icon:DollarSign,color:'pricing'},
+  {id:'trash',label:'Trash',path:'/trash',icon:Trash2,color:'trash'},
   {id:'play',label:'Play',path:'/play',icon:Gamepad2,color:'play'},
 ];
 type StudioWindow={id:string;path:string;x:number;y:number;z:number;minimized:boolean;maximized:boolean;positioned?:boolean;motion?:'minimize'|'restore'|'zoom'};
@@ -43,7 +49,8 @@ type OpenApp=(path:string)=>void;
 function appFor(path:string){if(path==='/contact')return {...apps.find(a=>a.id==='contact')!,label:'Contact',path:'/contact'};if(path.startsWith('/blog'))path=path.replace('/blog','/newsroom');return apps.find(a=>path===a.path||(a.path!=='/'&&path.startsWith(a.path+'/')))||{id:'info',label:'Read me',path,icon:NotebookPen,color:'cream'};}
 function createWindow(path:string,z:number,index=0):StudioWindow {return {id:`window-${z}`,path,x:index*24,y:index*20,z,minimized:false,maximized:false};}
 
-export function DesktopShell(){
+export function DesktopShell(){return <DesktopStorageProvider><DesktopWorkspace/></DesktopStorageProvider>;}
+function DesktopWorkspace(){
   const {projects,articles,settings,socials}=useStudioContent();
   const pathname=usePathname();const router=useRouter();
   const [windows,setWindows]=useState<StudioWindow[]>(()=>[createWindow(pathname==='/desktop'?'/':pathname,10)]);
@@ -81,7 +88,7 @@ export function DesktopShell(){
     <aside className="minimized-tray" aria-label="Minimized windows">{windows.filter(w=>w.minimized).map(w=>{const app=appFor(w.path);return <button key={w.id} data-sound="open" aria-label={`Restore ${app.label}`} onClick={()=>{setWindows(current=>current.map(item=>item.id===w.id?{...item,minimized:false,motion:'restore',z:++topZ.current}:item));route(w.path);}}><span className="mini-window-preview"><i/><app.icon size={24} strokeWidth={1.25}/><b>{app.label}</b></span><small>{app.label}</small></button>;})}</aside>
     <VisitorPrompts open={open} activePath={active?.path||"/desktop"}/>
     <DesktopLoops kind="tools"/><DesktopCompanion/><StudioIntro/>
-    <div className="dock-stage"><DesktopLoops kind="clients"/><nav className="os-dock" aria-label="Studio dock"><button className="dock-item" data-tip="home" onClick={()=>open("/")} aria-label="Open Home"><span className="dock-icon home"><Home size={29}/></span><span className="dock-tooltip">Home</span></button><div className="dock-divider"/>{apps.filter(a=>!['home','pricing'].includes(a.id)).map(a=><button className={`dock-item ${!!active&&appFor(active.path).id===a.id?'dock-active':''}`} key={a.id} data-tip={a.id} onClick={()=>open(a.id==='contact'?a.path:windows.find(w=>appFor(w.path).id===a.id)?.path||a.path)} aria-label={`Open ${a.label}`} aria-pressed={!!active&&appFor(active.path).id===a.id}><span className={`dock-icon ${a.color}`}>{a.id==='safari'?<MacIcon name="safari"/>:a.id==='gallery'?<MacIcon name="photos"/>:a.id==='tools'?<MacIcon name="appstore"/>:a.id==='work'?<MacIcon name="finder"/>:a.id==='assistant'?<MascotFace/>:a.id==='calendar'?<><small suppressHydrationWarning>{new Date().toLocaleDateString('en-US',{month:'short'}).toUpperCase()}</small><b suppressHydrationWarning>{new Date().getDate()}</b></>:<a.icon size={30} strokeWidth={1.5}/>}</span><span className="dock-tooltip">{a.label}</span><i className={windows.some(w=>appFor(w.path).id===a.id)?'running':''}/></button>)}<div className="dock-divider"/><button className="dock-item" aria-label="Show desktop" data-tip="desktop" onClick={showDesktop}><span className="dock-icon desktop"><Grid2X2 size={26}/></span><span className="dock-tooltip">Desktop</span></button></nav></div>
+    <div className="dock-stage"><DesktopLoops kind="clients"/><StudioDock apps={apps} activeId={active?appFor(active.path).id:''} runningIds={windows.map(w=>appFor(w.path).id)} open={path=>open(path==='/mail'?path:windows.find(w=>appFor(w.path).id===appFor(path).id)?.path||path)} showDesktop={showDesktop}/></div>
     <dialog className="os-spotlight" ref={searchDialog} onCancel={()=>setSpotlight(false)} onClick={e=>{if(e.target===searchDialog.current)setSpotlight(false);}}><form onSubmit={e=>{e.preventDefault();if(results[0])open(results[0].path);}}><Search size={22}/><input autoFocus aria-label="Search apps and projects" placeholder="Search the studio…" value={query} onChange={e=>setQuery(e.target.value)}/><button type="button" onClick={()=>setSpotlight(false)} aria-label="Close search"><X size={18}/></button></form><div className="spotlight-results">{results.length?results.map(r=><button key={r.path} onClick={()=>open(r.path)}><span>{r.name}</span><small>{r.type}</small><ArrowUpRight size={15}/></button>):<p>No matches. Try “Projects”, “Design”, or “Mail”.</p>}</div><footer><span>↑ Find your next idea</span><span>ESC to close</span></footer></dialog>
   </div>;
 }
@@ -94,7 +101,7 @@ function StudioLivePanel({open}:{open:OpenApp}){
   return <aside className="studio-live-panel" aria-label="Live studio overview">
     <div className="live-clocks"><span className="live-panel-label">A STUDIO WITHOUT BORDERS</span><div className="clock-pair"><div><span><i/>YOUR TIME</span><strong>{now?now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'—'}</strong></div><div><span><i/>LONDON</span><strong>{time('Europe/London')}</strong></div></div></div>
     <button className="live-call" onClick={()=>open('/calendar')}><span><b>{now?.toLocaleDateString('en-US',{weekday:'long'})||'TODAY'}</b><strong>{now?.getDate()||'—'}</strong></span><small>Let’s talk <ArrowUpRight size={13}/></small></button>
-    <NewsroomStack open={open}/>
+    <NewsroomStack open={open}/><ResourceTicket open={open}/>
     <div className="live-stats"><button onClick={()=>open('/projects')}><span>PORTFOLIO</span><strong>{String(projects.length).padStart(2,'0')}</strong><small>Projects in Finder</small></button><button onClick={()=>open('/tools-and-resources')}><span>RESOURCES</span><strong>{String(resources.filter(r=>r.price==='Free').length).padStart(2,'0')}</strong><small>Free to explore</small></button></div>
     <StudioMusic/>
   </aside>;
@@ -152,7 +159,8 @@ function AppWindow({window:w,active,sidebar,setSidebar,onFocus,onClose,onMinimiz
 
 function AppContent({path,open,search,list}:{path:string;open:OpenApp;search:string;list:boolean}){
   const {projects,services,resources,articles,settings}=useStudioContent();
-  if(path==='/')return <StudioOverview open={open} home/>;
+  if(path==='/')return <StudioHome open={open}/>;
+  if(path==='/trash')return <TrashWorkspace open={open}/>;
   if(path==='/ai-zone')return <AIZone open={open}/>;
   if(path==='/pricing')return <Pricing open={open}/>;
   if(path==='/play')return <PlayArea/>;
